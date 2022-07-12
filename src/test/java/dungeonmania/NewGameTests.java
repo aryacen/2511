@@ -90,6 +90,10 @@ public class NewGameTests {
         entities.add(entity4);
         entities.add(entity5);
         entities.add(entity6);
+
+        // checks if the entityId function works at naming multiple same entity types
+        assertEquals("arrow3", entity5.getId());
+
         String goal = ":exit";
         DungeonResponse expectedOutput = new DungeonResponse("build_bow1", "build_bow", entities, inventory, battles,
                 buildables, goal);

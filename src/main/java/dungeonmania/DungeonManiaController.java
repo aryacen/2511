@@ -143,17 +143,24 @@ public class DungeonManiaController {
         for (int i = 0; i < entities.length(); i++) {
             boolean interactable = false;
             JSONObject temp = entities.getJSONObject(i);
+
+            // entityId will be entity type followed with an integer (starting from 1),
+            // which is denoted by the frequency of the entity type in the dungeon
             String type = temp.getString("type");
             types.add(type);
             int frequencyOfType = Collections.frequency(types, type);
             String s = String.valueOf(frequencyOfType);
             String entityId = type + s;
+
             int x = temp.getInt("x");
             int y = temp.getInt("y");
             Position position = new Position(x, y);
+
             if (type.equals("mercenary") || type.equals("zombie_toast_spawner")) {
                 interactable = true;
             }
+
+            // Create an EntityResponse for the entity and store them in the output List
             EntityResponse tempResponse = new EntityResponse(entityId, type, position, interactable);
             output.add(tempResponse);
         }
