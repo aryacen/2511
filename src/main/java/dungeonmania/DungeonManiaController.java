@@ -15,14 +15,17 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.json.*;
 
 public class DungeonManiaController {
     List<String> dungeons = new ArrayList<String>();
+    Map<String, String> dungeonAndConfigs = new HashMap<String, String>();
 
     public String getSkin() {
         return "default";
@@ -70,6 +73,9 @@ public class DungeonManiaController {
         int frequencyOfType = Collections.frequency(this.dungeons, dungeonName);
         String s = String.valueOf(frequencyOfType);
         String dungeonId = dungeonName + s;
+
+        // Store the dungeon ID along with the configName, so we can use it for later
+        this.dungeonAndConfigs.put(dungeonId, configName);
 
         try {
             // Load the dungeon file in a String, and convert it to a JSONObject
