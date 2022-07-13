@@ -6,7 +6,7 @@ import dungeonmania.util.Position;
 
 public class KeyEntity extends Item {
     // Keys need to match the door
-    private int key;
+    private final int key;
 
     public KeyEntity(String id, String type, Position position, boolean isInteractable, int key) {
         super(id, type, position, isInteractable);
