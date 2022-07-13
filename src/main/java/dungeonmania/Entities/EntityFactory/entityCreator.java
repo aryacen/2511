@@ -89,7 +89,8 @@ public class entityCreator {
         else if (type.equals("key")) {
             return new KeyEntity(id, type, position, isInteractable, key);
         }
-
+        // Prevent error msg
+        return null;
     }
 
     /**
