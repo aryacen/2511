@@ -23,8 +23,8 @@ public class Inventory {
      * @return -1 if item has not found, otherwise returns how many instances of the item the player has
      */
     public int hasItem(Item i) {
-        if (!this.items.containsKey(i.getEntityName())) {
-            return items.get(i.getEntityName()).size();
+        if (!this.items.containsKey(i.getType())) {
+            return items.get(i.getType()).size();
         }
         else {
             return noSuchItem;
@@ -37,10 +37,10 @@ public class Inventory {
     public void addItem(Item i) {
         // If there are no items, created a new list
         if (hasItem(i) == noSuchItem) {
-            this.items.put(i.getEntityName(), new ArrayList<>());
+            this.items.put(i.getType(), new ArrayList<>());
         }
         // Add the item to the list
-        this.items.get(i.getEntityName()).add(i);
+        this.items.get(i.getType()).add(i);
     }
 
     /**

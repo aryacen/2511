@@ -3,8 +3,8 @@ package dungeonmania.Entities.Item;
 import dungeonmania.Entities.Entity;
 
 public abstract class Item extends Entity {
-    public Item(String EntityName, String EntityType) {
-        super(EntityName, EntityType);
+    public Item(String id, String type) {
+        super(type, type);
     }
 
     public boolean canBeCrafted() {

@@ -5,8 +5,8 @@ import dungeonmania.Entities.Item.Item;
 
 public class BombEntity extends Item {
 
-    public BombEntity() {
-        super("Bomb", "CollectableEntity");
+    public BombEntity(String id) {
+        super(id, "bomb");
     }
 
     // Can be collected by the player.

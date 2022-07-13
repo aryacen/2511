@@ -5,8 +5,8 @@ import dungeonmania.Entities.Item.Item;
 
 public class InvincibilityPotion extends Item {
 
-    public InvincibilityPotion() {
-        super("InvincibilityPotion", "CollectableEntity");
+    public InvincibilityPotion(String id) {
+        super(id, "invincibility_potion");
     }
 
     // When a Player picks up an Invincibility potion, they may consume it at any time.

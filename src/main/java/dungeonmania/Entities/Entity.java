@@ -1,27 +1,21 @@
 package dungeonmania.Entities;
 
 public abstract class Entity {
-    private String EntityName;
-    private String EntityType;
-    public Entity (String EntityName, String EntityType) {
-        this.EntityName = EntityName;
-        this.EntityType = EntityType;
+    // Id is unique to the entity
+    private final String id;
+    // Type refers to what type of entity it is (e.g. player, wall, etc)
+    private final String type;
+
+    public Entity (String id, String type) {
+        this.id = id;
+        this.type = type;
     }
 
-    public String getEntityName() {
-        return this.EntityName;
+    public String getId() {
+        return id;
     }
 
-    public void setEntityName(String EntityName) {
-        this.EntityName = EntityName;
+    public String getType() {
+        return type;
     }
-
-    public String getEntityType() {
-        return this.EntityType;
-    }
-
-    public void setEntityType(String EntityType) {
-        this.EntityType = EntityType;
-    }
-
 }

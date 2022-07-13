@@ -5,8 +5,8 @@ import dungeonmania.Entities.Item.Item;
 
 public class ShieldEntity extends BuildableEntity {
 
-    public ShieldEntity() {
-        super("Shield", "BuildableEntity");
+    public ShieldEntity(String id) {
+        super(id, "shield");
     }
 
     // Can be crafted with 2 wood + (1 treasure OR 1 key).
