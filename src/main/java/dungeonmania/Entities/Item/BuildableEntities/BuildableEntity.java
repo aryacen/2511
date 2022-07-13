@@ -8,14 +8,28 @@ import java.util.HashMap;
 
 public abstract class BuildableEntity extends Item {
     // Each buildable entity has a recipe that needs to be met
-    // TODO: FIGURE HOW HOW TO CRAFT THE ITEMS
-    public static HashMap<String, Integer> recipe;
 
     public BuildableEntity(String id, String type, Position position, boolean isInteractable) {
         super(id, type, EntityConstants.notOnMap, false);
     }
+
+
     @Override
     public boolean canBeCrafted() {
         return true;
     }
+
+    /*
+    E.g. Shield needs 2 wood + (1 treasure or 1 key)
+    Essential would be 2 wood
+    Optionm would be 1 treasure and 1 key
+     */
+    /**
+     * Returns essential ingredient for a buildable entity
+     */
+    public abstract HashMap<String, Integer> getEssential();
+    /**
+     * Returns option ingredient
+     */
+    public abstract HashMap<String, Integer> getOption();
 }
