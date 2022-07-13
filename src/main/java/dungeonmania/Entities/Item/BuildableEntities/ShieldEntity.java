@@ -3,7 +3,7 @@ package dungeonmania.Entities.Item.BuildableEntities;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
 
-public class ShieldEntity extends Item {
+public class ShieldEntity extends BuildableEntity {
 
     public ShieldEntity() {
         super("Shield", "BuildableEntity");

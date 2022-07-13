@@ -9,20 +9,11 @@ public class CraftingSystem {
     }
 
     /**
-     * Check that an item can be crafted
-     * @return
-     */
-    public boolean canCraft() {
-        return false;
-    }
-
-    /**
      * Craft a specific item
      * Will remove the item from the inventory and add the crafted item in
-     * @return
+     * @Pre-condition: Item can be crafted
      */
-    public void craft() {
-        Item itemCrafted;
+    public void craft(String itemName) {
         // Remove item from inventory
         // Add item crafted ot inventory
     }

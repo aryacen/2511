@@ -3,8 +3,7 @@ package dungeonmania.Entities.Item.BuildableEntities;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
 
-public class BowEntity extends Item {
-
+public class BowEntity extends BuildableEntity {
     public BowEntity(String EntityName, String EntityType) {
         super("Bow", "BuildableEntity");
     }
