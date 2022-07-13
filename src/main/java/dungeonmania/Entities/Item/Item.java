@@ -2,7 +2,12 @@ package dungeonmania.Entities.Item;
 
 import dungeonmania.Entities.Entity;
 
-public interface Item {
-    public abstract void collectItem(Entity entity);
-    public abstract void buildItem(Entity entity);
+public abstract class Item extends Entity {
+    public Item(String id, String type) {
+        super(type, type);
+    }
+
+    public boolean canBeCrafted() {
+        return false;
+    }
 }

@@ -3,10 +3,9 @@ package dungeonmania.Entities.Item.CollectableEntities;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
 
-public class InvisibilityPotionEntity extends Entity implements Item {
-
-    public InvisibilityPotionEntity() {
-        super("InvisibilityPotion", "CollectableEntity");
+public class InvisibilityPotionEntity extends Item {
+    public InvisibilityPotionEntity(String id) {
+        super(id, "invisibility_potion");
     }
 
     // When a player picks up an invisibility potion, they may consume it at any time and
@@ -16,16 +15,4 @@ public class InvisibilityPotionEntity extends Entity implements Item {
     // Since mercenaries typically follow the player, their movement becomes the same as 
     // a Zombie when the player is invisible.
 
-    @Override
-    public void collectItem(Entity entity) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void buildItem(Entity entity) {
-        // TODO Auto-generated method stub
-        
-    }
-    
 }
