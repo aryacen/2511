@@ -2,10 +2,11 @@ package dungeonmania.Entities.Item.CollectableEntities;
 
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
+import dungeonmania.util.Position;
 
 public class InvisibilityPotionEntity extends Item {
-    public InvisibilityPotionEntity(String id) {
-        super(id, "invisibility_potion");
+    public InvisibilityPotionEntity(String id, String type, Position position, boolean isInteractable) {
+        super(id, type, position, false);
     }
 
     // When a player picks up an invisibility potion, they may consume it at any time and

@@ -2,12 +2,14 @@ package dungeonmania.Entities.Item.BuildableEntities;
 
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
+import dungeonmania.util.EntityConstants;
+import dungeonmania.util.Position;
 
 public class ShieldEntity extends BuildableEntity {
-
-    public ShieldEntity(String id) {
-        super(id, "shield");
+    public ShieldEntity(String id, String type, Position position, boolean isInteractable) {
+        super(id, type, EntityConstants.notOnMap, false);
     }
+
 
     // Can be crafted with 2 wood + (1 treasure OR 1 key).
 

@@ -2,10 +2,12 @@ package dungeonmania.Entities.Item.BuildableEntities;
 
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
+import dungeonmania.util.EntityConstants;
+import dungeonmania.util.Position;
 
 public class BowEntity extends BuildableEntity {
-    public BowEntity(String id) {
-        super(id, "bow");
+    public BowEntity(String id, String type, Position position, boolean isInteractable) {
+        super(id, type, EntityConstants.notOnMap, false);
     }
 
     // Can be crafted with 1 wood + 3 arrows.

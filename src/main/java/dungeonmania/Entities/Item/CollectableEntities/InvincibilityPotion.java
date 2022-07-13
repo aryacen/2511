@@ -2,14 +2,13 @@ package dungeonmania.Entities.Item.CollectableEntities;
 
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
+import dungeonmania.util.Position;
 
 public class InvincibilityPotion extends Item {
-
-    public InvincibilityPotion(String id) {
-        super(id, "invincibility_potion");
+    public InvincibilityPotion(String id, String type, Position position, boolean isInteractable) {
+        super(id, type, position, false);
     }
 
-    // When a Player picks up an Invincibility potion, they may consume it at any time.
     // Any battles that occur when the Player has the effects of the potion end immediately
     // after the first round, with the Player immediately winning.
     // Because of this, Mercenaries and Zombies will run away from the Player when they are invinciple.
