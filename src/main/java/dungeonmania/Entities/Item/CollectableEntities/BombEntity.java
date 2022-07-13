@@ -3,7 +3,7 @@ package dungeonmania.Entities.Item.CollectableEntities;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
 
-public class BombEntity extends Entity implements Item {
+public class BombEntity extends Item {
 
     public BombEntity() {
         super("Bomb", "CollectableEntity");
@@ -24,15 +24,4 @@ public class BombEntity extends Entity implements Item {
 
     // A bomb cannot be picked up once it has been used.
 
-    @Override
-    public void collectItem(Entity entity) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void buildItem(Entity entity) {
-        // TODO Auto-generated method stub
-        
-    }
 }

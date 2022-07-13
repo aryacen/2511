@@ -3,8 +3,7 @@ package dungeonmania.Entities.Item.CollectableEntities;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
 
-public class KeyEntity extends Entity implements Item {
-
+public class KeyEntity extends Item {
     public KeyEntity(String EntityName, String EntityType) {
         super("Key", "CollectableEntity");
     }
@@ -17,16 +16,4 @@ public class KeyEntity extends Entity implements Item {
 
     // If a key is used before opening its door, its corresponding door will be locked forever.
 
-    @Override
-    public void collectItem(Entity entity) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void buildItem(Entity entity) {
-        // TODO Auto-generated method stub
-        
-    }
-    
 }

@@ -10,7 +10,6 @@ public class Inventory {
     // Each item is stored in a list that will keep track of how many items there are
     // Each item list is stored as a string list pair in a hash map
     HashMap<String, ArrayList> items;
-    // TODO: Think about how battles will interact with
 
     public Inventory() {
         items = new HashMap<>();
@@ -21,7 +20,7 @@ public class Inventory {
      * Checks if inventory has a certain item and in what quantity
      * @return -1 if item has not found, otherwise returns how many instances of the item the player has
      */
-    public int hasItem() {
+    public int hasItem(Item i) {
         return -1;
     }
 

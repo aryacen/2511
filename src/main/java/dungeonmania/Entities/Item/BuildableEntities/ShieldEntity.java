@@ -3,7 +3,7 @@ package dungeonmania.Entities.Item.BuildableEntities;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
 
-public class ShieldEntity extends Entity implements Item {
+public class ShieldEntity extends Item {
 
     public ShieldEntity() {
         super("Shield", "BuildableEntity");
@@ -16,16 +16,4 @@ public class ShieldEntity extends Entity implements Item {
     // Each shield has a specific durability that dictates the number of battles
     // it can be used before it deteriorates.
 
-    @Override
-    public void collectItem(Entity entity) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void buildItem(Entity entity) {
-        // TODO Auto-generated method stub
-        
-    }
-    
 }
