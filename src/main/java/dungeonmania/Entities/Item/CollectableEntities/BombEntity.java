@@ -2,12 +2,13 @@ package dungeonmania.Entities.Item.CollectableEntities;
 
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
+import dungeonmania.util.Position;
 
 public class BombEntity extends Item {
-
-    public BombEntity(String id) {
-        super(id, "bomb");
+    public BombEntity(String id, String type, Position position, boolean isInteractable) {
+        super(id, type, position, false);
     }
+
 
     // Can be collected by the player.
 

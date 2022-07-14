@@ -13,6 +13,7 @@ dependencies {
     implementation 'org.json:json:20210307'
     implementation 'com.sparkjava:spark-core:2.9.3'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.+'
+    implementation 'org.jetbrains:annotations:20.1.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.8.0'
     implementation 'org.reflections:reflections:0.10.2'

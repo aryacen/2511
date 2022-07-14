@@ -1,12 +1,12 @@
 package dungeonmania.Entities.StaticEntities;
 
 import dungeonmania.Entities.Entity;
+import dungeonmania.util.Position;
 
 public class BoulderEntity extends Entity {
-    public BoulderEntity() {
-        super("Boulder", "StaticEntity");
+    public BoulderEntity(String id, String type, Position position, boolean isInteractable) {
+        super(id, type, position, isInteractable);
     }
-
     // Acts like a wall in most cases.
 
     // The only difference is that it can be pushed by the Player into cardinally adjacent squares.
