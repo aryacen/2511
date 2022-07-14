@@ -1,6 +1,5 @@
 package dungeonmania.Entities.Item;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -22,9 +21,9 @@ public class Inventory {
      * Checks if inventory has a certain item and in what quantity
      * @return -1 if item has not found, otherwise returns how many instances of the item the player has
      */
-    public int hasItem(Item i) {
-        if (!this.items.containsKey(i.getType())) {
-            return items.get(i.getType()).size();
+    public int hasItem(String itemName) {
+        if (this.items.containsKey(itemName)) {
+            return items.get(itemName).size();
         }
         else {
             return noSuchItem;
@@ -36,7 +35,7 @@ public class Inventory {
      */
     public void addItem(Item i) {
         // If there are no items, created a new list
-        if (hasItem(i) == noSuchItem) {
+        if (hasItem(i.getType()) == noSuchItem) {
             this.items.put(i.getType(), new ArrayList<>());
         }
         // Add the item to the list
