@@ -93,4 +93,16 @@ public class CraftingSystem {
             i.addItem(itemToCraft);
         }
     }
+
+    private boolean sufficentMaterial(String itemName, Inventory i) {
+        // TODO FIGURE THIS OUT
+        boolean canCraft = true;
+        switch (itemName) {
+            case "shield":
+                break;
+            case "bow":
+                break;
+        }
+        return canCraft;
+    }
 }
