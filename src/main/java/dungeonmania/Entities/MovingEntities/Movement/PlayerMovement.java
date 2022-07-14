@@ -7,7 +7,13 @@ public class PlayerMovement implements Movement {
 
     @Override
     public Position move(Position currentPosition, Direction direction) {
-        return null;
+        // Move the player
+        Position offset = direction.getOffset();
+        Position newPosition = new Position(
+                currentPosition.getX() + offset.getX(),
+                currentPosition.getY() + offset.getY(),
+                currentPosition.getLayer());
+        return currentPosition;
     }
 
     /**
