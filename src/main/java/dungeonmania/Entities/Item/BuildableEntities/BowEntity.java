@@ -1,8 +1,5 @@
 package dungeonmania.Entities.Item.BuildableEntities;
 
-import dungeonmania.Entities.Entity;
-import dungeonmania.Entities.Item.Item;
-import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
 
 import java.util.HashMap;
