@@ -1,14 +1,13 @@
 package dungeonmania.Entities.MovingEntities;
 
 import dungeonmania.Entities.Entity;
+import dungeonmania.util.Position;
 
 public class MercenaryEntity extends Entity {
-
-    public MercenaryEntity() {
-        super("Mercenary", "MovingEntity");
+    public MercenaryEntity(String id, String type, Position position, boolean isInteractable) {
+        super(id, type, position, isInteractable);
     }
 
-    // Mercenaries do not spawn; they are only present if created as 
     // part of the dungeon.
 
     // They constantly mvoe towards the Player, stopping only if they

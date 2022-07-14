@@ -2,10 +2,19 @@ package dungeonmania.Entities.Item.CollectableEntities;
 
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
+import dungeonmania.util.Position;
 
 public class KeyEntity extends Item {
-    public KeyEntity(String id) {
-        super(id, "key");
+    // Keys need to match the door
+    private final int key;
+
+    public KeyEntity(String id, String type, Position position, boolean isInteractable, int key) {
+        super(id, type, position, isInteractable);
+        this.key = key;
+    }
+
+    public int getKey() {
+        return key;
     }
 
     // Can be picked up by the player when they move into the square containing it.

@@ -58,6 +58,7 @@ public class DungeonManiaController {
         List<BattleResponse> battleResponse = new ArrayList<BattleResponse>();
         List<String> buildables = new ArrayList<String>();
         List<String> goals = new ArrayList<String>();
+
         // Checks if the dungeonName and configName inputted exists in resource
         // directory, and throws an IllegalArgumentException if it does not exist
         if (!DungeonManiaController.dungeons().contains(dungeonName)) {
@@ -101,9 +102,11 @@ public class DungeonManiaController {
         return output;
     }
 
-    // Helper function to read the goals and construct a String representing the
-    // goals
-    public static String parseDungeonGoals(JSONObject goalCondition) {
+    /**
+     * Helper function to read the goals and construct a String representing the
+     * goals
+     */
+    private static String parseDungeonGoals(JSONObject goalCondition) {
         String tempGoal = goalCondition.getString("goal");
 
         // Checks if the goal is a supergoal ("AND" or "OR")
@@ -134,9 +137,11 @@ public class DungeonManiaController {
         }
     }
 
-    // Helper function to read the entities array, create EntityResponse for every
-    // entity and store them in a List of EntityResponse
-    public static List<EntityResponse> parseDungeonEntities(JSONArray entities) {
+    /**
+     * Helper function to read the entities array, create EntityResponse for every
+     * entity and store them in a List of EntityResponse
+     */
+     private static List<EntityResponse> parseDungeonEntities(JSONArray entities) {
         List<EntityResponse> output = new ArrayList<EntityResponse>();
         List<String> types = new ArrayList<String>();
         // Loop through the entities array
