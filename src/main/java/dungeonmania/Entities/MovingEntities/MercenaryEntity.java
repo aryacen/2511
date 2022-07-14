@@ -1,11 +1,13 @@
 package dungeonmania.Entities.MovingEntities;
 
 import dungeonmania.Entities.Entity;
+import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
 
-public class MercenaryEntity extends Entity {
+public class MercenaryEntity extends MovingEntities {
     public MercenaryEntity(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable);
+        this.hp = EntityConstants.mercenary_health;
         // TODO: GIVE MERCENARY A MOVEMENT FUNCTION
     }
 
@@ -25,5 +27,4 @@ public class MercenaryEntity extends Entity {
 
     // As an ally, once it reaches the Player it simply follows the Player around,
     // occupying the square the player was previously in.
-    
 }
