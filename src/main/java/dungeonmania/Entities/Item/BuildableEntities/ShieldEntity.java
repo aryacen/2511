@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class ShieldEntity extends BuildableEntity {
     public ShieldEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, EntityConstants.notOnMap, false);
+        super(id, type, position, isInteractable);
     }
 
     // Can be crafted with 2 wood + (1 treasure OR 1 key).
@@ -31,7 +31,7 @@ public class ShieldEntity extends BuildableEntity {
         return essential;
     }
 
-    public HashMap<String, Integer> getOption() {
+    public HashMap<String, Integer> getOptions() {
         return option;
     }
 

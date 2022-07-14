@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class BowEntity extends BuildableEntity {
     public BowEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, EntityConstants.notOnMap, false);
+        super(id, type, position, isInteractable);
     }
     // Format is item name: quantity required
     // Items that are necessary for creation
@@ -24,7 +24,7 @@ public class BowEntity extends BuildableEntity {
         return essential;
     }
     @Override
-    public HashMap<String, Integer> getOption() {
+    public HashMap<String, Integer> getOptions() {
         return new HashMap<String, Integer>();
     }
 
