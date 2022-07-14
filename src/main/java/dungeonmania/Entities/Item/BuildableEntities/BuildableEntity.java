@@ -22,7 +22,7 @@ public abstract class BuildableEntity extends Item {
     /*
     E.g. Shield needs 2 wood + (1 treasure or 1 key)
     Essential would be 2 wood
-    Optionm would be 1 treasure and 1 key
+    Option would be 1 treasure and 1 key
      */
     /**
      * Returns essential ingredient for a buildable entity
@@ -31,5 +31,5 @@ public abstract class BuildableEntity extends Item {
     /**
      * Returns option ingredient
      */
-    public abstract HashMap<String, Integer> getOption();
+    public abstract HashMap<String, Integer> getOptions();
 }

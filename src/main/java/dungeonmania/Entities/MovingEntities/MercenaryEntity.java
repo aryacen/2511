@@ -6,6 +6,7 @@ import dungeonmania.util.Position;
 public class MercenaryEntity extends Entity {
     public MercenaryEntity(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable);
+        // TODO: GIVE MERCENARY A MOVEMENT FUNCTION
     }
 
     // part of the dungeon.
