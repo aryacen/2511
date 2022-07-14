@@ -19,6 +19,7 @@ public class PlayerEntity extends MovingEntities {
         this.i = new Inventory();
         this.movement = new PlayerMovement();
         this.hp = EntityConstants.player_health;
+        this.attack = EntityConstants.player_attack;
     }
 
     /**

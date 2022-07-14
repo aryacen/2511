@@ -8,6 +8,7 @@ public class MercenaryEntity extends MovingEntities {
     public MercenaryEntity(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable);
         this.hp = EntityConstants.mercenary_health;
+        this.attack = EntityConstants.mercenary_attack;
         // TODO: GIVE MERCENARY A MOVEMENT FUNCTION
     }
 

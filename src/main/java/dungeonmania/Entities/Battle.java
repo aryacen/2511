@@ -13,5 +13,10 @@ public class Battle {
         this.player = player;
         this.combatant = combatant;
     }
-    // Battles
+    /*
+     Battles
+     Each round, the change in health is shown below
+     Player Health = Player Health - (Enemy Attack Damage / 10)
+     Enemy Health = Enemy Health - (Player Attack / 5)
+    */
 }
