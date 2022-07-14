@@ -8,7 +8,7 @@ public abstract class Entity {
     // Type refers to what type of entity it is (e.g. player, wall, etc)
     private final String type;
 
-    private Position position;
+    protected Position position;
     private boolean isInteractable;
 
     public Entity (String id, String type, Position position, boolean isInteractable) {

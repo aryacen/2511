@@ -32,8 +32,8 @@ public class CraftingSystem {
         String invalidId = "INVALID ID";
 
         BuildableEntity itemToCraft = null;
-        HashMap<String, Integer> essential = null;
-        HashMap<String, Integer> options = null;
+        HashMap<String, Integer> essential;
+        HashMap<String, Integer> options;
 
         // Create an item that may or may not be craft-able (needed to check whether it can be crafted)
         switch (itemName) {
