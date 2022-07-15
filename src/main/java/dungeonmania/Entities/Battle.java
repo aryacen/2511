@@ -30,7 +30,7 @@ public class Battle {
             List<ItemResponse> weaponryUsed = new ArrayList<>();
 
             // Player Health = Player Health - (Enemy Attack Damage / 10)
-            double deltaPlayerHealth = enemy.getAttack() / 10;
+            double deltaPlayerHealth = - enemy.getAttack() / 10;
             player.setHp(player.getHp() + deltaPlayerHealth);
 
             // Enemy Health = Enemy Health - (Player Attack / 5)

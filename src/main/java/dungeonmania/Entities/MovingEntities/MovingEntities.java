@@ -7,7 +7,7 @@ import dungeonmania.util.Position;
 public abstract class MovingEntities extends Entity {
     protected Movement movement;
     protected double hp;
-    protected int attack;
+    protected double attack;
 
     public MovingEntities(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable);
@@ -21,7 +21,7 @@ public abstract class MovingEntities extends Entity {
         this.hp = hp;
     }
 
-    public int getAttack() {
-        return attack;
+    public double getAttack() {
+        return this.attack;
     }
 }

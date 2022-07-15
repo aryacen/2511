@@ -19,7 +19,7 @@ public class PlayerMovement implements Movement {
          Is the player walking into a portal?
          Is the player walking onto a switch? (not sure about this one, maybe need an observer pattern for this one)
         */
-
+        // TODO: FIGURE THIS OUT
         Position newPosition = null;
         String type = null;
         switch (type) {
