@@ -27,4 +27,16 @@ public abstract class Entity {
     public String getType() {
         return type;
     }
+
+    public String getEntityType() {
+        return entityType;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public boolean isInteractable() {
+        return isInteractable;
+    }
 }

@@ -80,4 +80,18 @@ public class Inventory {
         // If durability reaches 0, remove the item by calling removeItem()
         // TODO: FINISH THIS
     }
+
+    /**
+     * Returns true if the key has been found, will remove the key from the users inventory
+     */
+    public boolean validKey(int key) {
+        // If there are no keys, return false
+        if (!this.items.containsKey("key")) {
+            return false;
+        }
+        else {
+            // Check if key exists
+            return true;
+        }
+    }
 }

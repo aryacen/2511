@@ -1,9 +1,10 @@
 package dungeonmania.Entities.MovingEntities;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.CraftingSystem;
 import dungeonmania.Entities.Item.Inventory;
+import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.MovingEntities.Movement.PlayerMovement;
-import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
 import dungeonmania.util.EntityConstants;
@@ -33,8 +34,26 @@ public class PlayerEntity extends MovingEntities {
         c.craft(buildable, i);
     }
 
-    public void move(Direction direction, ArrayList<StaticEntity> staticEntities) {
-        this.position = this.movement.move(position, direction, staticEntities);
+    /**
+     * Need to be given a set of adjacent entities such as items and static entities
+     * @param direction
+     * @param surroundingEntities
+     * @return Returns a list of the surrounding entities that may have been modified by the movement of the player
+     */
+    public ArrayList<Entity> move(Direction direction, ArrayList<Entity> surroundingEntities) {
+        // Movement will handle whether the player has moved for not
+        this.movement.move(this.position, direction, surroundingEntities);
+
+        // Check and pick up any items
+        ArrayList<Item> items = (ArrayList<Item>) surroundingEntities.stream().filter(e->e.getEntityType().equals("Item"));
+        for (Item item: items) {
+            // pick if entity is an item, pick it up
+            if (item.getPosition().equals(this.position)) {
+                surroundingEntities.remove(item);
+                this.i.addItem(item);
+            }
+        }
+        return surroundingEntities;
     }
     // Can bribe the mercenary
     

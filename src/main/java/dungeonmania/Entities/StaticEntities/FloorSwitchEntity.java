@@ -10,7 +10,7 @@ public class FloorSwitchEntity extends StaticEntity {
 
     @Override
     public boolean canPass(String type) {
-        return false;
+        return true;
     }
 
 
