@@ -28,8 +28,7 @@ public class CraftingSystem {
         if (!Arrays.asList(craftableItems).contains(itemName)) {
             throw new InvalidActionException("not buildable");
         }
-        // TODO: CREATE AN ID GENERATED IN THE DUNGEONMANIA CONTROLLER
-        String invalidId = "INVALID ID";
+        String newId = EntityConstants.newId();
 
         BuildableEntity itemToCraft = null;
         HashMap<String, Integer> essential;
@@ -38,10 +37,10 @@ public class CraftingSystem {
         // Create an item that may or may not be craft-able (needed to check whether it can be crafted)
         switch (itemName) {
             case "bow":
-                itemToCraft = new BowEntity(invalidId, "bow", EntityConstants.notOnMap, false);
+                itemToCraft = new BowEntity(newId, "bow", EntityConstants.notOnMap, false);
                 break;
             case "shield":
-                itemToCraft = new ShieldEntity(invalidId, "bow", EntityConstants.notOnMap, false);
+                itemToCraft = new ShieldEntity(newId, "bow", EntityConstants.notOnMap, false);
                 break;
         }
 
@@ -50,12 +49,13 @@ public class CraftingSystem {
         essential = itemToCraft.getEssential();
         options = itemToCraft.getOptions();
         HashMap<String, Integer> itemsToRemove = new HashMap<>();
+
         /* Check that the inventory has all the essential items */
         for (String materialName: essential.keySet()) {
-                    /*
-                    If the inventory does not have the sufficient number of essential materials, set itemToCraft to
-                    null and break
-                    */
+            /*
+            If the inventory does not have the sufficient number of essential materials, set itemToCraft to
+            null and break
+            */
             if (i.hasItem(materialName) < essential.get(materialName)) {
                 itemToCraft = null;
                 break;
@@ -92,17 +92,5 @@ public class CraftingSystem {
             /* Add item crafted ot inventory */
             i.addItem(itemToCraft);
         }
-    }
-
-    private boolean sufficentMaterial(String itemName, Inventory i) {
-        // TODO FIGURE THIS OUT
-        boolean canCraft = true;
-        switch (itemName) {
-            case "shield":
-                break;
-            case "bow":
-                break;
-        }
-        return canCraft;
     }
 }
