@@ -3,9 +3,14 @@ package dungeonmania.Entities.StaticEntities;
 import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
 
-public class BoulderEntity extends Entity {
+public class BoulderEntity extends StaticEntity {
     public BoulderEntity(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable);
+    }
+
+    @Override
+    public boolean canPass(String type) {
+        return false;
     }
     // Acts like a wall in most cases.
 
