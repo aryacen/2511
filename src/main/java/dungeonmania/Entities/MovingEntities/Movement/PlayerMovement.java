@@ -44,6 +44,9 @@ public class PlayerMovement extends Movement {
                 case "portal":
                     // TODO: FIGURE OUT WHAT TO DO WITH A PORTAL
                     break;
+                case "door":
+                    // TODO: FIGURE OUT WHAT TO DO WITH A DOOR
+                    break;
                 default:
                     // If it is not a special type, do nothing
                     break;

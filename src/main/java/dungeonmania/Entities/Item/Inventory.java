@@ -1,5 +1,7 @@
 package dungeonmania.Entities.Item;
 
+import dungeonmania.Entities.Item.CollectableEntities.KeyEntity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,10 +12,12 @@ public class Inventory {
     // Each item is stored in a list that will keep track of how many items there are
     // Each item list is stored as a string list pair in a hash map
     private HashMap<String, ArrayList<Item>> items;
+    private ArrayList<KeyEntity> keys;
     public static int noSuchItem = -1;
 
     public Inventory() {
         items = new HashMap<>();
+        keys = new ArrayList<>();
     }
 
 
@@ -35,6 +39,12 @@ public class Inventory {
      */
     public void addItem(Item i) {
         // If there are no items, created a new list
+        // If it is is a key, add it to its own special list
+        if (!i.getType().equals("key")) {
+            keys.add((KeyEntity) i);
+            return;
+        }
+            //
         if (hasItem(i.getType()) == noSuchItem) {
             this.items.put(i.getType(), new ArrayList<>());
         }
@@ -85,13 +95,16 @@ public class Inventory {
      * Returns true if the key has been found, will remove the key from the users inventory
      */
     public boolean validKey(int key) {
-        // If there are no keys, return false
-        if (!this.items.containsKey("key")) {
-            return false;
+        ArrayList<KeyEntity> tmpKeys = new ArrayList<>();
+        tmpKeys.addAll(this.keys);
+        // Check if there is matching key
+        for (KeyEntity k: tmpKeys) {
+            if (k.getKey() == key) {
+                this.keys.remove(k);
+                return true;
+            }
         }
-        else {
-            // Check if key exists
-            return true;
-        }
+        return false;
     }
+    // TODO: FIX INVENTORY FOR FUNCTION WITH KEY
 }
