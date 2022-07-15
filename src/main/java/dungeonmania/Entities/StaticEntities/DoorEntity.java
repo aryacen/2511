@@ -4,14 +4,14 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
 
 public class DoorEntity extends StaticEntity {
-    private final int key;
+    private final int keyId;
     public DoorEntity(String id, String type, Position position, boolean isInteractable, int key) {
         super(id, type, position, isInteractable);
-        this.key = key;
+        this.keyId = key;
     }
 
     public int getKey() {
-        return key;
+        return keyId;
     }
 
     @Override
