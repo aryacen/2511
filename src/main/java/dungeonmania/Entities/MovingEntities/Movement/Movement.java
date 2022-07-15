@@ -9,14 +9,26 @@ import java.util.ArrayList;
 /**
  * This interface governs how an entity can move
  */
-public interface Movement {
+public abstract class Movement {
     /**
      * Moves the entity given a certain direction and returns the new position of the entity
      */
-    Position move(Position currentPosition, Direction direction, ArrayList<StaticEntity> staticEntities);
+    public abstract void move(Position currentPosition,
+                              Direction direction,
+                              ArrayList<StaticEntity> staticEntities);
 
     /**
-     * Move entity without needing a direction input (dependent on implementation)
+     * Checks if there is an entity at a given position given a list of static entities and a position
+     * @return null if no item is at position pos, otherwise returns the static entity
      */
-    Position move(Position currentPosition, ArrayList<StaticEntity> staticEntities);
+    protected static StaticEntity entityAtPosition(Position pos, ArrayList<StaticEntity> staticEntities) {
+        for (StaticEntity staticEntity: staticEntities) {
+            if (staticEntity.getPosition().equals(pos)) {
+                return staticEntity;
+            }
+        }
+        return null;
+    }
+
+
 }

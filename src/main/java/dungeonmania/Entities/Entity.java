@@ -4,12 +4,12 @@ import dungeonmania.util.Position;
 
 public abstract class Entity {
     // id is unique to the entity
-    private final String id;
+    protected final String id;
     // Type refers to what type of entity it is (e.g. player, wall, etc)
-    private final String type;
+    protected final String type;
 
     protected Position position;
-    private boolean isInteractable;
+    protected boolean isInteractable;
     protected String entityType;
 
     public Entity (String id, String type, Position position, boolean isInteractable) {

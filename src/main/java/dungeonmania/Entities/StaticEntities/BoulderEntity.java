@@ -1,6 +1,7 @@
 package dungeonmania.Entities.StaticEntities;
 
 import dungeonmania.Entities.Entity;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class BoulderEntity extends StaticEntity {
@@ -11,6 +12,14 @@ public class BoulderEntity extends StaticEntity {
     @Override
     public boolean canPass(String type) {
         return false;
+    }
+
+    /**
+     * Moves the boulder in given direction
+     * @Pre-condition is only called when there is nothing in the boulders way
+     */
+    public void push(Direction direction) {
+        this.position = this.position.translateBy(direction);
     }
     // Acts like a wall in most cases.
 

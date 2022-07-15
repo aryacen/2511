@@ -1,7 +1,9 @@
 package dungeonmania.Entities.MovingEntities;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.CraftingSystem;
 import dungeonmania.Entities.Item.Inventory;
+import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.MovingEntities.Movement.PlayerMovement;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.exceptions.InvalidActionException;
@@ -33,9 +35,23 @@ public class PlayerEntity extends MovingEntities {
         c.craft(buildable, i);
     }
 
-    public void move(Direction direction, ArrayList<StaticEntity> staticEntities) {
-        this.position = this.movement.move(position, direction, staticEntities);
+    /**
+     * Moves the player and then pick up any items at the current location
+     */
+    public void move(Direction direction, ArrayList<Item> items,  ArrayList<StaticEntity> staticEntities) {
+        this.movement.move(position, direction, staticEntities);
+
+        // Create a duplicate list to avoid modification of list while in the loop
+        ArrayList<Item> tmpItemList = new ArrayList<>();
+        tmpItemList.addAll(items);
+        // If the item is at the current location of the player, place it in the inventory
+        for (Item item: tmpItemList)
+            if (item.getPosition().equals(this.position)) {
+                this.i.addItem(item);
+                items.remove(item);
+            }
     }
+
     // Can bribe the mercenary
     
 }
