@@ -11,6 +11,7 @@ public abstract class MovingEntities extends Entity {
 
     public MovingEntities(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable);
+        this.entityType = "Moving";
     }
 
     public double getHp() {
