@@ -6,15 +6,15 @@ import dungeonmania.util.Position;
 
 public class KeyEntity extends Item {
     // Keys need to match the door
-    private final int keyId;
+    private final int key;
 
     public KeyEntity(String id, String type, Position position, boolean isInteractable, int key) {
         super(id, type, position, isInteractable);
-        this.keyId = key;
+        this.key = key;
     }
 
     public int getKey() {
-        return keyId;
+        return key;
     }
 
     // Can be picked up by the player when they move into the square containing it.
