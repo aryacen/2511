@@ -6,6 +6,7 @@ import dungeonmania.util.Position;
 public abstract class StaticEntity extends Entity {
     public StaticEntity(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable);
+        this.entityType = "Static";
     }
 
     // Tells the movement interface whether the StaticEntity can be walked pass or not
