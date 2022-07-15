@@ -10,12 +10,14 @@ public abstract class Entity {
 
     protected Position position;
     private boolean isInteractable;
+    protected String entityType;
 
     public Entity (String id, String type, Position position, boolean isInteractable) {
         this.id = id;
         this.type = type;
         this.position = position;
         this.isInteractable = isInteractable;
+        this.entityType = "";
     }
 
     public String getId() {
@@ -24,5 +26,17 @@ public abstract class Entity {
 
     public String getType() {
         return type;
+    }
+
+    public String getEntityType() {
+        return entityType;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public boolean isInteractable() {
+        return isInteractable;
     }
 }
