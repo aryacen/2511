@@ -1,12 +1,22 @@
 package dungeonmania.Entities.MovingEntities.Movement;
 
+import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
+import java.util.ArrayList;
+
 public class PlayerMovement implements Movement {
 
+    /**
+     *
+     * @param currentPosition
+     * @param direction
+     * @param staticEntities
+     * @return
+     */
     @Override
-    public Position move(Position currentPosition, Direction direction) {
+    public Position move(Position currentPosition, Direction direction, ArrayList<StaticEntity> staticEntities) {
         Position offset = direction.getOffset();
         int newX = currentPosition.getX() + offset.getX();
         int newY = currentPosition.getY() + offset.getY();
@@ -39,11 +49,8 @@ public class PlayerMovement implements Movement {
         return newPosition;
     }
 
-    /**
-     * This should never be called for player
-     */
     @Override
-    public Position move(Position currentPosition) {
-        return currentPosition;
+    public Position move(Position currentPosition, ArrayList<StaticEntity> staticEntities) {
+        return null;
     }
 }

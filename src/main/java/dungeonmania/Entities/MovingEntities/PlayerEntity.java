@@ -3,10 +3,13 @@ package dungeonmania.Entities.MovingEntities;
 import dungeonmania.Entities.Item.CraftingSystem;
 import dungeonmania.Entities.Item.Inventory;
 import dungeonmania.Entities.MovingEntities.Movement.PlayerMovement;
+import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
+
+import java.util.ArrayList;
 
 public class PlayerEntity extends MovingEntities {
 
@@ -30,8 +33,8 @@ public class PlayerEntity extends MovingEntities {
         c.craft(buildable, i);
     }
 
-    public void move(Direction direction) {
-        this.position = this.movement.move(position, direction);
+    public void move(Direction direction, ArrayList<StaticEntity> staticEntities) {
+        this.position = this.movement.move(position, direction, staticEntities);
     }
     // Can bribe the mercenary
     
