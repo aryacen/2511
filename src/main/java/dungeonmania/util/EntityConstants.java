@@ -1,7 +1,8 @@
 package dungeonmania.util;
 
 /**
- * This file contains any pre-sets that are in the config files + anything else that are useful
+ * This class contains all the class related preset in config file + whatever constants that can be assigned to an
+ * entity
  */
 public class EntityConstants {
     // This constant is used to denote that item is not on the map / in the players inventory
@@ -83,5 +84,15 @@ public class EntityConstants {
         EntityConstants.zombie_attack = zombie_attack;
         EntityConstants.zombie_health = zombie_health;
         EntityConstants.zombie_spawn_rate = zombie_spawn_rate;
+    }
+
+    private static int idCounter = 0;
+
+    /**
+     * Generates a new unique id
+     */
+    public static String newId() {
+        EntityConstants.idCounter++;
+        return String.valueOf(idCounter);
     }
 }
