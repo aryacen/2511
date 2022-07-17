@@ -97,7 +97,7 @@ public class entityCreator {
      * Portals have an extra field for color
      * @Pre-condition this is only called for portals
      */
-    public static Entity createEntity(String id, String type, Position position, boolean isInteractable, String color) {
+    public static PortalEntity createEntity(String id, String type, Position position, boolean isInteractable, String color) {
         return new PortalEntity(id, type, position, isInteractable, color);
     }
 

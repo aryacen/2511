@@ -1,31 +1,43 @@
 package dungeonmania;
 
+import dungeonmania.Entities.Item.Item;
+import dungeonmania.Entities.MovingEntities.MovingEntities;
+import dungeonmania.Entities.MovingEntities.PlayerEntity;
+import dungeonmania.Entities.StaticEntities.PortalEntity;
+import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.response.models.BattleResponse;
 
+import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.EntityFactory.entityCreator;
+
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
+import dungeonmania.util.EntityConstants;
 
 import java.io.IOException;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.json.*;
 
 public class DungeonManiaController {
     List<String> dungeons = new ArrayList<String>();
-    Map<String, String> dungeonAndConfigs = new HashMap<String, String>();
+    List<DungeonResponse> currentModel = new ArrayList<DungeonResponse>();
+    String dungeonId;
+    String dungeonName;
+    String goals;
+
+    PlayerEntity playerEntity;
+    ArrayList<MovingEntities> movingEntities;
+    ArrayList<StaticEntity> staticEntities;
+    ArrayList<Item> itemEntities;
 
     public String getSkin() {
         return "default";
@@ -53,11 +65,15 @@ public class DungeonManiaController {
      * /game/new
      */
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException {
+        this.staticEntities = new ArrayList<>();
+        this.itemEntities = new ArrayList<>();
+        this.movingEntities = new ArrayList<>();
         List<EntityResponse> entitiesResponse = new ArrayList<EntityResponse>();
-        List<ItemResponse> itemResponse = new ArrayList<ItemResponse>();
-        List<BattleResponse> battleResponse = new ArrayList<BattleResponse>();
+        List<ItemResponse> inventory = new ArrayList<ItemResponse>();
+        List<BattleResponse> battles = new ArrayList<BattleResponse>();
         List<String> buildables = new ArrayList<String>();
-        List<String> goals = new ArrayList<String>();
+
+        this.dungeonName = dungeonName;
 
         // Checks if the dungeonName and configName inputted exists in resource
         // directory, and throws an IllegalArgumentException if it does not exist
@@ -68,17 +84,20 @@ public class DungeonManiaController {
             throw new IllegalArgumentException("Config does not exist");
         }
 
-        // Dungeon ID will be dungeonName followed with an integer (starting from 1),
         // which is denoted by the frequency of that dungeon type
         this.dungeons.add(dungeonName);
         int frequencyOfType = Collections.frequency(this.dungeons, dungeonName);
         String s = String.valueOf(frequencyOfType);
-        String dungeonId = dungeonName + s;
-
-        // Store the dungeon ID along with the configName, so we can use it for later
-        this.dungeonAndConfigs.put(dungeonId, configName);
+        this.dungeonId = (dungeonName + s);
 
         try {
+            // Load the config file in a string, convert it to JSONObject and store it in
+            // EntityConstants
+            String configFile = FileLoader.loadResourceFile("configs/" + configName + ".json");
+
+            JSONObject configFileJson = new JSONObject(configFile);
+            storeConfig(configFileJson);
+
             // Load the dungeon file in a String, and convert it to a JSONObject
             String loadedFile = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
             JSONObject fileJson = new JSONObject(loadedFile);
@@ -89,24 +108,124 @@ public class DungeonManiaController {
 
             // Get goals object and parse it to get the goals String
             JSONObject goalsJson = fileJson.getJSONObject("goal-condition");
-            goals.add(parseDungeonGoals(goalsJson));
+            this.goals = (parseDungeonGoals(goalsJson));
 
             // If the file is not found, throw IOException
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        DungeonResponse output = new DungeonResponse(dungeonId, dungeonName, entitiesResponse, itemResponse,
-                battleResponse,
-                buildables, goals.get(0));
+        DungeonResponse output = new DungeonResponse(this.dungeonId, this.dungeonName, entitiesResponse,
+                inventory,
+                battles,
+                buildables, this.goals);
+
+        this.currentModel.add(output);
         return output;
+    }
+
+    /**
+     * /game/dungeonResponseModel
+     */
+    public DungeonResponse getDungeonResponseModel() {
+        return this.currentModel.get(0);
+    }
+
+    /**
+     * /game/tick/item
+     */
+    public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
+        // try {
+        // // If the item type is not bomb, invincibility potion, and invisibility
+        // potion,
+        // // throw an illegal argument exception
+        // if (!this.entitiesMap.get(itemUsedId).equals("bomb")
+        // && !this.entitiesMap.get(itemUsedId).equals("invincibility_potion")
+        // && !this.entitiesMap.get(itemUsedId).equals("invisibility_potion")) {
+        // throw new IllegalArgumentException("Item is not usable");
+        // // If the item is not in inventory, then throw an invalid action exception
+        // } else {
+        // if (!this.inventoryString.contains(itemUsedId)) {
+        // throw new InvalidActionException("Item is not in player's inventory");
+        // }
+        // }
+
+        // // Once it passed the exceptions, then we can start removing the item from
+        // the
+        // // player's inventory
+        // ItemResponse tempItem = this.inventoryMap
+        // .get(itemUsedId);
+        // this.inventoryMap.remove(itemUsedId);
+        // this.inventory.remove(tempItem);
+
+        // // If item type is invincibility potion/invisibility potion, give the player
+        // a
+        // // buff for 5 ticks
+        // if (tempItem.getType().equals("invincibility_potion")) {
+        // this.playerBuff.put("invincible", 5);
+        // } else if (tempItem.getType().equals("invisibility_potion")) {
+        // this.playerBuff.put("invisible", 5);
+        // // If item type is bomb, then place a bomb in the map on the player's current
+        // // position
+        // } else {
+        // Position currentPosition = this.playerPosition.get(0).getPosition();
+        // EntityResponse bombEntity = new EntityResponse(itemUsedId, "bomb",
+        // currentPosition, false);
+        // this.entitiesResponse.add(bombEntity);
+        // }
+        // // If a NullPointerException is caught, that means that the item is not
+        // present
+        // // in the map to begin with (thus can never be in the person's inventory so
+        // this
+        // // throws invalid action exception)
+        // } catch (NullPointerException e) {
+        // throw new InvalidActionException("Item is not in the map");
+        // }
+
+        // this.currentTick++;
+        // DungeonResponse updatedResponse = new DungeonResponse(this.dungeonId.get(0),
+        // this.dungeons.get(0),
+        // this.entitiesResponse, this.inventory, this.battles, this.buildables,
+        // this.goals.get(0));
+
+        // return updatedResponse;
+        return null;
+    }
+
+    /**
+     * /game/tick/movement
+     */
+    public DungeonResponse tick(Direction movementDirection) {
+        this.playerEntity.move(
+                movementDirection,
+                this.itemEntities,
+                this.staticEntities,
+                this.movingEntities
+        );
+        // Create dungeon response
+        DungeonResponse output = getDungeonResponse();
+        return output;
+    }
+
+    /**
+     * /game/build
+     */
+    public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
+        return null;
+    }
+
+    /**
+     * /game/interact
+     */
+    public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
+        return null;
     }
 
     /**
      * Helper function to read the goals and construct a String representing the
      * goals
      */
-    private static String parseDungeonGoals(JSONObject goalCondition) {
+    private String parseDungeonGoals(JSONObject goalCondition) {
         String tempGoal = goalCondition.getString("goal");
 
         // Checks if the goal is a supergoal ("AND" or "OR")
@@ -114,6 +233,24 @@ public class DungeonManiaController {
             JSONArray subGoals = (JSONArray) goalCondition.getJSONArray("subgoals");
             JSONObject temp1 = subGoals.getJSONObject(0);
             String tempGoal1 = temp1.getString("goal");
+            if (tempGoal1.equals("AND") || tempGoal1.equals("OR")) {
+                JSONArray subGoal1 = (JSONArray) temp1.getJSONArray("subgoals");
+                JSONObject tempSubGoal1 = subGoal1.getJSONObject(0);
+                JSONObject tempSubGoal2 = subGoal1.getJSONObject(1);
+                String tempSubGoalString1 = tempSubGoal1.getString("goal");
+                String tempSubGoalString2 = tempSubGoal2.getString("goal");
+
+                JSONObject temp4 = subGoals.getJSONObject(1);
+                String superGoal1 = temp4.getString("goal");
+                JSONArray subGoal2 = (JSONArray) temp4.getJSONArray("subgoals");
+                JSONObject tempSubGoal3 = subGoal2.getJSONObject(0);
+                JSONObject tempSubGoal4 = subGoal2.getJSONObject(1);
+                String tempSubGoalString3 = tempSubGoal3.getString("goal");
+                String tempSubGoalString4 = tempSubGoal4.getString("goal");
+                String output = ":" + tempSubGoalString1 + " " + tempGoal + " (:" + tempSubGoalString2 + " " + tempGoal1
+                        + " (:" + tempSubGoalString3 + " " + superGoal1 + " :" + tempSubGoalString4 + "))";
+                return output;
+            }
             String output = ":" + tempGoal1 + " " + tempGoal + " ";
             JSONObject temp2 = subGoals.getJSONObject(1);
             String tempGoal2 = temp2.getString("goal");
@@ -141,9 +278,8 @@ public class DungeonManiaController {
      * Helper function to read the entities array, create EntityResponse for every
      * entity and store them in a List of EntityResponse
      */
-     private static List<EntityResponse> parseDungeonEntities(JSONArray entities) {
+    private List<EntityResponse> parseDungeonEntities(JSONArray entities) {
         List<EntityResponse> output = new ArrayList<EntityResponse>();
-        List<String> types = new ArrayList<String>();
         // Loop through the entities array
         for (int i = 0; i < entities.length(); i++) {
             boolean interactable = false;
@@ -152,17 +288,47 @@ public class DungeonManiaController {
             // entityId will be entity type followed with an integer (starting from 1),
             // which is denoted by the frequency of the entity type in the dungeon
             String type = temp.getString("type");
-            types.add(type);
-            int frequencyOfType = Collections.frequency(types, type);
-            String s = String.valueOf(frequencyOfType);
-            String entityId = type + s;
+            String entityId = EntityConstants.newId();
 
             int x = temp.getInt("x");
             int y = temp.getInt("y");
             Position position = new Position(x, y);
-
+            // TODO: THINK THIS SHOULD BE ABSTRACTED TO THE CLASSES
             if (type.equals("mercenary") || type.equals("zombie_toast_spawner")) {
                 interactable = true;
+            }
+
+            if (type.equals("player")) {
+                this.playerEntity = (PlayerEntity) entityCreator.createEntity(entityId, type, position, interactable);
+            } else {
+                switch (type) {
+                    case "portal":
+                        String color = temp.getString("color");
+                        PortalEntity newPortal = (PortalEntity) entityCreator.createEntity(entityId, type, position,
+                                interactable, color);
+                        this.staticEntities.add(newPortal);
+                        break;
+                    case "door":
+                    case "key":
+                        int keyId = temp.getInt("key");
+                        Entity newDoorOrKey = entityCreator.createEntity(entityId, type, position, interactable, keyId);
+                        if (newDoorOrKey.getEntityType().equals("Static")) {
+                            this.staticEntities.add((StaticEntity) newDoorOrKey);
+                        } else {
+                            this.itemEntities.add((Item) newDoorOrKey);
+                        }
+                        break;
+                    default:
+                        Entity newEntity = entityCreator.createEntity(entityId, type, position, interactable);
+                        if (newEntity.getEntityType().equals("Static")) {
+                            this.staticEntities.add((StaticEntity) newEntity);
+                        } else if (newEntity.getEntityType().equals("Moving")) {
+                            this.movingEntities.add((MovingEntities) newEntity);
+                        } else {
+                            this.itemEntities.add((Item) newEntity);
+                        }
+
+                }
             }
 
             // Create an EntityResponse for the entity and store them in the output List
@@ -172,38 +338,143 @@ public class DungeonManiaController {
         return output;
     }
 
-    /**
-     * /game/dungeonResponseModel
-     */
-    public DungeonResponse getDungeonResponseModel() {
-        return null;
+    private void storeConfig(JSONObject configContent) {
+        EntityConstants.ally_attack = configContent.getInt("ally_attack");
+        EntityConstants.ally_defence = configContent.getInt("ally_defence");
+        EntityConstants.bomb_radius = configContent.getInt("bomb_radius");
+        EntityConstants.bow_durability = configContent.getInt("bow_durability");
+        EntityConstants.bribe_amount = configContent.getInt("bribe_amount");
+        EntityConstants.bribe_radius = configContent.getInt("bribe_radius");
+        EntityConstants.enemy_goal = configContent.getInt("enemy_goal");
+        EntityConstants.invincibility_potion_duration = configContent.getInt("invincibility_potion_duration");
+        EntityConstants.invisibility_potion_duration = configContent.getInt("invisibility_potion_duration");
+        EntityConstants.mercenary_attack = configContent.getInt("mercenary_attack");
+        EntityConstants.mercenary_health = configContent.getInt("mercenary_health");
+        EntityConstants.player_attack = configContent.getInt("player_attack");
+        EntityConstants.player_health = configContent.getInt("player_health");
+        EntityConstants.shield_defence = configContent.getInt("shield_defence");
+        EntityConstants.shield_durability = configContent.getInt("shield_durability");
+        EntityConstants.spider_attack = configContent.getInt("spider_attack");
+        EntityConstants.spider_health = configContent.getInt("spider_health");
+        EntityConstants.spider_spawn_rate = configContent.getInt("spider_spawn_rate");
+        EntityConstants.sword_attack = configContent.getInt("sword_attack");
+        EntityConstants.sword_durability = configContent.getInt("sword_durability");
+        EntityConstants.treasure_goal = configContent.getInt("treasure_goal");
+        EntityConstants.zombie_attack = configContent.getInt("zombie_attack");
+        EntityConstants.zombie_health = configContent.getInt("zombie_health");
+        EntityConstants.zombie_spawn_rate = configContent.getInt("zombie_spawn_rate");
     }
 
-    /**
-     * /game/tick/item
-     */
-    public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
-        return null;
+    private List<Position> getCardinallyAdjPos(Position pos) {
+        List<Position> adjacentPositions = new ArrayList<Position>();
+        int x = pos.getX();
+        int y = pos.getY();
+        Position p1 = new Position(x - 1, 1);
+        Position p2 = new Position(x + 1, y);
+        Position p3 = new Position(x, y - 1);
+        Position p4 = new Position(x, y + 1);
+        adjacentPositions.add(p1);
+        adjacentPositions.add(p2);
+        adjacentPositions.add(p3);
+        adjacentPositions.add(p4);
+        return adjacentPositions;
     }
 
-    /**
-     * /game/tick/movement
-     */
-    public DungeonResponse tick(Direction movementDirection) {
-        return null;
+    private ArrayList<Item> getSurroundingItems(Position pos, ArrayList<Item> entityList) {
+        ArrayList<Item> output = new ArrayList<>();
+        List<Position> adjPosition = getCardinallyAdjPos(pos);
+        for (int i = 0; i < adjPosition.size(); i++) {
+            Position tempPos = adjPosition.get(i);
+            for (int j = 0; j < entityList.size(); j++) {
+                Item tempEntity = entityList.get(j);
+                if (tempEntity.getPosition().equals(tempPos)) {
+                    output.add(tempEntity);
+                }
+            }
+        }
+        return output;
     }
 
-    /**
-     * /game/build
-     */
-    public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        return null;
+    private ArrayList<StaticEntity> getSurroundingStaticEntities(Position pos, ArrayList<StaticEntity> entityList) {
+        ArrayList<StaticEntity> output = new ArrayList<>();
+        List<Position> adjPosition = getCardinallyAdjPos(pos);
+        for (int i = 0; i < adjPosition.size(); i++) {
+            Position tempPos = adjPosition.get(i);
+            for (int j = 0; j < entityList.size(); j++) {
+                StaticEntity tempEntity = entityList.get(j);
+                if (tempEntity.getPosition().equals(tempPos)) {
+                    output.add(tempEntity);
+                }
+            }
+        }
+        return output;
     }
 
-    /**
-     * /game/interact
-     */
-    public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        return null;
+    private DungeonResponse getDungeonResponse() {
+        /*
+         Dungeon id
+         Dungeon name
+         Entites
+         Inventory
+         Battle Response
+         Buildables
+         Goals
+        */
+        ArrayList<EntityResponse> entityResponse = new ArrayList<>();
+
+        for (int i = 0; i < this.movingEntities.size(); i++) {
+            MovingEntities tempEntity = this.movingEntities.get(i);
+            String id = tempEntity.getId();
+            String type = tempEntity.getType();
+            Position position = tempEntity.getPosition();
+            boolean interactable = tempEntity.isInteractable();
+            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
+            entityResponse.add(tempEntityResponse);
+        }
+
+        for (int i = 0; i < this.staticEntities.size(); i++) {
+            StaticEntity tempEntity = this.staticEntities.get(i);
+            String id = tempEntity.getId();
+            String type = tempEntity.getType();
+            Position position = tempEntity.getPosition();
+            boolean interactable = tempEntity.isInteractable();
+            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
+            entityResponse.add(tempEntityResponse);
+        }
+
+        for (int i = 0; i < this.itemEntities.size(); i++) {
+            Item tempEntity = this.itemEntities.get(i);
+            String id = tempEntity.getId();
+            String type = tempEntity.getType();
+            Position position = tempEntity.getPosition();
+            boolean interactable = tempEntity.isInteractable();
+            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
+            entityResponse.add(tempEntityResponse);
+        }
+
+        EntityResponse playerResponse = new EntityResponse(this.playerEntity.getId(), "player",
+                this.playerEntity.getPosition(), false);
+        entityResponse.add(playerResponse);
+
+        // TODO: FIX THIS
+        // BUT FOR NOW JUST CREATE EMPTY LIST FOR BATTLES, AND BUILDABLES
+        ArrayList<ItemResponse> itemResponse = generateItemResponse(this.playerEntity.getInventory());
+        ArrayList<BattleResponse> battleResponse = new ArrayList<>();
+        ArrayList<String> buildables = new ArrayList<>();
+
+        DungeonResponse output = new DungeonResponse(this.dungeonId, this.dungeonName, entityResponse, itemResponse,
+                battleResponse, buildables, this.goals);
+
+        return output;
+    }
+
+    private ArrayList<ItemResponse> generateItemResponse(HashMap<String, ArrayList<Item>> items) {
+        ArrayList<ItemResponse> itemResponses = new ArrayList<>();
+        for (String itemName: items.keySet()) {
+            for (Item i: items.get(itemName)) {
+                itemResponses.add(new ItemResponse(i.getId(), i.getType()));
+            }
+        }
+        return itemResponses;
     }
 }
