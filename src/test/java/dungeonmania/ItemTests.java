@@ -3,27 +3,27 @@ package dungeonmania;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+//import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+//import static org.junit.jupiter.api.Assertions.assertFalse;
+//import static org.junit.jupiter.api.Assertions.assertNotEquals;
+///import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static dungeonmania.TestUtils.getPlayer;
-import static dungeonmania.TestUtils.getEntities;
+//import static dungeonmania.TestUtils.getEntities;
 import static dungeonmania.TestUtils.getInventory;
-import static dungeonmania.TestUtils.getGoals;
-import static dungeonmania.TestUtils.countEntityOfType;
-import static dungeonmania.TestUtils.getValueFromConfigFile;
+//import static dungeonmania.TestUtils.getGoals;
+//import static dungeonmania.TestUtils.countEntityOfType;
+//import static dungeonmania.TestUtils.getValueFromConfigFile;
 import dungeonmania.exceptions.InvalidActionException;
 
 
 
-import dungeonmania.response.models.BattleResponse;
+//import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
-import dungeonmania.response.models.RoundResponse;
+//import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 /*
@@ -33,7 +33,7 @@ public class ItemTests {
     /*
     Tests with inventory.
      */
-    //@Test
+    @Test
     @DisplayName("Test player can pick up item")
     public void testPlayerPickUpItem() {
         DungeonManiaController dmc;
@@ -52,7 +52,7 @@ public class ItemTests {
     /*
     Movement with Doors and Keys
      */
-    //@Test
+    @Test
     @DisplayName("Test player cannot walk through a door without key")
     public void testPlayerCannotWalkThroughClosedDoor () {
         DungeonManiaController dmc;
@@ -71,7 +71,7 @@ public class ItemTests {
         assertEquals(expectedPlayer, actualPlayer);
     }
 
-    //@Test
+    @Test
     @DisplayName("Test player cannot walk through a door if keys do not match")
     public void testPlayerCannotWalkThroughClosedDoorMismatchKeys() {
         DungeonManiaController dmc;

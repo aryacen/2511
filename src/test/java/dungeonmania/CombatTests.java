@@ -12,42 +12,42 @@ public class CombatTests {
     Tests with Potions
      */
 
-    @Test
+    //@Test
     @DisplayName("Test invisibility potion causes player to be undetected")
     public void testsInvisiblityPotion() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test invisibility potion duration is 5 ticks")
     public void testInvisiblityPotionDuration() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test invincibility potion ends battle")
     public void testInvincibilityPotion() {
 
     }
-    @Test
+    //@Test
     @DisplayName("Test invincibility potion causes zombies to flee")
     public void testInvincibilityPotionCausesZombiesToFlee() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test invincibility potion causes mercenary to flee")
     public void testInvincibilityPotionCausesMercenaryToFlee() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test invincibility potion does not cause bribed mercenary to flee")
     public void testInvincibilityPotionAlliesDoNotFlee() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test potion durations stacks (different potion)")
     public void testPotionDurationStacks() {
 
@@ -56,7 +56,7 @@ public class CombatTests {
     /*
     Tests with Bombs
      */
-    @Test
+    //@Test
     @DisplayName("Test bomb destroys entities adjacement to player")
     public void testBombsDestroyAdjacentEntites() {
 
@@ -66,37 +66,37 @@ public class CombatTests {
     /*
     Tests with Weapons
      */
-    @Test
+    //@Test
     @DisplayName("Test sword adds damage")
     public void testSwordAddsDamage() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test sword durability is limited")
     public void testSwordHasLimitedDurability() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test bow adds damage")
     public void testBowAddsDamage() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test bow durability is limited")
     public void testBowHasLimitedDurability() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test shield reduces damage")
     public void testShieldReducesDamage() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test shield durability is limited")
     public void testShieldhasLimitedDurability() {
 
@@ -106,7 +106,7 @@ public class CombatTests {
     Test with allies providing attack and defence bonus
      */
 
-    @Test
+    //@Test
     @DisplayName("Test bribed mercenary provides attack and defense bonus")
     public void testAlliesGiveCombatBonus() {
 
@@ -117,25 +117,25 @@ public class CombatTests {
     Test normal combat
      */
 
-    @Test
+    //@Test
     @DisplayName("Test player will fight zombie")
     public void testZombieCombat() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test player will fight spider")
     public void testSpiderCombat() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test player will fight mercenary")
     public void testMercenaryCombat() {
 
     }
 
-    @Test
+    //@Test
     @DisplayName("Test player can fight multiple battles")
     public void testMultipleBattles() {
 
