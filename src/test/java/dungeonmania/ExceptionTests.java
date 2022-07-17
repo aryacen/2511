@@ -20,6 +20,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -32,16 +33,37 @@ Tests associated with any exceptions
  */
 public class ExceptionTests {
     // TODO: FINISH THIS
-    //@Test
+    @Test
     public void testUnknownDungeon() {
         DungeonManiaController dmc = new DungeonManiaController();
         assertThrows(IllegalArgumentException.class, () -> dmc.newGame("unknownDungeon", "simple"));
     }
 
-    //@Test
+    @Test
     public void testUnknownConfig() {
         DungeonManiaController dmc = new DungeonManiaController();
         assertThrows(IllegalArgumentException.class, () -> dmc.newGame("zombies", "unknownConfig"));
     }
 
+    @Test
+    public void testUsingStaticItem() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse initDungeonRes = dmc.newGame("zombies", "simple");
+        EntityResponse tempEntity = initDungeonRes.getEntities().stream().filter(e -> e.getType().equals("sword"))
+                .findFirst().get();
+
+        // PICK UP SWORD
+        dmc.tick(Direction.DOWN);
+        assertThrows(IllegalArgumentException.class, () -> dmc.tick(tempEntity.getId()));
+    }
+
+    @Test
+    public void testItemNotInInventory() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse initDungeonRes = dmc.newGame("advanced", "simple");
+        EntityResponse tempEntity = initDungeonRes.getEntities().stream()
+                .filter(e -> e.getType().equals("invisibility_potion"))
+                .findFirst().get();
+        assertThrows(InvalidActionException.class, () -> dmc.tick(tempEntity.getId()));
+    }
 }
