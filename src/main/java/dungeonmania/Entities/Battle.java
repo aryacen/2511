@@ -26,7 +26,6 @@ public class Battle {
         // While either the player or entity is alive, the round continues
         while (player.getHp() > 0 && enemy.getHp() > 0) {
             // What does the player have access to? (a list)
-            // TODO: INCLUDE ITEMS
             List<ItemResponse> weaponryUsed = new ArrayList<>();
 
             // Player Health = Player Health - (Enemy Attack Damage / 10)
@@ -40,6 +39,6 @@ public class Battle {
             rounds.add(new RoundResponse(deltaPlayerHealth, deltaEnemyHealth, weaponryUsed));
         }
         return new BattleResponse(enemy.getType(), rounds, initialPlayerHealth, initialEnemyHealth);
-        // TODO: AFTER THE BATTLE, NEED TO CHECK WHETHER THE PLAYER HAS DIED OR NOT
+        // AFTER THE BATTLE, NEED TO CHECK WHETHER THE PLAYER HAS DIED OR NOT
     }
 }

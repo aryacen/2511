@@ -1,15 +1,12 @@
 package dungeonmania.Entities.Item;
 
-import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.BuildableEntities.BowEntity;
 import dungeonmania.Entities.Item.BuildableEntities.ShieldEntity;
 import dungeonmania.Entities.Item.CollectableEntities.KeyEntity;
 import dungeonmania.Entities.Item.CollectableEntities.SwordEntity;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /*
 This class contains the player's inventory
@@ -148,10 +145,6 @@ public class Inventory {
     }
 
     /**
-<<<<<<< HEAD
-     * Returns true if the key has been found, will remove the key from the users
-     * inventory
-=======
      * Returns all weapons in the inventories.
      */
     public ArrayList<Item> getAllWeapons() {
@@ -174,7 +167,6 @@ public class Inventory {
 
     /**
      * Returns true if the key has been found, will remove the key from the users inventory
->>>>>>> master
      */
     public boolean validKey(int keyId) {
         if (keys.isEmpty()) {

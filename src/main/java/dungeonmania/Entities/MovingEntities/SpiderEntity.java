@@ -1,7 +1,5 @@
 package dungeonmania.Entities.MovingEntities;
 
-import dungeonmania.Entities.Entity;
-import dungeonmania.Entities.MovingEntities.Movement.Movement;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
 
@@ -10,7 +8,7 @@ public class SpiderEntity extends MovingEntities {
         super(id, type, position, isInteractable);
         this.hp = EntityConstants.spider_health;
         this.attack = EntityConstants.spider_attack;
-        // TODO: GIVE SPIDER A MOVEMENT FUNCTION
+        // GIVE SPIDER A MOVEMENT FUNCTION
     }
 
     // Spiders spawn at random locations in the dungeon from the beginning of the game.

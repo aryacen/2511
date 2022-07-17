@@ -1,11 +1,8 @@
 package dungeonmania;
 
 import dungeonmania.Entities.Item.Item;
-import dungeonmania.Entities.MovingEntities.MercenaryEntity;
 import dungeonmania.Entities.MovingEntities.MovingEntities;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
-import dungeonmania.Entities.MovingEntities.SpiderEntity;
-import dungeonmania.Entities.MovingEntities.ZombieToastEntity;
 import dungeonmania.Entities.StaticEntities.PortalEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.exceptions.InvalidActionException;
@@ -246,7 +243,7 @@ public class DungeonManiaController {
             int x = temp.getInt("x");
             int y = temp.getInt("y");
             Position position = new Position(x, y);
-            // TODO: THINK THIS SHOULD BE ABSTRACTED TO THE CLASSES
+            // THINK THIS SHOULD BE ABSTRACTED TO THE CLASSES
             if (type.equals("mercenary") || type.equals("zombie_toast_spawner")) {
                 interactable = true;
             }
@@ -411,7 +408,6 @@ public class DungeonManiaController {
                 this.playerEntity.getPosition(), false);
         entityResponse.add(playerResponse);
 
-        // TODO: FIX THIS
         // BUT FOR NOW JUST CREATE EMPTY LIST FOR BATTLES, AND BUILDABLES
         ArrayList<ItemResponse> itemResponse = generateItemResponse(this.playerEntity.getInventory());
         ArrayList<String> buildables = new ArrayList<>();
