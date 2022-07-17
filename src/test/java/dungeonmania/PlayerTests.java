@@ -4,26 +4,26 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+//import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+//import static org.junit.jupiter.api.Assertions.assertFalse;
+//import static org.junit.jupiter.api.Assertions.assertNotEquals;
+//import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getInventory;
-import static dungeonmania.TestUtils.getGoals;
-import static dungeonmania.TestUtils.countEntityOfType;
-import static dungeonmania.TestUtils.getValueFromConfigFile;
-import dungeonmania.exceptions.InvalidActionException;
+//import static dungeonmania.TestUtils.getInventory;
+///import static dungeonmania.TestUtils.getGoals;
+//import static dungeonmania.TestUtils.countEntityOfType;
+//import static dungeonmania.TestUtils.getValueFromConfigFile;
+//import dungeonmania.exceptions.InvalidActionException;
 
 
 
-import dungeonmania.response.models.BattleResponse;
+//import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
-import dungeonmania.response.models.RoundResponse;
+//import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 /*
@@ -34,11 +34,11 @@ public class PlayerTests {
     Movement of the player
     Basic Movements
      */
-    //@Test
+    @Test
     @DisplayName("Test player can move in any 4 directions")
     public void testCardinalMovement() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse initDungonRes = dmc.newGame("d_movementTest_testCardinalMovement",
+        DungeonResponse initDungonRes = dmc.newGame("d_movementTest_testMovementDown",
                 "c_movementTest_testCardinalMovement");
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
 
@@ -61,7 +61,7 @@ public class PlayerTests {
     /*
     Movement with walls
      */
-    //@Test
+    @Test
     @DisplayName("Test player is blocked by wall")
     public void testWallBlock() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -81,7 +81,7 @@ public class PlayerTests {
     /*
     Movement with Boulders
      */
-    //@Test
+    @Test
     @DisplayName("Test player can move boulder")
     public void testBoulderCanBePushed() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -94,7 +94,7 @@ public class PlayerTests {
         // player should move onto square where boulder was, and boulder moves one to the right as well
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
         assertEquals(expectedPlayer, actualPlayer);
-        Position actualBoulderPos = getEntities(initDungonRes, "boulder").get(0).getPosition();
+        Position actualBoulderPos = getEntities(actualDungonRes, "boulder").get(0).getPosition();
         // assert boulder moved one space right
         assertEquals(new Position(3, 1), actualBoulderPos);
 
@@ -102,7 +102,7 @@ public class PlayerTests {
         
     }
 
-    //@Test
+    @Test
     @DisplayName("Test player cannot move boulder into wall")
     public void testBoulderCannotBePushedIntoWalls() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -115,7 +115,7 @@ public class PlayerTests {
         // player should move onto square where boulder was, and boulder moves one to the right as well
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
         assertEquals(expectedPlayer, actualPlayer);
-        Position actualBoulderPos = getEntities(initDungonRes, "boulder").get(0).getPosition();
+        Position actualBoulderPos = getEntities(actualDungonRes, "boulder").get(0).getPosition();
         // assert boulder moved one space right
         assertEquals(new Position(3, 1), actualBoulderPos);
 
@@ -127,7 +127,7 @@ public class PlayerTests {
 
     }
 
-    //@Test
+    @Test
     @DisplayName("Test player cannot move two boulders")
         public void testCannotPushTwoBoulders() {
             DungeonManiaController dmc = new DungeonManiaController();
