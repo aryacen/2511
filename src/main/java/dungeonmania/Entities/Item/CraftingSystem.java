@@ -6,6 +6,7 @@ import dungeonmania.Entities.Item.BuildableEntities.ShieldEntity;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.EntityConstants;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -18,6 +19,9 @@ public class CraftingSystem {
     }
     public final static String[] craftableItems = {"bow", "shield"};
 
+    ArrayList<String> getBuildable(Inventory i) {
+        return null;
+    }
     /**
      * Craft a specific item
      * Will remove the item from the inventory and add the crafted item in

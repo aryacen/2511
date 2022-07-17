@@ -1,7 +1,9 @@
 package dungeonmania.Entities.Item;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.CollectableEntities.KeyEntity;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,7 +14,8 @@ public class Inventory {
     // Each item is stored in a list that will keep track of how many items there are
     // Each item list is stored as a string list pair in a hash map
     private HashMap<String, ArrayList<Item>> items;
-    private ArrayList<KeyEntity> keys;
+    // Keys are stored in their own list
+    ArrayList<KeyEntity> keys;
     public static int noSuchItem = -1;
 
     public Inventory() {
@@ -29,6 +32,14 @@ public class Inventory {
         if (this.items.containsKey(itemName)) {
             return items.get(itemName).size();
         }
+        else if (itemName.equals("key") ){
+            if (keys.isEmpty()) {
+                return noSuchItem;
+            }
+            else {
+                return keys.size();
+            }
+        }
         else {
             return noSuchItem;
         }
@@ -38,13 +49,12 @@ public class Inventory {
      * Adds an item into the players inventory
      */
     public void addItem(Item i) {
-        // If there are no items, created a new list
-        // If it is is a key, add it to its own special list
-        if (!i.getType().equals("key")) {
+        // If it is a key, add it to its own list
+        if (i.getType().equals("key")) {
             keys.add((KeyEntity) i);
             return;
         }
-            //
+        // If there are no items, created a new list
         if (hasItem(i.getType()) == noSuchItem) {
             this.items.put(i.getType(), new ArrayList<>());
         }
@@ -54,13 +64,17 @@ public class Inventory {
 
     /**
      * Removes one instance of the item
-     * @Pre-condition Must have at least one instance of the item in the inventory
+     * @Pre-condition Must have at least one instance of the item in the inventory AND is not used to remove a key
      */
     public void removeItem(String itemName) {
         /*
          Access the item list using the hashmap
          Remove the last item
         */
+        if (itemName.equals("key")) {
+            this.keys.remove(this.keys.size() - 1);
+            return;
+        }
         ArrayList<Item> itemList = this.items.get(itemName);
         itemList.remove(itemList.size() - 1);
 
@@ -94,17 +108,32 @@ public class Inventory {
     /**
      * Returns true if the key has been found, will remove the key from the users inventory
      */
-    public boolean validKey(int key) {
-        ArrayList<KeyEntity> tmpKeys = new ArrayList<>();
-        tmpKeys.addAll(this.keys);
-        // Check if there is matching key
-        for (KeyEntity k: tmpKeys) {
-            if (k.getKey() == key) {
-                this.keys.remove(k);
-                return true;
+    public boolean validKey(int keyId) {
+        if (keys.isEmpty()) {
+            return false;
+        }
+        KeyEntity validKey = null;
+        for (KeyEntity key: keys) {
+            if (key.getKey() == keyId) {
+                validKey = key;
+                break;
             }
         }
-        return false;
+        if (validKey == null) {
+            return false;
+        }
+        else {
+            keys.remove(validKey);
+            return true;
+        }
     }
-    // TODO: FIX INVENTORY FOR FUNCTION WITH KEY
+
+    public HashMap<String, ArrayList<Item>> getItems() {
+        HashMap<String, ArrayList<Item>> itemList = new HashMap<>();
+        itemList.putAll(this.items);
+        ArrayList<Item> keyList = new ArrayList<>();
+        keyList.addAll(keys);
+        itemList.put("key", keyList);
+        return itemList;
+    }
 }

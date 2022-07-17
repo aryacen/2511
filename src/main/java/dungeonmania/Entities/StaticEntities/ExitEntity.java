@@ -10,7 +10,7 @@ public class ExitEntity extends StaticEntity {
 
     @Override
     public boolean canPass(String type) {
-        return false;
+        return true;
     }
 
 

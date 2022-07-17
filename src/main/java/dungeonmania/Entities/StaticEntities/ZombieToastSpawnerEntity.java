@@ -10,7 +10,7 @@ public class ZombieToastSpawnerEntity extends StaticEntity {
 
     @Override
     public boolean canPass(String type) {
-        return false;
+        return true;
     }
 
     // Spawns zombie toasts in an open square cardinally adjacent to the spawner.
