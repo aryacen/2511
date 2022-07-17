@@ -135,60 +135,7 @@ public class DungeonManiaController {
      * /game/tick/item
      */
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
-        // try {
-        // // If the item type is not bomb, invincibility potion, and invisibility
-        // potion,
-        // // throw an illegal argument exception
-        // if (!this.entitiesMap.get(itemUsedId).equals("bomb")
-        // && !this.entitiesMap.get(itemUsedId).equals("invincibility_potion")
-        // && !this.entitiesMap.get(itemUsedId).equals("invisibility_potion")) {
-        // throw new IllegalArgumentException("Item is not usable");
-        // // If the item is not in inventory, then throw an invalid action exception
-        // } else {
-        // if (!this.inventoryString.contains(itemUsedId)) {
-        // throw new InvalidActionException("Item is not in player's inventory");
-        // }
-        // }
-
-        // // Once it passed the exceptions, then we can start removing the item from
-        // the
-        // // player's inventory
-        // ItemResponse tempItem = this.inventoryMap
-        // .get(itemUsedId);
-        // this.inventoryMap.remove(itemUsedId);
-        // this.inventory.remove(tempItem);
-
-        // // If item type is invincibility potion/invisibility potion, give the player
-        // a
-        // // buff for 5 ticks
-        // if (tempItem.getType().equals("invincibility_potion")) {
-        // this.playerBuff.put("invincible", 5);
-        // } else if (tempItem.getType().equals("invisibility_potion")) {
-        // this.playerBuff.put("invisible", 5);
-        // // If item type is bomb, then place a bomb in the map on the player's current
-        // // position
-        // } else {
-        // Position currentPosition = this.playerPosition.get(0).getPosition();
-        // EntityResponse bombEntity = new EntityResponse(itemUsedId, "bomb",
-        // currentPosition, false);
-        // this.entitiesResponse.add(bombEntity);
-        // }
-        // // If a NullPointerException is caught, that means that the item is not
-        // present
-        // // in the map to begin with (thus can never be in the person's inventory so
-        // this
-        // // throws invalid action exception)
-        // } catch (NullPointerException e) {
-        // throw new InvalidActionException("Item is not in the map");
-        // }
-
-        // this.currentTick++;
-        // DungeonResponse updatedResponse = new DungeonResponse(this.dungeonId.get(0),
-        // this.dungeons.get(0),
-        // this.entitiesResponse, this.inventory, this.battles, this.buildables,
-        // this.goals.get(0));
-
-        // return updatedResponse;
+        this.playerEntity.use(itemUsedId);
         return null;
     }
 
@@ -200,8 +147,7 @@ public class DungeonManiaController {
                 movementDirection,
                 this.itemEntities,
                 this.staticEntities,
-                this.movingEntities
-        );
+                this.movingEntities);
         // Create dungeon response
         DungeonResponse output = getDungeonResponse();
         return output;
@@ -412,14 +358,14 @@ public class DungeonManiaController {
 
     private DungeonResponse getDungeonResponse() {
         /*
-         Dungeon id
-         Dungeon name
-         Entites
-         Inventory
-         Battle Response
-         Buildables
-         Goals
-        */
+         * Dungeon id
+         * Dungeon name
+         * Entites
+         * Inventory
+         * Battle Response
+         * Buildables
+         * Goals
+         */
         ArrayList<EntityResponse> entityResponse = new ArrayList<>();
 
         for (int i = 0; i < this.movingEntities.size(); i++) {
@@ -470,8 +416,8 @@ public class DungeonManiaController {
 
     private ArrayList<ItemResponse> generateItemResponse(HashMap<String, ArrayList<Item>> items) {
         ArrayList<ItemResponse> itemResponses = new ArrayList<>();
-        for (String itemName: items.keySet()) {
-            for (Item i: items.get(itemName)) {
+        for (String itemName : items.keySet()) {
+            for (Item i : items.get(itemName)) {
                 itemResponses.add(new ItemResponse(i.getId(), i.getType()));
             }
         }
