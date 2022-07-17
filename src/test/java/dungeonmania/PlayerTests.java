@@ -4,26 +4,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-//import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertFalse;
-//import static org.junit.jupiter.api.Assertions.assertNotEquals;
-//import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
-//import static dungeonmania.TestUtils.getInventory;
-///import static dungeonmania.TestUtils.getGoals;
-//import static dungeonmania.TestUtils.countEntityOfType;
-//import static dungeonmania.TestUtils.getValueFromConfigFile;
-//import dungeonmania.exceptions.InvalidActionException;
 
-
-
-//import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
-//import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 /*
@@ -55,7 +42,6 @@ public class PlayerTests {
         actualDungonRes = dmc.tick(Direction.LEFT);
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
         assertEquals(expectedPlayer, actualPlayer);
-        
     }
 
     /*
@@ -246,8 +232,8 @@ public class PlayerTests {
         //pick up sword and move down so we are not adjacent to the spawner
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.DOWN);
-        String spawnerId = getEntities(res, "zombie_toast_spawner").get(0).getId();
-        //check itneract throws exception and spawner still exists
+        //String spawnerId = getEntities(res, "zombie_toast_spawner").get(0).getId();
+        //check interact throws exception and spawner still exists
 
         // UNCOMMENT BELOW LINE ONCE INTERACT IMPLEMENTED ***********************************************************
         //res = assertThrows(InvalidActionException.class, () -> dmc.interact(spawnerId));
@@ -266,7 +252,7 @@ public class PlayerTests {
         res = dmc.tick(Direction.DOWN);
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
-        String spawnerId = getEntities(res, "zombie_toast_spawner").get(0).getId();
+        //String spawnerId = getEntities(res, "zombie_toast_spawner").get(0).getId();
         //check interact throws exception and spawner still exists
 
         // UNCOMMENT BELOW LINE ONCE INTERACT IMPLEMENTED ***********************************************************

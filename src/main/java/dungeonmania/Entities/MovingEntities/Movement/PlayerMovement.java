@@ -1,7 +1,5 @@
 package dungeonmania.Entities.MovingEntities.Movement;
 
-import com.sun.jdi.ArrayReference;
-import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Inventory;
 import dungeonmania.Entities.MovingEntities.MovingEntities;
 import dungeonmania.Entities.StaticEntities.BoulderEntity;
@@ -10,7 +8,6 @@ import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class PlayerMovement extends Movement {
@@ -81,7 +78,7 @@ public class PlayerMovement extends Movement {
             }
         }
         else if (entityAtNewPosition.stream().anyMatch(e -> e.getType().equals("portal"))) {
-            // TODO: FIGURE OUT THE PORTAL TELEPORT FUNCTIONALITY
+            // FIGURE OUT THE PORTAL TELEPORT FUNCTIONALITY
         }
         // Default to just not doing anything
         return currentPosition;

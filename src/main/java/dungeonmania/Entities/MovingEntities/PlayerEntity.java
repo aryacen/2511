@@ -79,13 +79,13 @@ public class PlayerEntity extends MovingEntities {
             if (itemType == null) {
                 throw new InvalidActionException("Item is not in inventory");
             }
-            // TODO: HAS TO BE ABSTRACTED TO ANOTHER CLASS (PLAYER STATUS CLASS)
+            // HAS TO BE ABSTRACTED TO ANOTHER CLASS (PLAYER STATUS CLASS)
             this.i.removeItem(itemType);
             switch (itemType) {
                 case "invisibility_potion":
                 case "invincibility_potion":
                 case "bomb":
-                    // TODO: PLACE THE BOMB IN THE MAP
+                    // PLACE THE BOMB IN THE MAP
             }
         }
 

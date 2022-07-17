@@ -9,7 +9,7 @@ public class EntityConstants {
     // This constant is used to denote that item is not on the map / in the players
     // inventory
     public final static Position notOnMap = new Position(-1, -1);
-    // TODO: DONT KNOW HOW TO MAKE THIS BETTER SINCE WE WANT IT TO BE STATIC AND
+    // DONT KNOW HOW TO MAKE THIS BETTER SINCE WE WANT IT TO BE STATIC AND
     // FINAL
 
     public static int ally_attack;

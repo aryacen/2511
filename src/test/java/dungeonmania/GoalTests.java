@@ -91,5 +91,5 @@ public class GoalTests {
     /*
     ! Complex Goals
      */
-    // TODO: WRITE COMPLEX GOAL TESTS
+    // WRITE COMPLEX GOAL TESTS
 }

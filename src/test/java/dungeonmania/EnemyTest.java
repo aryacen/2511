@@ -10,7 +10,7 @@ public class EnemyTest {
     /*
     Spiders
      */
-    // TODO: FIGURE OUT THE EDGE CASE NOT COVERED IN EXAMPLE TESTS
+    // FIGURE OUT THE EDGE CASE NOT COVERED IN EXAMPLE TESTS
 
     /*
     Mercenary
