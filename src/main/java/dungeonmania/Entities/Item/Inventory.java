@@ -148,6 +148,10 @@ public class Inventory {
     }
 
     /**
+<<<<<<< HEAD
+     * Returns true if the key has been found, will remove the key from the users
+     * inventory
+=======
      * Returns all weapons in the inventories.
      */
     public ArrayList<Item> getAllWeapons() {
@@ -170,6 +174,7 @@ public class Inventory {
 
     /**
      * Returns true if the key has been found, will remove the key from the users inventory
+>>>>>>> master
      */
     public boolean validKey(int keyId) {
         if (keys.isEmpty()) {

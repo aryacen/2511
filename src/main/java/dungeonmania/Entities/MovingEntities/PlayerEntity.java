@@ -37,7 +37,7 @@ public class PlayerEntity extends MovingEntities {
      * 
      * @throws InvalidActionException if the item could not be created
      */
-    public void craftItem(String buildable) throws InvalidActionException {
+    public void craftItem(String buildable) throws InvalidActionException, IllegalArgumentException {
         c.craft(buildable, i);
     }
 
