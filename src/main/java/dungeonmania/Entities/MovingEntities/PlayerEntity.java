@@ -93,4 +93,17 @@ public class PlayerEntity extends MovingEntities {
 
     // Can bribe the mercenary
 
+    /**
+     * Return the list of weapons the Player has.
+     */
+    public List<Item> getWeapons() {
+        return i.getAllWeapons();
+    }
+
+    /**
+     * Update the durability of the weapons the Player has after a battle.
+     */
+    public void updateDurability() {
+        this.i.decreaseDurability();
+    }
 }
