@@ -66,4 +66,18 @@ public class ExceptionTests {
                 .findFirst().get();
         assertThrows(InvalidActionException.class, () -> dmc.tick(tempEntity.getId()));
     }
+
+    @Test
+    public void testInvalidBuildable() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        dmc.newGame("advanced", "simple");
+        assertThrows(IllegalArgumentException.class, () -> dmc.build("sword"));
+    }
+
+    @Test
+    public void testInsufficientMaterial() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        dmc.newGame("build_bow", "simple");
+        assertThrows(InvalidActionException.class, () -> dmc.build("bow"));
+    }
 }

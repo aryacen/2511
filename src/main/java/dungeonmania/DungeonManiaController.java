@@ -153,19 +153,18 @@ public class DungeonManiaController {
                 movementDirection,
                 this.itemEntities,
                 this.staticEntities,
-                this.movingEntities
-        );
+                this.movingEntities);
         this.haveBattle();
         // Create dungeon response
-        DungeonResponse output = getDungeonResponse();
-        return output;
+        return getDungeonResponse();
     }
 
     /**
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        this.playerEntity.craftItem(buildable);
+        return getDungeonResponse();
     }
 
     /**
@@ -319,50 +318,52 @@ public class DungeonManiaController {
         EntityConstants.zombie_spawn_rate = configContent.getInt("zombie_spawn_rate");
     }
 
-    private List<Position> getCardinallyAdjPos(Position pos) {
-        List<Position> adjacentPositions = new ArrayList<Position>();
-        int x = pos.getX();
-        int y = pos.getY();
-        Position p1 = new Position(x - 1, 1);
-        Position p2 = new Position(x + 1, y);
-        Position p3 = new Position(x, y - 1);
-        Position p4 = new Position(x, y + 1);
-        adjacentPositions.add(p1);
-        adjacentPositions.add(p2);
-        adjacentPositions.add(p3);
-        adjacentPositions.add(p4);
-        return adjacentPositions;
-    }
+    // private List<Position> getCardinallyAdjPos(Position pos) {
+    // List<Position> adjacentPositions = new ArrayList<Position>();
+    // int x = pos.getX();
+    // int y = pos.getY();
+    // Position p1 = new Position(x - 1, 1);
+    // Position p2 = new Position(x + 1, y);
+    // Position p3 = new Position(x, y - 1);
+    // Position p4 = new Position(x, y + 1);
+    // adjacentPositions.add(p1);
+    // adjacentPositions.add(p2);
+    // adjacentPositions.add(p3);
+    // adjacentPositions.add(p4);
+    // return adjacentPositions;
+    // }
 
-    private ArrayList<Item> getSurroundingItems(Position pos, ArrayList<Item> entityList) {
-        ArrayList<Item> output = new ArrayList<>();
-        List<Position> adjPosition = getCardinallyAdjPos(pos);
-        for (int i = 0; i < adjPosition.size(); i++) {
-            Position tempPos = adjPosition.get(i);
-            for (int j = 0; j < entityList.size(); j++) {
-                Item tempEntity = entityList.get(j);
-                if (tempEntity.getPosition().equals(tempPos)) {
-                    output.add(tempEntity);
-                }
-            }
-        }
-        return output;
-    }
+    // private ArrayList<Item> getSurroundingItems(Position pos, ArrayList<Item>
+    // entityList) {
+    // ArrayList<Item> output = new ArrayList<>();
+    // List<Position> adjPosition = getCardinallyAdjPos(pos);
+    // for (int i = 0; i < adjPosition.size(); i++) {
+    // Position tempPos = adjPosition.get(i);
+    // for (int j = 0; j < entityList.size(); j++) {
+    // Item tempEntity = entityList.get(j);
+    // if (tempEntity.getPosition().equals(tempPos)) {
+    // output.add(tempEntity);
+    // }
+    // }
+    // }
+    // return output;
+    // }
 
-    private ArrayList<StaticEntity> getSurroundingStaticEntities(Position pos, ArrayList<StaticEntity> entityList) {
-        ArrayList<StaticEntity> output = new ArrayList<>();
-        List<Position> adjPosition = getCardinallyAdjPos(pos);
-        for (int i = 0; i < adjPosition.size(); i++) {
-            Position tempPos = adjPosition.get(i);
-            for (int j = 0; j < entityList.size(); j++) {
-                StaticEntity tempEntity = entityList.get(j);
-                if (tempEntity.getPosition().equals(tempPos)) {
-                    output.add(tempEntity);
-                }
-            }
-        }
-        return output;
-    }
+    // private ArrayList<StaticEntity> getSurroundingStaticEntities(Position pos,
+    // ArrayList<StaticEntity> entityList) {
+    // ArrayList<StaticEntity> output = new ArrayList<>();
+    // List<Position> adjPosition = getCardinallyAdjPos(pos);
+    // for (int i = 0; i < adjPosition.size(); i++) {
+    // Position tempPos = adjPosition.get(i);
+    // for (int j = 0; j < entityList.size(); j++) {
+    // StaticEntity tempEntity = entityList.get(j);
+    // if (tempEntity.getPosition().equals(tempPos)) {
+    // output.add(tempEntity);
+    // }
+    // }
+    // }
+    // return output;
+    // }
 
     private DungeonResponse getDungeonResponse() {
         /*
@@ -441,16 +442,16 @@ public class DungeonManiaController {
             // Movement methods are not implemented for other moving entities.
             // if (enemy.getPosition() == playerEntity.getPosition()) {
             if (true) {
-                //System.out.println("same position");
+                // System.out.println("same position");
                 Battle newBattle = new Battle(playerEntity, enemy);
                 BattleResponse newBattleResponse = newBattle.battle();
                 this.battleResponse.add(newBattleResponse);
                 if (enemy.getHp() <= 0.0) { // the enemy has died
-                    //this.movingEntities.remove(enemy);
+                    // this.movingEntities.remove(enemy);
                 }
                 if (playerEntity.getHp() <= 0.0) { // the player has died
-                    //this.playerEntity = null;
-                    //System.out.println("player died");
+                    // this.playerEntity = null;
+                    // System.out.println("player died");
                     break;
                 }
             }
@@ -460,8 +461,9 @@ public class DungeonManiaController {
 
     /**
      * Return a new list of alive moving entities
+     * 
      * @return ArrayList<MovingEntities>
-     */ 
+     */
     public ArrayList<MovingEntities> removeDead() {
         ArrayList<MovingEntities> newMovingEntities = new ArrayList<>();
         for (MovingEntities enemy : movingEntities) {
