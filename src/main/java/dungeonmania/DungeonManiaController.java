@@ -1,8 +1,11 @@
 package dungeonmania;
 
 import dungeonmania.Entities.Item.Item;
+import dungeonmania.Entities.MovingEntities.MercenaryEntity;
 import dungeonmania.Entities.MovingEntities.MovingEntities;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
+import dungeonmania.Entities.MovingEntities.SpiderEntity;
+import dungeonmania.Entities.MovingEntities.ZombieToastEntity;
 import dungeonmania.Entities.StaticEntities.PortalEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.exceptions.InvalidActionException;
@@ -10,7 +13,7 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.response.models.BattleResponse;
-
+import dungeonmania.Entities.Battle;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.EntityFactory.entityCreator;
 
@@ -38,6 +41,8 @@ public class DungeonManiaController {
     ArrayList<MovingEntities> movingEntities;
     ArrayList<StaticEntity> staticEntities;
     ArrayList<Item> itemEntities;
+
+    ArrayList<BattleResponse> battleResponse = new ArrayList<>();
 
     public String getSkin() {
         return "default";
@@ -136,7 +141,8 @@ public class DungeonManiaController {
      */
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
         this.playerEntity.use(itemUsedId);
-        return null;
+        DungeonResponse output = getDungeonResponse();
+        return output;
     }
 
     /**
@@ -147,7 +153,9 @@ public class DungeonManiaController {
                 movementDirection,
                 this.itemEntities,
                 this.staticEntities,
-                this.movingEntities);
+                this.movingEntities
+        );
+        this.haveBattle();
         // Create dungeon response
         DungeonResponse output = getDungeonResponse();
         return output;
@@ -405,11 +413,10 @@ public class DungeonManiaController {
         // TODO: FIX THIS
         // BUT FOR NOW JUST CREATE EMPTY LIST FOR BATTLES, AND BUILDABLES
         ArrayList<ItemResponse> itemResponse = generateItemResponse(this.playerEntity.getInventory());
-        ArrayList<BattleResponse> battleResponse = new ArrayList<>();
         ArrayList<String> buildables = new ArrayList<>();
 
         DungeonResponse output = new DungeonResponse(this.dungeonId, this.dungeonName, entityResponse, itemResponse,
-                battleResponse, buildables, this.goals);
+                this.battleResponse, buildables, this.goals);
 
         return output;
     }
@@ -422,5 +429,46 @@ public class DungeonManiaController {
             }
         }
         return itemResponses;
+    }
+
+    /**
+     * Conduct a battle
+     */
+    public void haveBattle() {
+        // A battle takes place when the Player and an enemy are in the same cell
+        // at any point within a single tick.
+        for (MovingEntities enemy : movingEntities) {
+            // Movement methods are not implemented for other moving entities.
+            // if (enemy.getPosition() == playerEntity.getPosition()) {
+            if (true) {
+                //System.out.println("same position");
+                Battle newBattle = new Battle(playerEntity, enemy);
+                BattleResponse newBattleResponse = newBattle.battle();
+                this.battleResponse.add(newBattleResponse);
+                if (enemy.getHp() <= 0.0) { // the enemy has died
+                    //this.movingEntities.remove(enemy);
+                }
+                if (playerEntity.getHp() <= 0.0) { // the player has died
+                    //this.playerEntity = null;
+                    //System.out.println("player died");
+                    break;
+                }
+            }
+        }
+        this.movingEntities = removeDead();
+    }
+
+    /**
+     * Return a new list of alive moving entities
+     * @return ArrayList<MovingEntities>
+     */ 
+    public ArrayList<MovingEntities> removeDead() {
+        ArrayList<MovingEntities> newMovingEntities = new ArrayList<>();
+        for (MovingEntities enemy : movingEntities) {
+            if (enemy.getHp() > 0.0) {
+                newMovingEntities.add(enemy);
+            }
+        }
+        return newMovingEntities;
     }
 }

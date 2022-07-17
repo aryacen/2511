@@ -1,7 +1,10 @@
 package dungeonmania.Entities.Item;
 
 import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.Item.BuildableEntities.BowEntity;
+import dungeonmania.Entities.Item.BuildableEntities.ShieldEntity;
 import dungeonmania.Entities.Item.CollectableEntities.KeyEntity;
+import dungeonmania.Entities.Item.CollectableEntities.SwordEntity;
 
 import java.security.Key;
 import java.util.ArrayList;
@@ -80,7 +83,7 @@ public class Inventory {
          * Remove the last item
          */
         if (itemName.equals("key")) {
-            this.keys.remove(this.keys.size() - 1);
+            this.keys.remove(0);
             return;
         }
         ArrayList<Item> itemList = this.items.get(itemName);
@@ -115,12 +118,58 @@ public class Inventory {
     public void decreaseDurability() {
         // Decrease the durability of an item
         // If durability reaches 0, remove the item by calling removeItem()
-        // TODO: FINISH THIS
+        ArrayList<Item> weapons = getAllWeapons();
+        for (Item weapon : weapons) {
+            String itemType = weapon.getType();
+            switch (itemType) {
+                case "bow": 
+                    BowEntity usedBow = (BowEntity)weapon;
+                    usedBow.decreaseDurability();
+                    if (usedBow.getDurability() == 0) {
+                        removeItem("bow");
+                    }
+                    break;
+                case "sword":
+                    SwordEntity usedSword = (SwordEntity)weapon;
+                    usedSword.decreaseDurability();
+                    if (usedSword.getDurability() == 0) {
+                        removeItem("sword");
+                    }
+                    break;
+                case "shield":
+                    ShieldEntity usedShield = (ShieldEntity)weapon;
+                    usedShield.decreaseDurability();
+                    if (usedShield.getDurability() == 0) {
+                        removeItem("shield");
+                    }
+                    break;
+            }
+        }   
     }
 
     /**
-     * Returns true if the key has been found, will remove the key from the users
-     * inventory
+     * Returns all weapons in the inventories.
+     */
+    public ArrayList<Item> getAllWeapons() {
+        ArrayList<Item> weaponsList = new ArrayList<>();
+        if (hasItem("bow") >= 1) {
+            ArrayList<Item> bows = this.items.get("bow");
+            weaponsList.add(bows.get(0));
+        }
+        if (hasItem("sword") >= 1) {
+            ArrayList<Item> swords = this.items.get("sword");
+            weaponsList.add(swords.get(0));
+        }
+        if (hasItem("shield") >= 1) {
+            ArrayList<Item> shields = this.items.get("shield");
+            weaponsList.add(shields.get(0));
+        }
+        return weaponsList;
+    }
+
+
+    /**
+     * Returns true if the key has been found, will remove the key from the users inventory
      */
     public boolean validKey(int keyId) {
         if (keys.isEmpty()) {

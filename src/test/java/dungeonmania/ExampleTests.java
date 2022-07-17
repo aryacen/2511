@@ -204,6 +204,7 @@ public class ExampleTests {
         }
     }
 
+    @Test
     @DisplayName("Test basic battle calculations - mercenary - player loses")
     public void testHealthBelowZeroMercenary() {
         DungeonManiaController controller = new DungeonManiaController();
@@ -213,6 +214,7 @@ public class ExampleTests {
         assertBattleCalculations("mercenary", battle, false, "c_battleTests_basicMercenaryPlayerDies");
     }
 
+    @Test
     @DisplayName("Test basic battle calculations - mercenary - player wins")
     public void testRoundCalculationsMercenary() {
         DungeonManiaController controller = new DungeonManiaController();

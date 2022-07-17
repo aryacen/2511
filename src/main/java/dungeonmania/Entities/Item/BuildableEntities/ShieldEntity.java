@@ -4,10 +4,14 @@ import dungeonmania.util.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import dungeonmania.util.EntityConstants;
 
 public class ShieldEntity extends BuildableEntity {
+    private int durability;
+
     public ShieldEntity(String id, String type, Position position, boolean isInteractable) {
         super(id, type, position, isInteractable);
+        this.durability = EntityConstants.shield_durability;
     }
 
     // Can be crafted with 2 wood + (1 treasure OR 1 key).
@@ -36,5 +40,11 @@ public class ShieldEntity extends BuildableEntity {
 
     // Each shield has a specific durability that dictates the number of battles
     // it can be used before it deteriorates.
+    public int getDurability() {
+        return durability;
+    }
 
+    public void decreaseDurability() {
+        this.durability -= 1;
+    }
 }
