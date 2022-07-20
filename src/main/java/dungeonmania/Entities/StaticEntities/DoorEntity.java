@@ -1,5 +1,6 @@
 package dungeonmania.Entities.StaticEntities;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
 
 public class DoorEntity extends StaticEntity {

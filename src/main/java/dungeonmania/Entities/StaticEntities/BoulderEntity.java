@@ -1,5 +1,6 @@
 package dungeonmania.Entities.StaticEntities;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
