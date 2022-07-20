@@ -1,5 +1,6 @@
 package dungeonmania.Entities.MovingEntities;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
 
@@ -8,7 +9,7 @@ public class MercenaryEntity extends MovingEntities {
         super(id, type, position, isInteractable);
         this.hp = EntityConstants.mercenary_health;
         this.attack = EntityConstants.mercenary_attack;
-        // GIVE MERCENARY A MOVEMENT FUNCTION
+        // TODO: GIVE MERCENARY A MOVEMENT FUNCTION
     }
 
     // part of the dungeon.
