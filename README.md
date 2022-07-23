@@ -564,6 +564,7 @@ In Milestone 3, the following configuration fields have been added.
 | `assassin_bribe_fail_rate`     | The chance that the bribe on an assassin will fail. The value of this field should be always inclusively between 0 and 1. |
 | `assassin_health`              | Health of the assassin. |
 | `assassin_recon_radius`        | The radius within which an assassin can see and move towards the player even when they are invisible. |
+| `hydra_spawn_rate`             | Hydras spawn every x ticks, starting from the x'th tick. Spawn rate of 0 means that hydras will never spawn in the game.  |
 | `hydra_attack`                 | Attack damage of the hydra. |
 | `hydra_health`                 | Health of the hydra. |
 | `hydra_health_increase_rate`   | The chance that the health of a Hydra increases when it gets attacked. The value of this field should be always inclusively between 0 and 1. |
