@@ -43,6 +43,7 @@ This specification is broken into four parts:
 - Tue 19 Jul 9pm - Fix section 4.1.1 by adding boss entities
 - Tue 19 Jul 10pm - Fix M3 spec Typos
 - Wed 20 Jul 12am - Fix description for `midnight_armour_defence` and durability for midnight armour in the spec.
+- Wed 20 Jul 6pm - Removed redundant `hydra_spawn_rate` config field from the spec because hydra will not spawn from a spawner.
 
 ## 1. Aims
 
