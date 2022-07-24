@@ -19,10 +19,72 @@ public class CraftingSystem {
     }
 
     public final static String[] craftableItems = { "bow", "shield" };
+    // public final static String[] noOptionalItems = { "bow" };
 
-    ArrayList<String> getBuildable(Inventory i) {
+    public ArrayList<String> getBuildable(Inventory i) {
+
+        // ArrayList<String> output = new ArrayList<>();
+
+        // for (String item : craftableItems) {
+        // HashMap<String, Integer> essentials = new HashMap<>();
+        // HashMap<String, Integer> optionals = new HashMap<>();
+        // essentials = getEssentials(item);
+        // optionals = getOptionals(item);
+        // boolean hasEssentials = false;
+        // boolean hasOptionals = false;
+
+        // for (String materialName : essentials.keySet()) {
+        // if (i.hasItem(materialName) >= essentials.get(materialName)) {
+        // hasEssentials = true;
+        // } else {
+        // hasEssentials = false;
+        // }
+        // }
+
+        // for (String materialName : optionals.keySet()) {
+        // if (i.hasItem(materialName) >= optionals.get(materialName)) {
+        // hasOptionals = true;
+        // } else {
+        // hasOptionals = false;
+        // }
+        // }
+
+        // if (Arrays.asList(noOptionalItems).contains(item)) {
+        // hasOptionals = true;
+        // }
+
+        // if (hasEssentials && hasOptionals) {
+        // output.add(item);
+        // }
+        // }
+        // return output;
         return null;
+
     }
+
+    // public HashMap<String, Integer> getEssentials(String item) {
+    // BuildableEntity itemToCraft = null;
+    // switch (item) {
+    // case "bow":
+    // itemToCraft = new BowEntity("temp", "bow", EntityConstants.notOnMap, false);
+    // case "shield":
+    // itemToCraft = new ShieldEntity("temp", "shield", EntityConstants.notOnMap,
+    // false);
+    // }
+    // return itemToCraft.getEssential();
+    // }
+
+    // public HashMap<String, Integer> getOptionals(String item) {
+    // BuildableEntity itemToCraft = null;
+    // switch (item) {
+    // case "bow":
+    // itemToCraft = new BowEntity("temp", "bow", EntityConstants.notOnMap, false);
+    // case "shield":
+    // itemToCraft = new ShieldEntity("temp", "shield", EntityConstants.notOnMap,
+    // false);
+    // }
+    // return itemToCraft.getOptions();
+    // }
 
     /**
      * Craft a specific item
@@ -50,7 +112,7 @@ public class CraftingSystem {
                 itemToCraft = new BowEntity(newId, "bow", EntityConstants.notOnMap, false);
                 break;
             case "shield":
-                itemToCraft = new ShieldEntity(newId, "bow", EntityConstants.notOnMap, false);
+                itemToCraft = new ShieldEntity(newId, "shield", EntityConstants.notOnMap, false);
                 break;
         }
 
@@ -76,7 +138,7 @@ public class CraftingSystem {
         }
 
         /* Check that inventory has enough for at least one of the optional items */
-        boolean hasOptionMaterials = false;
+        boolean hasOptionalMaterials = false;
         for (String materialName : options.keySet()) {
             /*
              * If the inventory has more than what is required for a certain option
@@ -84,22 +146,27 @@ public class CraftingSystem {
              * can create the item
              */
             if (i.hasItem(materialName) >= options.get(materialName)) {
-                hasOptionMaterials = true;
+                hasOptionalMaterials = true;
                 itemsToRemove.put(materialName, options.get(materialName));
                 break;
             }
         }
 
+        if (itemToCraft != null && itemToCraft.getOptions().isEmpty()) {
+            hasOptionalMaterials = true;
+        }
+
         /* Check that the item has passed has all the item it needs */
-        if (itemToCraft == null || !hasOptionMaterials) {
+        if (itemToCraft == null || !hasOptionalMaterials) {
             throw new InvalidActionException("insufficient material");
         } else {
             /* Remove item from inventory */
             for (String itemToRemove : itemsToRemove.keySet()) {
-                i.removeItem(itemName, itemsToRemove.get(itemToRemove));
+                i.removeItem(itemToRemove, itemsToRemove.get(itemToRemove));
             }
-            /* Add item crafted ot inventory */
+            /* Add item crafted to inventory */
             i.addItem(itemToCraft);
         }
+
     }
 }

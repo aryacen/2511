@@ -21,7 +21,6 @@ public class Inventory {
 
     // Key = item type, Value = List of Items of that item type
     private HashMap<String, ArrayList<Item>> items;
-    private HashMap<String, String> itemType;
     // Keys are stored in their own list
     ArrayList<KeyEntity> keys;
     public static int noSuchItem = -1;
@@ -29,7 +28,6 @@ public class Inventory {
     public Inventory() {
         items = new HashMap<>();
         keys = new ArrayList<>();
-        itemType = new HashMap<>();
     }
 
     /**
@@ -63,12 +61,14 @@ public class Inventory {
         }
         // If there are no items, created a new list
         if (hasItem(i.getType()) == noSuchItem) {
-            this.items.put(i.getType(), new ArrayList<>());
-            this.itemType.put(i.getId(), i.getType());
+            ArrayList<Item> tempList = new ArrayList<Item>();
+            tempList.add(i);
+            this.items.put(i.getType(), tempList);
+        } else {
+            ArrayList<Item> tempList = this.items.get(i.getType());
+            tempList.add(i);
+            this.items.replace(i.getType(), tempList);
         }
-        // Add the item to the list
-        this.itemType.put(i.getId(), i.getType());
-        this.items.get(i.getType()).add(i);
     }
 
     /**
@@ -86,14 +86,12 @@ public class Inventory {
             this.keys.remove(0);
             return;
         }
-        ArrayList<Item> itemList = this.items.get(itemName);
-        Item tempItem = itemList.get(itemList.size() - 1);
-        this.itemType.remove(tempItem.getId());
-        itemList.remove(itemList.size() - 1);
-
-        /* If the list is empty, remove it from the hashmap */
-        if (itemList.isEmpty()) {
-            items.remove(itemName);
+        ArrayList<Item> itemList = this.items.getOrDefault(itemName, new ArrayList<Item>());
+        if (itemList.size() > 1) {
+            itemList.remove((itemList.size() - 1));
+            this.items.replace(itemName, itemList);
+        } else {
+            this.items.remove(itemName);
         }
 
     }
@@ -122,36 +120,32 @@ public class Inventory {
         for (Item weapon : weapons) {
             String itemType = weapon.getType();
             switch (itemType) {
-                case "bow": 
-                    BowEntity usedBow = (BowEntity)weapon;
+                case "bow":
+                    BowEntity usedBow = (BowEntity) weapon;
                     usedBow.decreaseDurability();
                     if (usedBow.getDurability() == 0) {
                         removeItem("bow");
                     }
                     break;
                 case "sword":
-                    SwordEntity usedSword = (SwordEntity)weapon;
+                    SwordEntity usedSword = (SwordEntity) weapon;
                     usedSword.decreaseDurability();
                     if (usedSword.getDurability() == 0) {
                         removeItem("sword");
                     }
                     break;
                 case "shield":
-                    ShieldEntity usedShield = (ShieldEntity)weapon;
+                    ShieldEntity usedShield = (ShieldEntity) weapon;
                     usedShield.decreaseDurability();
                     if (usedShield.getDurability() == 0) {
                         removeItem("shield");
                     }
                     break;
             }
-        }   
+        }
     }
 
     /**
-<<<<<<< HEAD
-     * Returns true if the key has been found, will remove the key from the users
-     * inventory
-=======
      * Returns all weapons in the inventories.
      */
     public ArrayList<Item> getAllWeapons() {
@@ -171,10 +165,9 @@ public class Inventory {
         return weaponsList;
     }
 
-
     /**
-     * Returns true if the key has been found, will remove the key from the users inventory
->>>>>>> master
+     * Returns true if the key has been found, will remove the key from the users
+     * inventory
      */
     public boolean validKey(int keyId) {
         if (keys.isEmpty()) {
