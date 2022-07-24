@@ -1,40 +1,32 @@
 package dungeonmania.Entities.MovingEntities.Movement;
 
-import com.sun.jdi.ArrayReference;
-import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Inventory;
-import dungeonmania.Entities.MovingEntities.MovingEntities;
+import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.StaticEntities.BoulderEntity;
 import dungeonmania.Entities.StaticEntities.DoorEntity;
+import dungeonmania.Entities.StaticEntities.PortalEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class PlayerMovement extends Movement {
-
-    /**
-     * Move the player from current position in the direction given
-     * 
-     * @param currentPosition
-     * @param direction
-     * @param staticEntities
-     */
     @Override
     public Position move(Position currentPosition,
                          Direction direction,
                          ArrayList<StaticEntity> staticEntities,
-                         ArrayList<MovingEntities> movingEntities,
+                         ArrayList<MovingEntity> movingEntities,
                          Inventory i) {
         Position offset = direction.getOffset();
         Position newPosition = currentPosition.translateBy(offset);
-
-        // Note the only case so far where
+        // Note the only case so far where there are two static entities in with a boulder and a switch
         ArrayList<StaticEntity> entityAtNewPosition = Movement.staticEntityAtPosition(newPosition, staticEntities);
         // If we can walk through the static entity or there are no static entity, move
-        if (entityAtNewPosition.isEmpty() || entityAtNewPosition.stream().allMatch(e -> e.canPass("player"))) {
+        if (
+                entityAtNewPosition.isEmpty() ||
+                (entityAtNewPosition.stream().allMatch(e -> e.canPass("player"))) &&
+                entityAtNewPosition.stream().noneMatch(e -> e.getType().equals("portal"))) {
             currentPosition = newPosition;
             return currentPosition;
         }
@@ -46,10 +38,10 @@ public class PlayerMovement extends Movement {
                     .filter(e -> e.getType().equals("boulder"))
                     .findFirst()
                     .get();
-                    ArrayList<StaticEntity> entityBehindBoulder = Movement.staticEntityAtPosition(
+                ArrayList<StaticEntity> entityBehindBoulder = Movement.staticEntityAtPosition(
                     newPosition.translateBy(direction),
                     staticEntities);
-            ArrayList<MovingEntities> movingEntitiesBehindBoulder = Movement.movingEntityAtPosition(
+            ArrayList<MovingEntity> movingEntitiesBehindBoulder = Movement.movingEntityAtPosition(
                     newPosition.translateBy(direction),
                     movingEntities
             );
@@ -81,7 +73,12 @@ public class PlayerMovement extends Movement {
             }
         }
         else if (entityAtNewPosition.stream().anyMatch(e -> e.getType().equals("portal"))) {
-            // TODO: FIGURE OUT THE PORTAL TELEPORT FUNCTIONALITY
+            // Extract the first portal
+            PortalEntity portal = (PortalEntity) entityAtNewPosition.stream()
+                    .filter(e -> e.getType().equals("portal"))
+                    .findFirst()
+                    .get();
+            currentPosition = portal.teleport(direction, currentPosition, staticEntities, "player");
         }
         // Default to just not doing anything
         return currentPosition;

@@ -15,15 +15,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class PlayerEntity extends MovingEntities {
+public class PlayerEntity extends MovingEntity {
 
     private CraftingSystem c;
     private Inventory i;
 
     private final static String[] usableItems = { "bomb", "invisibility_potion", "invincibility_potion" };
 
-    public PlayerEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+    public PlayerEntity(String id, String type, Position position) {
+        super(id, type, position);
         this.c = new CraftingSystem();
         this.i = new Inventory();
         this.movement = new PlayerMovement();
@@ -47,7 +47,7 @@ public class PlayerEntity extends MovingEntities {
     public void move(Direction direction,
             ArrayList<Item> items,
             ArrayList<StaticEntity> staticEntities,
-            ArrayList<MovingEntities> movingEntities) {
+            ArrayList<MovingEntity> movingEntities) {
         Position newPosition = this.movement.move(this.position, direction, staticEntities, movingEntities, this.i);
         this.position = newPosition;
         // Create a duplicate list to avoid modification of list while in the loop

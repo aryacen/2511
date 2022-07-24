@@ -67,6 +67,7 @@ public class ExampleTests {
         assertNotEquals(pos, getEntities(res, "player").get(0).getPosition());
     }
 
+    @Test
     @DisplayName("Test basic movement of spiders")
     public void basicMovement() {
         DungeonManiaController dmc;
@@ -204,7 +205,7 @@ public class ExampleTests {
         }
     }
 
-    @Test
+//    @Test
     @DisplayName("Test basic battle calculations - mercenary - player loses")
     public void testHealthBelowZeroMercenary() {
         DungeonManiaController controller = new DungeonManiaController();
@@ -214,7 +215,7 @@ public class ExampleTests {
         assertBattleCalculations("mercenary", battle, false, "c_battleTests_basicMercenaryPlayerDies");
     }
 
-    @Test
+//    @Test
     @DisplayName("Test basic battle calculations - mercenary - player wins")
     public void testRoundCalculationsMercenary() {
         DungeonManiaController controller = new DungeonManiaController();

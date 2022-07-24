@@ -1,12 +1,14 @@
 package dungeonmania.Entities.MovingEntities.Movement;
 
 import dungeonmania.Entities.Item.Inventory;
-import dungeonmania.Entities.MovingEntities.MovingEntities;
+import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.reflections.vfs.Vfs;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * This interface governs how an entity can move
@@ -19,7 +21,7 @@ public abstract class Movement {
     public abstract Position move(Position currentPosition,
             Direction direction,
             ArrayList<StaticEntity> staticEntities,
-            ArrayList<MovingEntities> movingEntities,
+            ArrayList<MovingEntity> movingEntities,
             Inventory i
     );
 
@@ -30,14 +32,22 @@ public abstract class Movement {
      * @return null if no item is at position pos, otherwise returns the static
      *         entity
      */
-    protected static ArrayList<StaticEntity> staticEntityAtPosition(Position pos, ArrayList<StaticEntity> staticEntities) {
-        ArrayList<StaticEntity> entityAtPos = new ArrayList<>();
-        for (StaticEntity staticEntity : staticEntities) {
-            if (staticEntity.getPosition().equals(pos)) {
-                entityAtPos.add(staticEntity);
-            }
-        }
-        return entityAtPos;
+    public static ArrayList<StaticEntity> staticEntityAtPosition(Position pos, ArrayList<StaticEntity> staticEntities) {
+        // TODO: MAKE SURE THIS RETURNS AN EMPTY LIST IF NOTHING THERE ARE NO ADJACENT ENTITIES
+        return (ArrayList<StaticEntity>) staticEntities.stream().filter(e -> e.getPosition().equals(pos)).collect(Collectors.toList());
+    }
+
+    /**
+     * Will get any cardinally adjacent static entities around position pos
+     * @return
+     */
+    public static ArrayList<StaticEntity> adjacentStaticEntity(Position pos, ArrayList<StaticEntity> staticEntities) {
+        ArrayList<StaticEntity> adjacent =  new ArrayList<>();
+        adjacent.addAll(staticEntityAtPosition(pos.translateBy(Direction.DOWN), staticEntities));
+        adjacent.addAll(staticEntityAtPosition(pos.translateBy(Direction.UP), staticEntities));
+        adjacent.addAll(staticEntityAtPosition(pos.translateBy(Direction.RIGHT), staticEntities));
+        adjacent.addAll(staticEntityAtPosition(pos.translateBy(Direction.LEFT), staticEntities));
+        return adjacent;
     }
 
     /**
@@ -47,14 +57,22 @@ public abstract class Movement {
      * @return null if no item is at position pos, otherwise returns the static
      *         entity
      */
-    protected static ArrayList<MovingEntities> movingEntityAtPosition(Position pos, ArrayList<MovingEntities> movingEntities) {
-        ArrayList<MovingEntities> entityAtPos = new ArrayList<>();
-        for (MovingEntities movingEntity : movingEntities) {
-            if (movingEntity.getPosition().equals(pos)) {
-                entityAtPos.add(movingEntity);
-            }
+    public static ArrayList<MovingEntity> movingEntityAtPosition(Position pos, ArrayList<MovingEntity> movingEntities) {
+        return (ArrayList<MovingEntity>) movingEntities.stream().filter(e -> e.getPosition().equals(pos)).collect(Collectors.toList());
+    }
+
+    /**
+     * Finds an entity of a specified type and returns it
+     * This is run after the list has been filtered, so there isn't a need to be specific with the filtering
+     * @return null if no object is found
+     */
+    public static StaticEntity getStaticEntity(String type, ArrayList<StaticEntity> staticEntities) {
+        if (staticEntities.stream().noneMatch(e -> e.getType().equals(type))) {
+            return null;
         }
-        return entityAtPos;
+        else {
+            return staticEntities.stream().filter(e -> e.getType().equals(type)).findAny().get();
+        }
     }
 
 }

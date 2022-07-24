@@ -8,8 +8,8 @@ public class KeyEntity extends Item {
     // Keys need to match the door
     private final int keyId;
 
-    public KeyEntity(String id, String type, Position position, boolean isInteractable, int key) {
-        super(id, type, position, isInteractable);
+    public KeyEntity(String id, String type, Position position, int key) {
+        super(id, type, position);
         this.keyId = key;
     }
 

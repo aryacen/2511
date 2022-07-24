@@ -1,15 +1,26 @@
 package dungeonmania.Entities.MovingEntities;
 
 import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.Item.Item;
+import dungeonmania.Entities.StaticEntities.StaticEntity;
+import dungeonmania.util.Direction;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
 
-public class MercenaryEntity extends MovingEntities {
-    public MercenaryEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+import java.util.ArrayList;
+
+public class MercenaryEntity extends MovingEntity {
+    public MercenaryEntity(String id, String type, Position position) {
+        super(id, type, position);
         this.hp = EntityConstants.mercenary_health;
         this.attack = EntityConstants.mercenary_attack;
+        this.isInteractable = true;
         // TODO: GIVE MERCENARY A MOVEMENT FUNCTION
+    }
+
+    @Override
+    public void move(Direction direction, ArrayList<Item> items, ArrayList<StaticEntity> staticEntities, ArrayList<MovingEntity> movingEntities) {
+
     }
 
     // part of the dungeon.

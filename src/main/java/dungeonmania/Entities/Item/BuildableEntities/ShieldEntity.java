@@ -9,8 +9,8 @@ import dungeonmania.util.EntityConstants;
 public class ShieldEntity extends BuildableEntity {
     private int durability;
 
-    public ShieldEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+    public ShieldEntity(String id, String type, Position position) {
+        super(id, type, position);
         this.durability = EntityConstants.shield_durability;
     }
 

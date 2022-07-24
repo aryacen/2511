@@ -7,8 +7,8 @@ import dungeonmania.util.EntityConstants;
 
 public class SceptreEntity extends BuildableEntity {
 
-    public SceptreEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+    public SceptreEntity(String id, String type, Position position) {
+        super(id, type, position);
     }
 
     // Format is item name: quantity required

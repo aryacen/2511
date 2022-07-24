@@ -8,8 +8,8 @@ import dungeonmania.util.EntityConstants;
 
 public class SwordEntity extends Item{
     private int swordDurability;
-    public SwordEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, false);
+    public SwordEntity(String id, String type, Position position) {
+        super(id, type, position);
         this.swordDurability = EntityConstants.sword_durability;
     }
 

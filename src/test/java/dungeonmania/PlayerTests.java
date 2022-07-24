@@ -3,15 +3,14 @@ package dungeonmania;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 //import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.junit.jupiter.api.Assertions.assertFalse;
 //import static org.junit.jupiter.api.Assertions.assertNotEquals;
 //import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
+import static org.junit.jupiter.api.Assertions.*;
 //import static dungeonmania.TestUtils.getInventory;
 ///import static dungeonmania.TestUtils.getGoals;
 //import static dungeonmania.TestUtils.countEntityOfType;
@@ -26,6 +25,9 @@ import dungeonmania.response.models.EntityResponse;
 //import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+
+import java.util.ArrayList;
+
 /*
 This test is for anything interaction/action involving the player as the only moving entity
  */
@@ -150,43 +152,33 @@ public class PlayerTests {
     /*
     Movement with Teleporters
      */
-    //@Test
+    @Test
     @DisplayName("Test player can be teleported via a teleporter")
     public void testTeleportFunctions() {
-        
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse initDungonRes = dmc.newGame("d_movementTest_testTeleportFunctions",
                 "c_movementTest_testCardinalMovement");
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
-        // ASSUMED BY DEFAULT PORTAL TELEPORT PLAYER TO ONE SQUARE DOWN IF NO WALL
-        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(3, 4),
+        // ASSUMED BY DEFAULT PORTAL TELEPORT PLAYER IN SAME DIRECTION AS PLAYER MOVEMENT
+        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(4, 3),
                     false);
         
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get(); 
         assertEquals(expectedPlayer, actualPlayer);
-
-
     }
-    //@Test
+    @Test
     @DisplayName("Test player can't be teleported into a wall")
     public void testTeleportIntoWall() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse initDungonRes = dmc.newGame("d_movementTest_testTeleportIntoWall",
                 "c_movementTest_testCardinalMovement");
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
-        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(2, 3),
-                    false);
-
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
-        assertEquals(expectedPlayer, actualPlayer);
-        
-        
-
-
+        assertNotEquals(actualPlayer.getPosition(), new Position(4, 3));
     }
-   // @Test
+    @Test
     @DisplayName("Test player can't be teleported into a spot with no movements")
     public void testTeleportIntoPositonWithNoValidMovement() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -202,21 +194,33 @@ public class PlayerTests {
         assertEquals(expectedPlayer, actualPlayer);
     }
 
-    //@Test
+    @Test
     @DisplayName("Test teleporter correctly teleports to the correct corresponding teleporter")
     public void testTeleportCorrectColouredTeleporter() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse initDungonRes = dmc.newGame("d_movementTest_testTeleportCorrectColour",
                 "c_movementTest_testCardinalMovement");
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
-        // ASSUMED BY DEFAULT PORTAL TELEPORT PLAYER TO ONE SQUARE DOWN IF NO WALL
-        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(4, 6),
-                    false);
-        
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
-        EntityResponse actualPlayer = getPlayer(actualDungonRes).get(); 
-        assertEquals(expectedPlayer, actualPlayer);
+        EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
+        // Check that player has teleported
+        assertNotEquals(actualPlayer.getPosition(), initPlayer.getPosition());
+        // Check that the player is teleported correctly
+        assertEquals(actualPlayer.getPosition(), new Position(5, 5));
     }
+    @Test
+    @DisplayName("Test teleporting from one portal to another")
+    public void testTeleportMultipleTimes() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse initDungonRes = dmc.newGame("d_movementTest_testTeleportMultiple",
+                "c_movementTest_testCardinalMovement");
+        EntityResponse initPlayer = getPlayer(initDungonRes).get();
+        DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
+        EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
+        // Should teleport twice as we have two portals in a row
+        assertEquals(actualPlayer.getPosition(), new Position(6, 5));
+    }
+
 
     /*
     Interaction with Zombie Toaster Spawner

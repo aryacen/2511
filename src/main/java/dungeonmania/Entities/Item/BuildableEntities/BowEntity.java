@@ -8,8 +8,8 @@ import dungeonmania.util.EntityConstants;
 public class BowEntity extends BuildableEntity {
     private int durability;
 
-    public BowEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+    public BowEntity(String id, String type, Position position) {
+        super(id, type, position);
         this.durability = EntityConstants.bow_durability;
     }
     // Format is item name: quantity required

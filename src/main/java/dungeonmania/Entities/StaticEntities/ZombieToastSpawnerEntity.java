@@ -4,8 +4,9 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
 
 public class ZombieToastSpawnerEntity extends StaticEntity {
-    public ZombieToastSpawnerEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+    public ZombieToastSpawnerEntity(String id, String type, Position position) {
+        super(id, type, position);
+        this.isInteractable = true;
     }
 
     @Override
