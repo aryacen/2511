@@ -196,7 +196,7 @@ public class DungeonManiaController {
     }
 
     /**
-    * Helper function to read the goals and construct a String representing the
+     * Helper function to read the goals and construct a String representing the
      * goals
      */
     private String parseDungeonGoals(JSONObject goalCondition) {
@@ -338,6 +338,7 @@ public class DungeonManiaController {
         EntityConstants.zombie_health = configContent.getInt("zombie_health");
         EntityConstants.zombie_spawn_rate = configContent.getInt("zombie_spawn_rate");
     }
+
     private DungeonResponse getDungeonResponse() {
         /*
          * Dungeon id
@@ -384,10 +385,9 @@ public class DungeonManiaController {
                 this.playerEntity.getPosition(), false);
         entityResponse.add(playerResponse);
 
-        // TODO: FIX THIS
-        // BUT FOR NOW JUST CREATE EMPTY LIST FOR BATTLES, AND BUILDABLES
+        // TODO: MAKE A LIST FOR BATTLES
         ArrayList<ItemResponse> itemResponse = generateItemResponse(this.playerEntity.getInventory());
-        ArrayList<String> buildables = new ArrayList<>();
+        ArrayList<String> buildables = this.playerEntity.getBuildable();
 
         DungeonResponse output = new DungeonResponse(this.dungeonId, this.dungeonName, entityResponse, itemResponse,
                 this.battleResponse, buildables, this.goals);
@@ -447,4 +447,3 @@ public class DungeonManiaController {
         return newMovingEntities;
     }
 }
-

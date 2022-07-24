@@ -38,7 +38,7 @@ public class PlayerEntity extends MovingEntities {
      * @throws InvalidActionException if the item could not be created
      */
     public void craftItem(String buildable) throws InvalidActionException, IllegalArgumentException {
-        c.craft(buildable, i);
+        c.craft(buildable, this.i);
     }
 
     /**
@@ -66,8 +66,8 @@ public class PlayerEntity extends MovingEntities {
         return this.i.getItems();
     }
 
-    public List<String> getBuildable() {
-        return null;
+    public ArrayList<String> getBuildable() {
+        return this.c.getBuildable(i);
     }
 
     public void use(String itemId) throws IllegalArgumentException, InvalidActionException {
