@@ -5,8 +5,8 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class BoulderEntity extends StaticEntity {
-    public BoulderEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+    public BoulderEntity(String id, String type, Position position) {
+        super(id, type, position);
     }
 
     @Override

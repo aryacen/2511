@@ -1,11 +1,8 @@
 package dungeonmania;
 
 import dungeonmania.Entities.Item.Item;
-import dungeonmania.Entities.MovingEntities.MercenaryEntity;
-import dungeonmania.Entities.MovingEntities.MovingEntities;
+import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
-import dungeonmania.Entities.MovingEntities.SpiderEntity;
-import dungeonmania.Entities.MovingEntities.ZombieToastEntity;
 import dungeonmania.Entities.StaticEntities.PortalEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.exceptions.InvalidActionException;
@@ -38,7 +35,7 @@ public class DungeonManiaController {
     String goals;
 
     PlayerEntity playerEntity;
-    ArrayList<MovingEntities> movingEntities;
+    ArrayList<MovingEntity> movingEntities;
     ArrayList<StaticEntity> staticEntities;
     ArrayList<Item> itemEntities;
 
@@ -154,6 +151,7 @@ public class DungeonManiaController {
                 this.itemEntities,
                 this.staticEntities,
                 this.movingEntities);
+        this.movingEntities.stream().forEach(e -> e.move(null, this.itemEntities, this.staticEntities, this.movingEntities));
         this.haveBattle();
         // Create dungeon response
         return getDungeonResponse();
@@ -196,7 +194,7 @@ public class DungeonManiaController {
     }
 
     /**
-     * Helper function to read the goals and construct a String representing the
+    * Helper function to read the goals and construct a String representing the
      * goals
      */
     private String parseDungeonGoals(JSONObject goalCondition) {
@@ -267,37 +265,34 @@ public class DungeonManiaController {
             int x = temp.getInt("x");
             int y = temp.getInt("y");
             Position position = new Position(x, y);
-            // TODO: THINK THIS SHOULD BE ABSTRACTED TO THE CLASSES
-            if (type.equals("mercenary") || type.equals("zombie_toast_spawner")) {
-                interactable = true;
-            }
 
+            Entity newEntity = null;
             if (type.equals("player")) {
-                this.playerEntity = (PlayerEntity) entityCreator.createEntity(entityId, type, position, interactable);
+                newEntity = entityCreator.createEntity(entityId, type, position);
+                this.playerEntity = (PlayerEntity) newEntity;
             } else {
                 switch (type) {
                     case "portal":
-                        String color = temp.getString("color");
-                        PortalEntity newPortal = (PortalEntity) entityCreator.createEntity(entityId, type, position,
-                                interactable, color);
-                        this.staticEntities.add(newPortal);
+                        String color = temp.getString("colour");
+                        newEntity = entityCreator.createEntity(entityId, type, position, color);
+                        this.staticEntities.add((StaticEntity) newEntity);
                         break;
                     case "door":
                     case "key":
                         int keyId = temp.getInt("key");
-                        Entity newDoorOrKey = entityCreator.createEntity(entityId, type, position, interactable, keyId);
-                        if (newDoorOrKey.getEntityType().equals("Static")) {
-                            this.staticEntities.add((StaticEntity) newDoorOrKey);
+                        newEntity = entityCreator.createEntity(entityId, type, position, keyId);
+                        if (newEntity.getEntityType().equals("Static")) {
+                            this.staticEntities.add((StaticEntity) newEntity);
                         } else {
-                            this.itemEntities.add((Item) newDoorOrKey);
+                            this.itemEntities.add((Item) newEntity);
                         }
                         break;
                     default:
-                        Entity newEntity = entityCreator.createEntity(entityId, type, position, interactable);
+                        newEntity = entityCreator.createEntity(entityId, type, position);
                         if (newEntity.getEntityType().equals("Static")) {
                             this.staticEntities.add((StaticEntity) newEntity);
                         } else if (newEntity.getEntityType().equals("Moving")) {
-                            this.movingEntities.add((MovingEntities) newEntity);
+                            this.movingEntities.add((MovingEntity) newEntity);
                         } else {
                             this.itemEntities.add((Item) newEntity);
                         }
@@ -306,7 +301,7 @@ public class DungeonManiaController {
             }
 
             // Create an EntityResponse for the entity and store them in the output List
-            EntityResponse tempResponse = new EntityResponse(entityId, type, position, interactable);
+            EntityResponse tempResponse = new EntityResponse(entityId, type, position, newEntity.isInteractable());
             output.add(tempResponse);
         }
         return output;
@@ -338,7 +333,6 @@ public class DungeonManiaController {
         EntityConstants.zombie_health = configContent.getInt("zombie_health");
         EntityConstants.zombie_spawn_rate = configContent.getInt("zombie_spawn_rate");
     }
-
     private DungeonResponse getDungeonResponse() {
         /*
          * Dungeon id
@@ -351,25 +345,18 @@ public class DungeonManiaController {
          */
         ArrayList<EntityResponse> entityResponse = new ArrayList<>();
 
-        for (int i = 0; i < this.movingEntities.size(); i++) {
-            MovingEntities tempEntity = this.movingEntities.get(i);
-            String id = tempEntity.getId();
-            String type = tempEntity.getType();
-            Position position = tempEntity.getPosition();
-            boolean interactable = tempEntity.isInteractable();
-            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
-            entityResponse.add(tempEntityResponse);
-        }
-
-        for (int i = 0; i < this.staticEntities.size(); i++) {
-            StaticEntity tempEntity = this.staticEntities.get(i);
-            String id = tempEntity.getId();
-            String type = tempEntity.getType();
-            Position position = tempEntity.getPosition();
-            boolean interactable = tempEntity.isInteractable();
-            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
-            entityResponse.add(tempEntityResponse);
-        }
+        movingEntities.stream().forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
+        staticEntities.stream().forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
+        itemEntities.stream().forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
+        entityResponse.add(new EntityResponse(this.playerEntity.getId(), this.playerEntity.getType(), this.playerEntity.getPosition(), this.playerEntity.isInteractable()));
+//        for (MovingEntity movingEntity: movingEntities) {
+//            String id = movingEntity.getId();
+//            String type = movingEntity.getType();
+//            Position position = movingEntity.getPosition();
+//            boolean interactable = movingEntity.isInteractable();
+//            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
+//            entityResponse.add(tempEntityResponse);
+//        }
 
         for (int i = 0; i < this.itemEntities.size(); i++) {
             Item tempEntity = this.itemEntities.get(i);
@@ -385,9 +372,10 @@ public class DungeonManiaController {
                 this.playerEntity.getPosition(), false);
         entityResponse.add(playerResponse);
 
-        // TODO: MAKE A LIST FOR BATTLES
+        // TODO: FIX THIS
+        // BUT FOR NOW JUST CREATE EMPTY LIST FOR BATTLES, AND BUILDABLES
         ArrayList<ItemResponse> itemResponse = generateItemResponse(this.playerEntity.getInventory());
-        ArrayList<String> buildables = this.playerEntity.getBuildable();
+        ArrayList<String> buildables = new ArrayList<>();
 
         DungeonResponse output = new DungeonResponse(this.dungeonId, this.dungeonName, entityResponse, itemResponse,
                 this.battleResponse, buildables, this.goals);
@@ -411,10 +399,9 @@ public class DungeonManiaController {
     public void haveBattle() {
         // A battle takes place when the Player and an enemy are in the same cell
         // at any point within a single tick.
-        for (MovingEntities enemy : movingEntities) {
+        for (MovingEntity enemy : movingEntities) {
             // Movement methods are not implemented for other moving entities.
-            // if (enemy.getPosition() == playerEntity.getPosition()) {
-            if (true) {
+             if (enemy.getPosition().equals(playerEntity.getPosition())) {
                 // System.out.println("same position");
                 Battle newBattle = new Battle(playerEntity, enemy);
                 BattleResponse newBattleResponse = newBattle.battle();
@@ -437,9 +424,9 @@ public class DungeonManiaController {
      *
      * @return ArrayList<MovingEntities>
      */
-    public ArrayList<MovingEntities> removeDead() {
-        ArrayList<MovingEntities> newMovingEntities = new ArrayList<>();
-        for (MovingEntities enemy : movingEntities) {
+    public ArrayList<MovingEntity> removeDead() {
+        ArrayList<MovingEntity> newMovingEntities = new ArrayList<>();
+        for (MovingEntity enemy : movingEntities) {
             if (enemy.getHp() > 0.0) {
                 newMovingEntities.add(enemy);
             }
@@ -447,3 +434,4 @@ public class DungeonManiaController {
         return newMovingEntities;
     }
 }
+

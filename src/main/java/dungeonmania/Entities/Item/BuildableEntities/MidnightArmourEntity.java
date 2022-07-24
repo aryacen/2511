@@ -7,8 +7,8 @@ import dungeonmania.util.EntityConstants;
 
 public class MidnightArmourEntity extends BuildableEntity {
 
-    public MidnightArmourEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+    public MidnightArmourEntity(String id, String type, Position position) {
+        super(id, type, position);
     }
 
     // Format is item name: quantity required

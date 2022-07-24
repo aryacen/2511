@@ -8,12 +8,12 @@
             "type" : "portal",
             "x" : 2,
             "y" : 1,
-            "color": "blue"
+            "colour": "blue"
         },{
             "type" : "portal",
             "x" : 3,
             "y" : 3,
-            "color": "blue"
+            "colour": "blue"
         },
         {
             "type": "exit",

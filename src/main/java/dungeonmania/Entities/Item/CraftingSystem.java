@@ -89,9 +89,9 @@ public class CraftingSystem {
     /**
      * Craft a specific item
      * Will remove the item from the inventory and add the crafted item in
-     * 
+     *
      * @throws InvalidActionException
-     * 
+     *
      * @Pre-condition: Item can be crafted
      */
     public void craft(String itemName, Inventory i) throws IllegalArgumentException, InvalidActionException {
@@ -109,10 +109,10 @@ public class CraftingSystem {
         // can be crafted)
         switch (itemName) {
             case "bow":
-                itemToCraft = new BowEntity(newId, "bow", EntityConstants.notOnMap, false);
+                itemToCraft = new BowEntity(newId, "bow", EntityConstants.notOnMap);
                 break;
             case "shield":
-                itemToCraft = new ShieldEntity(newId, "shield", EntityConstants.notOnMap, false);
+                itemToCraft = new ShieldEntity(newId, "shield", EntityConstants.notOnMap);
                 break;
         }
 

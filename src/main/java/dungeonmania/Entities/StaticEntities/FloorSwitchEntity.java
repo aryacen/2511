@@ -4,8 +4,8 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
 
 public class FloorSwitchEntity extends StaticEntity {
-    public FloorSwitchEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+    public FloorSwitchEntity(String id, String type, Position position) {
+        super(id, type, position);
     }
 
     @Override

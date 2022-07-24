@@ -12,11 +12,11 @@ public abstract class Entity {
     protected boolean isInteractable;
     protected String entityType;
 
-    public Entity (String id, String type, Position position, boolean isInteractable) {
+    public Entity (String id, String type, Position position) {
         this.id = id;
         this.type = type;
         this.position = position;
-        this.isInteractable = isInteractable;
+        this.isInteractable = false;
         this.entityType = "";
     }
 

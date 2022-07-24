@@ -5,8 +5,8 @@ import dungeonmania.Entities.Item.Item;
 import dungeonmania.util.Position;
 
 public class InvincibilityPotion extends Item {
-    public InvincibilityPotion(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, false);
+    public InvincibilityPotion(String id, String type, Position position) {
+        super(id, type, position);
     }
 
     // Any battles that occur when the Player has the effects of the potion end immediately

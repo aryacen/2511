@@ -6,8 +6,8 @@ import dungeonmania.util.Position;
 public class DoorEntity extends StaticEntity {
     private final int keyId;
     private boolean unlocked;
-    public DoorEntity(String id, String type, Position position, boolean isInteractable, int key) {
-        super(id, type, position, isInteractable);
+    public DoorEntity(String id, String type, Position position,  int key) {
+        super(id, type, position);
         this.keyId = key;
         unlocked = false;
     }

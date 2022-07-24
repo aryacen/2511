@@ -1,6 +1,6 @@
 package dungeonmania.Entities;
 
-import dungeonmania.Entities.MovingEntities.MovingEntities;
+import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.response.models.RoundResponse;
@@ -12,10 +12,10 @@ import java.util.List;
  * This class is used to conduct a battle
  */
 public class Battle {
-    private MovingEntities player;
+    private MovingEntity player;
     // Moving entity that is fighting the player
-    private MovingEntities enemy;
-    public Battle(MovingEntities player, MovingEntities combatant) {
+    private MovingEntity enemy;
+    public Battle(MovingEntity player, MovingEntity combatant) {
         this.player = player;
         this.enemy = combatant;
     }

@@ -5,8 +5,8 @@ import dungeonmania.Entities.Item.Item;
 import dungeonmania.util.Position;
 
 public class BombEntity extends Item {
-    public BombEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, false);
+    public BombEntity(String id, String type, Position position) {
+        super(id, type, position);
     }
 
 

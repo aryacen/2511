@@ -9,8 +9,8 @@ import java.util.HashMap;
 public abstract class BuildableEntity extends Item {
     // Each buildable entity has a recipe that needs to be met
 
-    public BuildableEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, EntityConstants.notOnMap, false);
+    public BuildableEntity(String id, String type, Position position) {
+        super(id, type, EntityConstants.notOnMap);
     }
 
 

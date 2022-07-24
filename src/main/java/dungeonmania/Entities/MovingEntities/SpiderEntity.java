@@ -1,16 +1,27 @@
 package dungeonmania.Entities.MovingEntities;
 
 import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.MovingEntities.Movement.Movement;
+import dungeonmania.Entities.MovingEntities.Movement.SpiderMovement;
+import dungeonmania.Entities.StaticEntities.StaticEntity;
+import dungeonmania.util.Direction;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
 
-public class SpiderEntity extends MovingEntities {
-    public SpiderEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+import java.util.ArrayList;
+
+public class SpiderEntity extends MovingEntity {
+    public SpiderEntity(String id, String type, Position position) {
+        super(id, type, position);
         this.hp = EntityConstants.spider_health;
         this.attack = EntityConstants.spider_attack;
-        // TODO: GIVE SPIDER A MOVEMENT FUNCTION
+        this.movement = new SpiderMovement();
+    }
+
+    @Override
+    public void move(Direction direction, ArrayList<Item> items, ArrayList<StaticEntity> staticEntities, ArrayList<MovingEntity> movingEntities) {
+        this.position = this.movement.move(this.position, null, staticEntities, null, null);
     }
 
     // Spiders spawn at random locations in the dungeon from the beginning of the game.

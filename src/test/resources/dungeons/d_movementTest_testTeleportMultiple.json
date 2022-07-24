@@ -8,28 +8,22 @@
             "type" : "portal",
             "x" : 2,
             "y" : 1,
-            "colour": "blue"
+            "colour": "red"
         },{
             "type" : "portal",
             "x" : 3,
             "y" : 3,
-            "colour": "blue"
-        }, {
-            "type" : "wall",
+            "colour": "red"
+        },{
+            "type" : "portal",
             "x" : 4,
-            "y" : 3
+            "y" : 3,
+            "colour": "blue"
         },{
-            "type" : "wall",
-            "x" : 3,
-            "y" : 4
-        },{
-            "type" : "wall",
-            "x" : 3,
-            "y" : 2
-        },{
-            "type" : "wall",
-            "x" : 2,
-            "y" : 3
+            "type" : "portal",
+            "x" : 5,
+            "y" : 5,
+            "colour": "blue"
         },
         {
             "type": "exit",

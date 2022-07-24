@@ -4,8 +4,8 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
 
 public abstract class StaticEntity extends Entity {
-    public StaticEntity(String id, String type, Position position, boolean isInteractable) {
-        super(id, type, position, isInteractable);
+    public StaticEntity(String id, String type, Position position) {
+        super(id, type, position);
         this.entityType = "Static";
     }
 
