@@ -19,4 +19,8 @@ public class ZombieToastSpawnerEntity extends StaticEntity {
     // The Player can destroy a zombie spawner if they have a weapon and are 
     // cardinally adjacent to the spawner.
     
+    @Override
+    public boolean isSpawner() {
+        return true;
+    }
 }

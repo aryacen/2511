@@ -15,4 +15,6 @@ public abstract class StaticEntity extends Entity {
     // however if a spider
     // TODO: MAKE THIS FUNCTION WORK FOR ALL THE STATIC ENTITIES
     public abstract boolean canPass(String type);
+
+    public abstract boolean isSpawner();
 }

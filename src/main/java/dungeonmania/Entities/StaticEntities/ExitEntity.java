@@ -13,6 +13,10 @@ public class ExitEntity extends StaticEntity {
         return true;
     }
 
-
     // If the Player goes through it, the puzzle is complete.
+
+    @Override
+    public boolean isSpawner() {
+        return false;
+    }
 }

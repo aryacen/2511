@@ -4,8 +4,12 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
 
 public class FloorSwitchEntity extends StaticEntity {
+
+    private boolean triggered;
+
     public FloorSwitchEntity(String id, String type, Position position) {
         super(id, type, position);
+        this.triggered = false;
     }
 
     @Override
@@ -13,6 +17,22 @@ public class FloorSwitchEntity extends StaticEntity {
         return true;
     }
 
+    @Override
+    public boolean isSpawner() {
+        return false;
+    }
+
+    public void setUntriggered() {
+        this.triggered = false;
+    }
+
+    public void setTriggered() {
+        this.triggered = true;
+    }
+
+    public boolean getTriggered() {
+        return this.triggered;
+    }
 
     // Switches behave like empty squares, so other entities can appear on top of them. 
     

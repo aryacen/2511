@@ -114,4 +114,9 @@ public class PortalEntity extends StaticEntity {
             // If all the paths fail, just return original position (i.e. player does not get teleported)
         return newPos;
     }
+
+    @Override
+    public boolean isSpawner() {
+        return false;
+    }
 }

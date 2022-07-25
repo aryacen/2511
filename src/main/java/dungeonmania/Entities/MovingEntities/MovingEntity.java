@@ -35,4 +35,8 @@ public abstract class MovingEntity extends Entity {
                      ArrayList<Item> items,
                      ArrayList<StaticEntity> staticEntities,
                      ArrayList<MovingEntity> movingEntities);
+    
+    public Boolean isDead() {
+        return (this.getHp() <= 0.0);
+    }
 }

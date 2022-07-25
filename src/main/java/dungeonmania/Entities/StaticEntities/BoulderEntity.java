@@ -1,5 +1,7 @@
 package dungeonmania.Entities.StaticEntities;
 
+import java.util.ArrayList;
+
 import dungeonmania.Entities.Entity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -18,8 +20,10 @@ public class BoulderEntity extends StaticEntity {
      * Moves the boulder in given direction
      * @Pre-condition is only called when there is nothing in the boulders way
      */
-    public void push(Direction direction) {
+    public void push(Direction direction, ArrayList<StaticEntity> staticEntities) {
+        this.untriggerSwitch(staticEntities);
         this.position = this.position.translateBy(direction);
+        this.triggerSwitch(staticEntities);
     }
     // Acts like a wall in most cases.
 
@@ -30,4 +34,27 @@ public class BoulderEntity extends StaticEntity {
     // When the player pushes a boulder, they move into the spot the boulder was previously in. 
     
     // Boulders can be pushed onto collectable entities.
+
+    @Override
+    public boolean isSpawner() {
+        return false;
+    }
+
+    public void untriggerSwitch(ArrayList<StaticEntity> staticEntities) {
+        for (StaticEntity entity : staticEntities) {
+            if (entity.getType().equals("switch") && entity.getPosition().equals(this.getPosition())) {
+                FloorSwitchEntity floorSwitch = (FloorSwitchEntity) entity;
+                floorSwitch.setUntriggered();
+            }
+        }
+    }
+
+    public void triggerSwitch(ArrayList<StaticEntity> staticEntities) {
+        for (StaticEntity entity : staticEntities) {
+            if (entity.getType().equals("switch") && entity.getPosition().equals(this.getPosition())) {
+                FloorSwitchEntity floorSwitch = (FloorSwitchEntity) entity;
+                floorSwitch.setTriggered();
+            }
+        }
+    }
 }
