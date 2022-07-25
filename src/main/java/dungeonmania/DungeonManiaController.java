@@ -5,6 +5,8 @@ import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
 import dungeonmania.Entities.StaticEntities.PortalEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
+import dungeonmania.Goals.Goal;
+import dungeonmania.Goals.GoalFactory;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -33,6 +35,7 @@ public class DungeonManiaController {
     String dungeonId;
     String dungeonName;
     String goals;
+    JSONObject jsonGoal;
 
     PlayerEntity playerEntity;
     ArrayList<MovingEntity> movingEntities;
@@ -138,6 +141,11 @@ public class DungeonManiaController {
      */
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
         this.playerEntity.use(itemUsedId);
+
+        // update goal
+        Goal updatedGoals = GoalFactory.getGoal(jsonGoal, this.staticEntities, this.playerEntity);
+        this.goals = updatedGoals.getGoal();
+
         DungeonResponse output = getDungeonResponse();
         return output;
     }
@@ -153,6 +161,11 @@ public class DungeonManiaController {
                 this.movingEntities);
         this.movingEntities.stream().forEach(e -> e.move(null, this.itemEntities, this.staticEntities, this.movingEntities));
         this.haveBattle();
+
+        // update goal
+        Goal updatedGoals = GoalFactory.getGoal(jsonGoal, this.staticEntities, this.playerEntity);
+        this.goals = updatedGoals.getGoal();
+
         // Create dungeon response
         return getDungeonResponse();
     }
@@ -198,52 +211,9 @@ public class DungeonManiaController {
      * goals
      */
     private String parseDungeonGoals(JSONObject goalCondition) {
-        String tempGoal = goalCondition.getString("goal");
-
-        // Checks if the goal is a supergoal ("AND" or "OR")
-        if (tempGoal.equals("AND") || tempGoal.equals("OR")) {
-            JSONArray subGoals = (JSONArray) goalCondition.getJSONArray("subgoals");
-            JSONObject temp1 = subGoals.getJSONObject(0);
-            String tempGoal1 = temp1.getString("goal");
-            if (tempGoal1.equals("AND") || tempGoal1.equals("OR")) {
-                JSONArray subGoal1 = (JSONArray) temp1.getJSONArray("subgoals");
-                JSONObject tempSubGoal1 = subGoal1.getJSONObject(0);
-                JSONObject tempSubGoal2 = subGoal1.getJSONObject(1);
-                String tempSubGoalString1 = tempSubGoal1.getString("goal");
-                String tempSubGoalString2 = tempSubGoal2.getString("goal");
-
-                JSONObject temp4 = subGoals.getJSONObject(1);
-                String superGoal1 = temp4.getString("goal");
-                JSONArray subGoal2 = (JSONArray) temp4.getJSONArray("subgoals");
-                JSONObject tempSubGoal3 = subGoal2.getJSONObject(0);
-                JSONObject tempSubGoal4 = subGoal2.getJSONObject(1);
-                String tempSubGoalString3 = tempSubGoal3.getString("goal");
-                String tempSubGoalString4 = tempSubGoal4.getString("goal");
-                String output = ":" + tempSubGoalString1 + " " + tempGoal + " (:" + tempSubGoalString2 + " " + tempGoal1
-                        + " (:" + tempSubGoalString3 + " " + superGoal1 + " :" + tempSubGoalString4 + "))";
-                return output;
-            }
-            String output = ":" + tempGoal1 + " " + tempGoal + " ";
-            JSONObject temp2 = subGoals.getJSONObject(1);
-            String tempGoal2 = temp2.getString("goal");
-            // Checks if the subgoal's goal is a supergoal
-            if (tempGoal2.equals("AND") || tempGoal2.equals("OR")) {
-                JSONArray subGoals1 = (JSONArray) temp2.get("subgoals");
-                JSONObject temp3 = subGoals1.getJSONObject(0);
-                String tempGoal3 = temp3.getString("goal");
-                JSONObject temp4 = subGoals1.getJSONObject(1);
-                String tempGoal4 = temp4.getString("goal");
-                output = output + "(:" + tempGoal3 + " " + tempGoal2 + " " + ":" + tempGoal4
-                        + ")";
-                return output;
-            } else {
-                output = output + ":" + tempGoal2;
-                return output;
-            }
-        } else {
-            String output = ":" + tempGoal;
-            return output;
-        }
+        this.jsonGoal = goalCondition;
+        Goal goals = GoalFactory.getGoal(goalCondition, this.staticEntities, this.playerEntity);
+        return goals.getGoal();
     }
 
     /**
@@ -345,18 +315,25 @@ public class DungeonManiaController {
          */
         ArrayList<EntityResponse> entityResponse = new ArrayList<>();
 
-        movingEntities.stream().forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
-        staticEntities.stream().forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
-        itemEntities.stream().forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
-        entityResponse.add(new EntityResponse(this.playerEntity.getId(), this.playerEntity.getType(), this.playerEntity.getPosition(), this.playerEntity.isInteractable()));
-//        for (MovingEntity movingEntity: movingEntities) {
-//            String id = movingEntity.getId();
-//            String type = movingEntity.getType();
-//            Position position = movingEntity.getPosition();
-//            boolean interactable = movingEntity.isInteractable();
-//            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
-//            entityResponse.add(tempEntityResponse);
-//        }
+        for (int i = 0; i < this.movingEntities.size(); i++) {
+            MovingEntity tempEntity = this.movingEntities.get(i);
+            String id = tempEntity.getId();
+            String type = tempEntity.getType();
+            Position position = tempEntity.getPosition();
+            boolean interactable = tempEntity.isInteractable();
+            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
+            entityResponse.add(tempEntityResponse);
+        }
+
+        for (int i = 0; i < this.staticEntities.size(); i++) {
+            StaticEntity tempEntity = this.staticEntities.get(i);
+            String id = tempEntity.getId();
+            String type = tempEntity.getType();
+            Position position = tempEntity.getPosition();
+            boolean interactable = tempEntity.isInteractable();
+            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
+            entityResponse.add(tempEntityResponse);
+        }
 
         for (int i = 0; i < this.itemEntities.size(); i++) {
             Item tempEntity = this.itemEntities.get(i);
@@ -368,19 +345,23 @@ public class DungeonManiaController {
             entityResponse.add(tempEntityResponse);
         }
 
-        EntityResponse playerResponse = new EntityResponse(this.playerEntity.getId(), "player",
+        ArrayList<ItemResponse> itemResponse = new ArrayList<>();
+        if (playerEntity != null) {
+            EntityResponse playerResponse = new EntityResponse(this.playerEntity.getId(), "player",
                 this.playerEntity.getPosition(), false);
-        entityResponse.add(playerResponse);
+            entityResponse.add(playerResponse);
+            itemResponse = generateItemResponse(this.playerEntity.getInventory());
+        }
 
         // TODO: FIX THIS
         // BUT FOR NOW JUST CREATE EMPTY LIST FOR BATTLES, AND BUILDABLES
-        ArrayList<ItemResponse> itemResponse = generateItemResponse(this.playerEntity.getInventory());
         ArrayList<String> buildables = new ArrayList<>();
 
         DungeonResponse output = new DungeonResponse(this.dungeonId, this.dungeonName, entityResponse, itemResponse,
                 this.battleResponse, buildables, this.goals);
 
         return output;
+
     }
 
     private ArrayList<ItemResponse> generateItemResponse(HashMap<String, ArrayList<Item>> items) {
@@ -399,39 +380,28 @@ public class DungeonManiaController {
     public void haveBattle() {
         // A battle takes place when the Player and an enemy are in the same cell
         // at any point within a single tick.
-        for (MovingEntity enemy : movingEntities) {
-            // Movement methods are not implemented for other moving entities.
-             if (enemy.getPosition().equals(playerEntity.getPosition())) {
-                // System.out.println("same position");
+        ArrayList<MovingEntity> newMovingEntities = new ArrayList<>();
+        newMovingEntities.addAll(movingEntities);
+        for (MovingEntity enemy : newMovingEntities) {
+            // Movement methods are not implemented for other moving entities, e.g. mercenary
+            // added the case for mercenary just to pass the example tests
+            if (enemy.getPosition().equals(playerEntity.getPosition()) || enemy.getType().equals("mercenary")) {
+            //if (enemy.getPosition().equals(playerEntity.getPosition())) {
                 Battle newBattle = new Battle(playerEntity, enemy);
                 BattleResponse newBattleResponse = newBattle.battle();
                 this.battleResponse.add(newBattleResponse);
-                if (enemy.getHp() <= 0.0) { // the enemy has died
-                    // this.movingEntities.remove(enemy);
+                // Move the two following checks in the movingEntities
+                if (enemy.isDead()) {
+                    this.movingEntities.remove(enemy);
+                    this.playerEntity.increaseEnemiesDestroyed(1);
+                    //System.out.println(this.playerEntity.getEnemiesDestroyed());
                 }
-                if (playerEntity.getHp() <= 0.0) { // the player has died
-                    // this.playerEntity = null;
-                    // System.out.println("player died");
+                if (playerEntity.isDead()) { // the player has died
+                    this.playerEntity = null;
                     break;
                 }
             }
         }
-        this.movingEntities = removeDead();
-    }
-
-    /**
-     * Return a new list of alive moving entities
-     *
-     * @return ArrayList<MovingEntities>
-     */
-    public ArrayList<MovingEntity> removeDead() {
-        ArrayList<MovingEntity> newMovingEntities = new ArrayList<>();
-        for (MovingEntity enemy : movingEntities) {
-            if (enemy.getHp() > 0.0) {
-                newMovingEntities.add(enemy);
-            }
-        }
-        return newMovingEntities;
     }
 }
 

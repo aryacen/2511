@@ -30,4 +30,9 @@ public class DoorEntity extends StaticEntity {
     // If the Player holds the key, they can open the door by moving through it.
     
     // Once open, it remains open.
+
+    @Override
+    public boolean isSpawner() {
+        return false;
+    }
 }

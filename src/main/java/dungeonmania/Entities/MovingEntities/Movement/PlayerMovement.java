@@ -53,7 +53,7 @@ public class PlayerMovement extends Movement {
             if (
                     (entityBehindBoulder.isEmpty()|| entityBehindBoulder.stream().allMatch(e->e.canPass("player")))
                     && movingEntitiesBehindBoulder.isEmpty()) {
-                b.push(direction);
+                b.push(direction, staticEntities);
                 currentPosition = newPosition;
             }
         }

@@ -15,4 +15,8 @@ public class WallEntity extends StaticEntity {
 
     // Blocks the movement of the Player, enemies and boulders.
     
+    @Override
+    public boolean isSpawner() {
+        return false;
+    }
 }

@@ -132,6 +132,7 @@ public class ExampleTests {
         assertEquals(1, getEntities(res, "player").size());
     }
 
+    @Test
     @DisplayName("Testing a map with 4 conjunction goal")
     public void andAll() {
         DungeonManiaController dmc;
@@ -205,7 +206,7 @@ public class ExampleTests {
         }
     }
 
-//    @Test
+    @Test
     @DisplayName("Test basic battle calculations - mercenary - player loses")
     public void testHealthBelowZeroMercenary() {
         DungeonManiaController controller = new DungeonManiaController();
@@ -215,7 +216,7 @@ public class ExampleTests {
         assertBattleCalculations("mercenary", battle, false, "c_battleTests_basicMercenaryPlayerDies");
     }
 
-//    @Test
+    @Test
     @DisplayName("Test basic battle calculations - mercenary - player wins")
     public void testRoundCalculationsMercenary() {
         DungeonManiaController controller = new DungeonManiaController();
@@ -224,5 +225,4 @@ public class ExampleTests {
         BattleResponse battle = postBattleResponse.getBattles().get(0);
         assertBattleCalculations("mercenary", battle, true, "c_battleTests_basicMercenaryMercenaryDies");
     }
-
 }

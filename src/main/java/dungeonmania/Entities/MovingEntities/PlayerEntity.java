@@ -19,6 +19,7 @@ public class PlayerEntity extends MovingEntity {
 
     private CraftingSystem c;
     private Inventory i;
+    private int enemiesDestroyed;
 
     private final static String[] usableItems = { "bomb", "invisibility_potion", "invincibility_potion" };
 
@@ -29,7 +30,7 @@ public class PlayerEntity extends MovingEntity {
         this.movement = new PlayerMovement();
         this.hp = EntityConstants.player_health;
         this.attack = EntityConstants.player_attack;
-
+        this.enemiesDestroyed = 0;
     }
 
     /**
@@ -64,6 +65,10 @@ public class PlayerEntity extends MovingEntity {
 
     public HashMap<String, ArrayList<Item>> getInventory() {
         return this.i.getItems();
+    }
+
+    public int getCountOfItems(String itemName) {
+        return this.i.hasItem(itemName);
     }
 
     public ArrayList<String> getBuildable() {
@@ -106,4 +111,19 @@ public class PlayerEntity extends MovingEntity {
     public void updateDurability() {
         this.i.decreaseDurability();
     }
+
+    /**
+     * Increment the number of enemies destroyed by the player.
+     */
+    public void increaseEnemiesDestroyed(int noOfEnemiesDestroyed) {
+        this.enemiesDestroyed += noOfEnemiesDestroyed;
+    }
+
+    /**
+     * Return the number of enemies destroyed by the player.
+     */
+    public int getEnemiesDestroyed() {
+        return this.enemiesDestroyed;
+    }
+
 }

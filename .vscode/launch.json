@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch ExampleTests",
+            "request": "launch",
+            "mainClass": "dungeonmania.ExampleTests",
+            "projectName": "project"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}"
