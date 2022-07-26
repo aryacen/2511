@@ -1,7 +1,9 @@
 package dungeonmania.Entities.MovingEntities.Movement;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Inventory;
 import dungeonmania.Entities.MovingEntities.MovingEntity;
+import dungeonmania.Entities.MovingEntities.PlayerEntity;
 import dungeonmania.Entities.StaticEntities.BoulderEntity;
 import dungeonmania.Entities.StaticEntities.DoorEntity;
 import dungeonmania.Entities.StaticEntities.PortalEntity;
@@ -12,14 +14,13 @@ import dungeonmania.util.Position;
 import java.util.ArrayList;
 
 public class PlayerMovement extends Movement {
+
     @Override
-    public Position move(Position currentPosition,
-                         Direction direction,
-                         ArrayList<StaticEntity> staticEntities,
-                         ArrayList<MovingEntity> movingEntities,
-                         Inventory i) {
+    public Position move(Entity entity, Direction direction, ArrayList<StaticEntity> staticEntities, ArrayList<MovingEntity> movingEntities) {
+        Position currentPosition = entity.getPosition();
         Position offset = direction.getOffset();
         Position newPosition = currentPosition.translateBy(offset);
+        Inventory i = ((PlayerEntity) entity).getI();
         // Note the only case so far where there are two static entities in with a boulder and a switch
         ArrayList<StaticEntity> entityAtNewPosition = Movement.staticEntityAtPosition(newPosition, staticEntities);
         // If we can walk through the static entity or there are no static entity, move
@@ -83,4 +84,5 @@ public class PlayerMovement extends Movement {
         // Default to just not doing anything
         return currentPosition;
     }
+
 }

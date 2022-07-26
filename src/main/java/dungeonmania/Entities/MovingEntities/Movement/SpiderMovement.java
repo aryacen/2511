@@ -1,9 +1,11 @@
 package dungeonmania.Entities.MovingEntities.Movement;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Inventory;
 import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.StaticEntities.BoulderEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
+import dungeonmania.Entities.StaticEntities.SwampTileEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -45,13 +47,17 @@ public class SpiderMovement extends Movement {
         nextDirectionIndex = 0;
     }
     @Override
-    public Position move(Position currentPosition,
-                         Direction direction,
-                         ArrayList<StaticEntity> staticEntities,
-                         ArrayList<MovingEntity> movingEntities,
-                         Inventory i) {
+    public Position move(Entity entity, Direction direction, ArrayList<StaticEntity> staticEntities, ArrayList<MovingEntity> movingEntities) {
+        Position currentPosition = entity.getPosition();
         Direction d = null;
         // Check if the spider has moved the first step or not
+        SwampTileEntity s = (SwampTileEntity) getStaticEntity("swamp_tile", Movement.staticEntityAtPosition(currentPosition, staticEntities));
+        // If the spider is currently on a swamp tile, check if it can move
+        if (s != null) {
+            if (s.STUCK(entity.getId())) {
+                return currentPosition;
+            }
+        }
         if (firstStepNotMoved) {
             d = startingDirection;
         } else {

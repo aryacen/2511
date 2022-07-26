@@ -20,8 +20,11 @@ public class SpiderEntity extends MovingEntity {
     }
 
     @Override
-    public void move(Direction direction, ArrayList<Item> items, ArrayList<StaticEntity> staticEntities, ArrayList<MovingEntity> movingEntities) {
-        this.position = this.movement.move(this.position, null, staticEntities, null, null);
+    public void move(Direction direction,
+                     ArrayList<Item> items,
+                     ArrayList<StaticEntity> staticEntities,
+                     ArrayList<MovingEntity> movingEntities) {
+        this.position = this.movement.move(this, null, staticEntities, null);
     }
 
     // Spiders spawn at random locations in the dungeon from the beginning of the game.

@@ -49,7 +49,7 @@ public class PlayerEntity extends MovingEntity {
             ArrayList<Item> items,
             ArrayList<StaticEntity> staticEntities,
             ArrayList<MovingEntity> movingEntities) {
-        Position newPosition = this.movement.move(this.position, direction, staticEntities, movingEntities, this.i);
+        Position newPosition = this.movement.move(this, direction, staticEntities, movingEntities);
         this.position = newPosition;
         // Create a duplicate list to avoid modification of list while in the loop
         ArrayList<Item> tmpItemList = new ArrayList<>();
@@ -61,6 +61,10 @@ public class PlayerEntity extends MovingEntity {
                 this.i.addItem(item);
                 items.remove(item);
             }
+    }
+
+    public Inventory getI() {
+        return this.i;
     }
 
     public HashMap<String, ArrayList<Item>> getInventory() {
