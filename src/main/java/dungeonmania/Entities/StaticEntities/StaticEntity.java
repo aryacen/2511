@@ -13,7 +13,6 @@ public abstract class StaticEntity extends Entity {
     // by a moving entity
     // E.g. if the player checks if a boulder is passable, then this returns false
     // however if a spider
-    // TODO: MAKE THIS FUNCTION WORK FOR ALL THE STATIC ENTITIES
     public abstract boolean canPass(String type);
 
     public abstract boolean isSpawner();

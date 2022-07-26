@@ -1,9 +1,10 @@
 package dungeonmania;
 
+import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.EntityFactory.entityCreator;
 import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
-import dungeonmania.Entities.StaticEntities.PortalEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.Goals.Goal;
 import dungeonmania.Goals.GoalFactory;
@@ -13,8 +14,6 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.Entities.Battle;
-import dungeonmania.Entities.Entity;
-import dungeonmania.Entities.EntityFactory.entityCreator;
 
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
@@ -22,10 +21,7 @@ import dungeonmania.util.Position;
 import dungeonmania.util.EntityConstants;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import org.json.*;
 
@@ -73,11 +69,6 @@ public class DungeonManiaController {
         this.staticEntities = new ArrayList<>();
         this.itemEntities = new ArrayList<>();
         this.movingEntities = new ArrayList<>();
-        List<EntityResponse> entitiesResponse = new ArrayList<EntityResponse>();
-        List<ItemResponse> inventory = new ArrayList<ItemResponse>();
-        List<BattleResponse> battles = new ArrayList<BattleResponse>();
-        List<String> buildables = new ArrayList<String>();
-
         this.dungeonName = dungeonName;
 
         // Checks if the dungeonName and configName inputted exists in resource
@@ -108,24 +99,18 @@ public class DungeonManiaController {
             JSONObject fileJson = new JSONObject(loadedFile);
 
             // Get entities array and parse it to get a List of EntityResponse
-            JSONArray entitiesJson = fileJson.getJSONArray("entities");
-            entitiesResponse = parseDungeonEntities(entitiesJson);
+            parseDungeonEntities(fileJson.getJSONArray("entities"));
 
             // Get goals object and parse it to get the goals String
             JSONObject goalsJson = fileJson.getJSONObject("goal-condition");
-            this.goals = (parseDungeonGoals(goalsJson));
+            this.goals = parseDungeonGoals(goalsJson);
 
             // If the file is not found, throw IOException
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        DungeonResponse output = new DungeonResponse(this.dungeonId, this.dungeonName, entitiesResponse,
-                inventory,
-                battles,
-                buildables, this.goals);
-
-        this.currentModel.add(output);
+        DungeonResponse output = getDungeonResponse();
         return output;
     }
 
@@ -217,64 +202,31 @@ public class DungeonManiaController {
     }
 
     /**
-     * Helper function to read the entities array, create EntityResponse for every
-     * entity and store them in a List of EntityResponse
+     * Creates and stores all the entities
      */
-    private List<EntityResponse> parseDungeonEntities(JSONArray entities) {
-        List<EntityResponse> output = new ArrayList<EntityResponse>();
-        // Loop through the entities array
-        for (int i = 0; i < entities.length(); i++) {
-            boolean interactable = false;
-            JSONObject temp = entities.getJSONObject(i);
-
-            // entityId will be entity type followed with an integer (starting from 1),
-            // which is denoted by the frequency of the entity type in the dungeon
-            String type = temp.getString("type");
-            String entityId = EntityConstants.newId();
-
-            int x = temp.getInt("x");
-            int y = temp.getInt("y");
-            Position position = new Position(x, y);
-
-            Entity newEntity = null;
-            if (type.equals("player")) {
-                newEntity = entityCreator.createEntity(entityId, type, position);
+    private void parseDungeonEntities(JSONArray entities) {
+        Iterator<Object> entityIterator = entities.iterator();
+        Entity newEntity;
+        while (entityIterator.hasNext()) {
+            newEntity = entityCreator.createEntity((JSONObject) entityIterator.next());
+            // Player is stored separately to all other entities
+            if (newEntity.getType().equals("player")) {
                 this.playerEntity = (PlayerEntity) newEntity;
-            } else {
-                switch (type) {
-                    case "portal":
-                        String color = temp.getString("colour");
-                        newEntity = entityCreator.createEntity(entityId, type, position, color);
+            }
+            // Figure out where to store the entity
+            else {
+                switch (newEntity.getEntityType()) {
+                    case "Static":
                         this.staticEntities.add((StaticEntity) newEntity);
                         break;
-                    case "door":
-                    case "key":
-                        int keyId = temp.getInt("key");
-                        newEntity = entityCreator.createEntity(entityId, type, position, keyId);
-                        if (newEntity.getEntityType().equals("Static")) {
-                            this.staticEntities.add((StaticEntity) newEntity);
-                        } else {
-                            this.itemEntities.add((Item) newEntity);
-                        }
+                    case "Moving":
+                        this.movingEntities.add((MovingEntity) newEntity);
                         break;
-                    default:
-                        newEntity = entityCreator.createEntity(entityId, type, position);
-                        if (newEntity.getEntityType().equals("Static")) {
-                            this.staticEntities.add((StaticEntity) newEntity);
-                        } else if (newEntity.getEntityType().equals("Moving")) {
-                            this.movingEntities.add((MovingEntity) newEntity);
-                        } else {
-                            this.itemEntities.add((Item) newEntity);
-                        }
-
+                    case "Item":
+                        this.itemEntities.add((Item) newEntity);
                 }
             }
-
-            // Create an EntityResponse for the entity and store them in the output List
-            EntityResponse tempResponse = new EntityResponse(entityId, type, position, newEntity.isInteractable());
-            output.add(tempResponse);
         }
-        return output;
     }
 
     private void storeConfig(JSONObject configContent) {

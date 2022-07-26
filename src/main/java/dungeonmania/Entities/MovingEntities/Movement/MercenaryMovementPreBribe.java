@@ -1,5 +1,6 @@
 package dungeonmania.Entities.MovingEntities.Movement;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Inventory;
 import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 public class MercenaryMovementPreBribe extends Movement {
     @Override
-    public Position move(Position currentPosition, Direction direction, ArrayList<StaticEntity> staticEntities, ArrayList<MovingEntity> movingEntities, Inventory i) {
+    public Position move(Entity entity, Direction direction, ArrayList<StaticEntity> staticEntities, ArrayList<MovingEntity> movingEntities) {
         return null;
     }
 }

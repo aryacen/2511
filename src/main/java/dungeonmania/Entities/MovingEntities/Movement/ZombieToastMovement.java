@@ -1,9 +1,11 @@
 package dungeonmania.Entities.MovingEntities.Movement;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Inventory;
 import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.StaticEntities.PortalEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
+import dungeonmania.Entities.StaticEntities.SwampTileEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -21,12 +23,12 @@ public class ZombieToastMovement extends Movement {
      * @return new position
      */
     @Override
-    public Position move(Position currentPosition,
-                         Direction direction,
-                         ArrayList<StaticEntity> staticEntities,
-                         ArrayList<MovingEntity> movingEntities,
-                         Inventory i) {
-
+    public Position move(Entity entity, Direction direction, ArrayList<StaticEntity> staticEntities, ArrayList<MovingEntity> movingEntities) {
+        Position currentPosition = entity.getPosition();
+        SwampTileEntity s = (SwampTileEntity) getStaticEntity("swamp_tile", Movement.staticEntityAtPosition(currentPosition, staticEntities));
+        if (s != null && s.STUCK(entity.getId())) {
+            return currentPosition;
+        }
         ArrayList<StaticEntity> adjacentStaticEntities = Movement.adjacentStaticEntity(currentPosition,
                 staticEntities);
 

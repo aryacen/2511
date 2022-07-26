@@ -1,5 +1,6 @@
 package dungeonmania.Entities.MovingEntities.Movement;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Inventory;
 import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
@@ -18,12 +19,16 @@ public abstract class Movement {
      * Moves the entity given a certain direction and returns the new position of
      * the entity
      */
-    public abstract Position move(Position currentPosition,
-            Direction direction,
-            ArrayList<StaticEntity> staticEntities,
-            ArrayList<MovingEntity> movingEntities,
-            Inventory i
-    );
+//    public abstract Position move(Position currentPosition,
+//            Direction direction,
+//            ArrayList<StaticEntity> staticEntities,
+//            ArrayList<MovingEntity> movingEntities,
+//            Inventory i
+//    );
+    public abstract Position move(Entity entity,
+                                  Direction direction,
+                                  ArrayList<StaticEntity> staticEntities,
+                                  ArrayList<MovingEntity> movingEntities);
 
     /**
      * Checks if there is an entity at a given position given a list of static

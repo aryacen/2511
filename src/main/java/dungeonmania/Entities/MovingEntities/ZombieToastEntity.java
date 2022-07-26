@@ -24,7 +24,7 @@ public class ZombieToastEntity extends MovingEntity {
                      ArrayList<Item> items,
                      ArrayList<StaticEntity> staticEntities,
                      ArrayList<MovingEntity> movingEntities) {
-        this.position = this.movement.move(this.position, null, staticEntities, null, null);
+        this.position = this.movement.move(this, null, staticEntities, null);
     }
 
     // Zombies spawn at zombie spawners and move in random directions.

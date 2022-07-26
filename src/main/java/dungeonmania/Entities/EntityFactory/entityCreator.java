@@ -7,14 +7,20 @@ import dungeonmania.Entities.MovingEntities.PlayerEntity;
 import dungeonmania.Entities.MovingEntities.SpiderEntity;
 import dungeonmania.Entities.MovingEntities.ZombieToastEntity;
 import dungeonmania.Entities.StaticEntities.*;
+import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 
 /**
  * Utilise a Factory Method to create entities
  * @Pre-condition parameters are valid
  */
 public class entityCreator {
-    public static Entity createEntity(String id, String type, Position position) {
+
+    public static Entity createEntity(JSONObject entityInfo) {
+        String type = entityInfo.getString("type");
+        String id = EntityConstants.newId();
+        Position position = new Position(entityInfo.getInt("x"), entityInfo.getInt("y"));
         Entity e = null;
         switch (type) {
             /*
@@ -56,6 +62,9 @@ public class entityCreator {
             case "wood":
                 e = new WoodEntity(id, type, position);
                 break;
+            case "key":
+                e = new KeyEntity(id, type, position, entityInfo.getInt("key"));
+                break;
             /*
             Static Entities
              */
@@ -74,31 +83,16 @@ public class entityCreator {
             case "zombie_toast_spawner":
                 e = new ZombieToastSpawnerEntity(id, type, position);
                 break;
+            case "door":
+                e = new DoorEntity(id, type, position, entityInfo.getInt("key"));
+                break;
+            case "portal":
+                e = new PortalEntity(id, type, position, entityInfo.getString("colour"));
+                break;
+            case "swamp_tile":
+                e = new SwampTileEntity(id, type, position, entityInfo.getInt("movement_factor"));
+                break;
         }
         return e;
     }
-
-    /**
-     * Doors and keys both need the 'key' field
-     * @Pre-condition this is only called for keys or doors
-     */
-    public static Entity createEntity(String id, String type, Position position, int key) {
-        if (type.equals("door")) {
-            return new DoorEntity(id, type, position, key);
-        }
-        else if (type.equals("key")) {
-            return new KeyEntity(id, type, position, key);
-        }
-        // Prevent error msg
-        return null;
-    }
-
-    /**
-     * Portals have an extra field for color
-     * @Pre-condition this is only called for portals
-     */
-    public static PortalEntity createEntity(String id, String type, Position position, String color) {
-        return new PortalEntity(id, type, position, color);
-    }
-
 }
