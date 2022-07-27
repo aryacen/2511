@@ -11,7 +11,7 @@ public class ShieldEntity extends BuildableEntity {
 
     public ShieldEntity(String id, String type, Position position) {
         super(id, type, position);
-        this.durability = EntityConstants.shield_durability;
+        this.durability = EntityConstants.getInstance("shield_durability").intValue();
     }
 
     // Can be crafted with 2 wood + (1 treasure OR 1 key).

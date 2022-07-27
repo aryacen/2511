@@ -1,6 +1,5 @@
 package dungeonmania.Entities.MovingEntities;
 
-import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.util.Direction;
@@ -9,17 +8,26 @@ import dungeonmania.util.Position;
 
 import java.util.ArrayList;
 
+import static dungeonmania.util.EntityConstants.*;
+
 public class MercenaryEntity extends MovingEntity {
+    private Integer bribeAmount;
+    private Integer bribeRadius;
     public MercenaryEntity(String id, String type, Position position) {
         super(id, type, position);
-        this.hp = EntityConstants.mercenary_health;
-        this.attack = EntityConstants.mercenary_attack;
+        this.hp = getInstance("mercenary_health");
+        this.attack = getInstance("mercenary_attack");
+        this.bribeAmount = getInstance("bribe_amount").intValue();
+        this.bribeRadius = getInstance("bribe_radius").intValue();
         this.isInteractable = true;
         // TODO: GIVE MERCENARY A MOVEMENT FUNCTION
     }
 
     @Override
-    public void move(Direction direction, ArrayList<Item> items, ArrayList<StaticEntity> staticEntities, ArrayList<MovingEntity> movingEntities) {
+    public void move(Direction direction,
+                     ArrayList<Item> items,
+                     ArrayList<StaticEntity> staticEntities,
+                     ArrayList<MovingEntity> movingEntities) {
 
     }
 

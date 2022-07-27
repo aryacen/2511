@@ -92,7 +92,7 @@ public class DungeonManiaController {
             String configFile = FileLoader.loadResourceFile("configs/" + configName + ".json");
 
             JSONObject configFileJson = new JSONObject(configFile);
-            storeConfig(configFileJson);
+            EntityConstants.setConfig(configFileJson);
 
             // Load the dungeon file in a String, and convert it to a JSONObject
             String loadedFile = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
@@ -227,33 +227,6 @@ public class DungeonManiaController {
                 }
             }
         }
-    }
-
-    private void storeConfig(JSONObject configContent) {
-        EntityConstants.ally_attack = configContent.getInt("ally_attack");
-        EntityConstants.ally_defence = configContent.getInt("ally_defence");
-        EntityConstants.bomb_radius = configContent.getInt("bomb_radius");
-        EntityConstants.bow_durability = configContent.getInt("bow_durability");
-        EntityConstants.bribe_amount = configContent.getInt("bribe_amount");
-        EntityConstants.bribe_radius = configContent.getInt("bribe_radius");
-        EntityConstants.enemy_goal = configContent.getInt("enemy_goal");
-        EntityConstants.invincibility_potion_duration = configContent.getInt("invincibility_potion_duration");
-        EntityConstants.invisibility_potion_duration = configContent.getInt("invisibility_potion_duration");
-        EntityConstants.mercenary_attack = configContent.getInt("mercenary_attack");
-        EntityConstants.mercenary_health = configContent.getInt("mercenary_health");
-        EntityConstants.player_attack = configContent.getInt("player_attack");
-        EntityConstants.player_health = configContent.getInt("player_health");
-        EntityConstants.shield_defence = configContent.getInt("shield_defence");
-        EntityConstants.shield_durability = configContent.getInt("shield_durability");
-        EntityConstants.spider_attack = configContent.getInt("spider_attack");
-        EntityConstants.spider_health = configContent.getInt("spider_health");
-        EntityConstants.spider_spawn_rate = configContent.getInt("spider_spawn_rate");
-        EntityConstants.sword_attack = configContent.getInt("sword_attack");
-        EntityConstants.sword_durability = configContent.getInt("sword_durability");
-        EntityConstants.treasure_goal = configContent.getInt("treasure_goal");
-        EntityConstants.zombie_attack = configContent.getInt("zombie_attack");
-        EntityConstants.zombie_health = configContent.getInt("zombie_health");
-        EntityConstants.zombie_spawn_rate = configContent.getInt("zombie_spawn_rate");
     }
     private DungeonResponse getDungeonResponse() {
         /*
