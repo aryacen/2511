@@ -3,14 +3,14 @@ package dungeonmania.Entities.Item.BuildableEntities;
 import dungeonmania.util.Position;
 
 import java.util.HashMap;
+
+import dungeonmania.Entities.MovingEntities.PlayerEntity;
 import dungeonmania.util.EntityConstants;
 
 public class BowEntity extends BuildableEntity {
-    private int durability;
 
     public BowEntity(String id, String type, Position position) {
         super(id, type, position);
-        this.durability = EntityConstants.getInstance("bow_durability").intValue();
     }
     // Format is item name: quantity required
     // Items that are necessary for creation
@@ -24,19 +24,27 @@ public class BowEntity extends BuildableEntity {
     public HashMap<String, Integer> getEssential() {
         return essential;
     }
+    
     @Override
     public HashMap<String, Integer> getOptions() {
         return new HashMap<String, Integer>();
     }
 
     // Can be crafted with 1 wood + 3 arrows.
-    
-    // The bow has a durability which deteriorates after a certain number of battles.
-    public int getDurability() {
-        return durability;
+
+    @Override
+    public boolean isWeapon() {
+        return true;
     }
-    public void decreaseDurability() {
-        this.durability -= 1;
+
+    @Override
+    public void setDurability(int durability) {
+        super.setDurability(EntityConstants.getInstance("bow_durability").intValue());
+    }
+
+    @Override
+    public double getExtraAttack(double currentAttack) {
+        return currentAttack;
     }
 
     // Bows give the Player double damage in a single round, to simulate being able to

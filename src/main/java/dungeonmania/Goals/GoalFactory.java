@@ -10,11 +10,11 @@ import dungeonmania.Entities.StaticEntities.StaticEntity;
 
 public class GoalFactory {
     
-    public static Goal getGoal(JSONObject obj, ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity) {
+    public static Goal getGoal(JSONObject obj, ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity, int enemyGoal, int treasureGoal) {
         String goal = obj.getString("goal");
 
         if (!goal.equals("AND") && !goal.equals("OR")) {
-            return new SimpleGoal(goal, staticEntities, playerEntity);
+            return new SimpleGoal(goal, staticEntities, playerEntity, enemyGoal, treasureGoal);
         }
 
         JSONArray subgoals = (JSONArray) obj.getJSONArray("subgoals");
@@ -22,9 +22,9 @@ public class GoalFactory {
         JSONObject subgoal2 = subgoals.getJSONObject(1);
 
         if (goal.equals("AND")) {
-            return new AndGoal(getGoal(subgoal1, staticEntities, playerEntity), getGoal(subgoal2, staticEntities, playerEntity), staticEntities, playerEntity);
+            return new AndGoal(getGoal(subgoal1, staticEntities, playerEntity, enemyGoal, treasureGoal), getGoal(subgoal2, staticEntities, playerEntity, enemyGoal, treasureGoal), staticEntities, playerEntity, enemyGoal, treasureGoal);
         } else if (goal.equals("OR")) {
-            return new OrGoal(getGoal(subgoal1, staticEntities, playerEntity), getGoal(subgoal2, staticEntities, playerEntity), staticEntities, playerEntity);
+            return new OrGoal(getGoal(subgoal1, staticEntities, playerEntity, enemyGoal, treasureGoal), getGoal(subgoal2, staticEntities, playerEntity, enemyGoal, treasureGoal), staticEntities, playerEntity, enemyGoal, treasureGoal);
         }
 
         return null;

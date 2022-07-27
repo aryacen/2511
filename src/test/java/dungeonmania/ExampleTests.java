@@ -24,6 +24,7 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
+// import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
 
 public class ExampleTests {
@@ -100,6 +101,7 @@ public class ExampleTests {
         }
     }
 
+    //@Test
     @DisplayName("Test surrounding entities are removed when placing a bomb next to an active switch with config file bomb radius set to 2")
     public void placeBombRadius2() {
         DungeonManiaController dmc;

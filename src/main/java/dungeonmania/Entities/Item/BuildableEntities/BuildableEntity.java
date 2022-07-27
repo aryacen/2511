@@ -1,6 +1,7 @@
 package dungeonmania.Entities.Item.BuildableEntities;
 
 import dungeonmania.Entities.Item.Item;
+import dungeonmania.Entities.MovingEntities.PlayerEntity;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
 
@@ -13,10 +14,24 @@ public abstract class BuildableEntity extends Item {
         super(id, type, EntityConstants.notOnMap);
     }
 
-
     @Override
     public boolean canBeCrafted() {
         return true;
+    }
+
+    @Override
+    public void setDurability(int durability) {
+        super.setDurability(durability);
+    }
+
+    @Override
+    public double getExtraAttack(double currentAttack) {
+        return currentAttack;
+    }
+
+    @Override
+    public double getExtraDefence() {
+        return 0;
     }
 
     /*
