@@ -70,6 +70,7 @@ public class EntityConstants {
             config.put("shield_durability", null);
             config.put("spider_attack", null);
             config.put("spider_health", null);
+            config.put("sword_attack", null);
             config.put("sword_durability", null);
             config.put("treasure_goal", null);
             config.put("zombie_attack", null);

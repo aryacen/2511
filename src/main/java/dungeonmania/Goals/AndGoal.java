@@ -11,7 +11,7 @@ public class AndGoal implements Goal {
 
     ArrayList<Goal> children = new ArrayList<Goal>();
 
-    public AndGoal(Goal g1, Goal g2, ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity) {
+    public AndGoal(Goal g1, Goal g2, ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity, int enemyGoal, int treasureGoal) {
         this.g1 = g1;
         this.g2 = g2;
         this.children.add(g1);
@@ -50,7 +50,7 @@ public class AndGoal implements Goal {
     }
 
     @Override
-    public boolean setAchievedGoal(ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity) {
+    public boolean setAchievedGoal(ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity, int enemyGoal, int treasureGoal) {
         return false;
     }
 }

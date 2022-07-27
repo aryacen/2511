@@ -8,5 +8,5 @@ import dungeonmania.Entities.StaticEntities.StaticEntity;
 public interface Goal {
     public boolean achievedGoal();
     public String getGoal();
-    public boolean setAchievedGoal(ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity);
+    public boolean setAchievedGoal(ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity, int enemyGoal, int treasureGoal);
 }

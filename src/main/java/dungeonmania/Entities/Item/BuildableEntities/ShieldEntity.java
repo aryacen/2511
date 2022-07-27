@@ -8,6 +8,7 @@ import dungeonmania.util.EntityConstants;
 
 public class ShieldEntity extends BuildableEntity {
     private int durability;
+    //private int 
 
     public ShieldEntity(String id, String type, Position position) {
         super(id, type, position);
@@ -40,11 +41,18 @@ public class ShieldEntity extends BuildableEntity {
 
     // Each shield has a specific durability that dictates the number of battles
     // it can be used before it deteriorates.
-    public int getDurability() {
-        return durability;
+    @Override
+    public boolean isWeapon() {
+        return true;
     }
 
-    public void decreaseDurability() {
-        this.durability -= 1;
+    @Override
+    public void setDurability(int durability) {
+        super.setDurability(EntityConstants.getInstance("shield_durability").intValue());
+    }
+
+    @Override
+    public double getExtraDefence() {
+        return EntityConstants.getInstance("shield_defence").intValue();
     }
 }

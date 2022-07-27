@@ -7,17 +7,22 @@ import dungeonmania.util.Position;
 import dungeonmania.util.EntityConstants;
 
 public class SwordEntity extends Item{
-    private int swordDurability;
     public SwordEntity(String id, String type, Position position) {
         super(id, type, position);
-        this.swordDurability = EntityConstants.getInstance("sword_durability").intValue();
     }
 
-    public int getDurability() {
-        return this.swordDurability;
+    @Override
+    public boolean isWeapon() {
+        return true;
     }
 
-    public void decreaseDurability() {
-        this.swordDurability -= 1;
+    @Override
+    public double getExtraAttack(double currentAttack) {
+        return EntityConstants.getInstance("sword_attack").intValue();
+    }
+
+    @Override
+    public void setDurability(int durability) {
+        super.setDurability(EntityConstants.getInstance("sword_durability").intValue());
     }
 }

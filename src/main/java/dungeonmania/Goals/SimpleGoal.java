@@ -2,19 +2,20 @@ package dungeonmania.Goals;
 
 import java.util.ArrayList;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
 import dungeonmania.Entities.StaticEntities.FloorSwitchEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
+import dungeonmania.util.EntityConstants;
 
 public class SimpleGoal implements Goal {
 
     private String goal;
     private boolean achievedGoal;
 
-    public SimpleGoal(String goal, ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity) {
+    public SimpleGoal(String goal, ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity, int enemyGoal, int treasureGoal) {
         this.goal = goal;
-        //this.achievedGoal = false;
-        this.achievedGoal = setAchievedGoal(staticEntities, playerEntity);
+        this.achievedGoal = setAchievedGoal(staticEntities, playerEntity, enemyGoal, treasureGoal);
     }
 
     @Override
@@ -34,8 +35,7 @@ public class SimpleGoal implements Goal {
         return null;
     }
 
-    // TODO: Check for the four conditions here
-    public boolean setAchievedGoal(ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity) {
+    public boolean setAchievedGoal(ArrayList<StaticEntity> staticEntities, PlayerEntity playerEntity, int enemyGoal, int treasureGoal) {
         if (playerEntity == null) { // player is dead
             return false;
         }
@@ -45,16 +45,15 @@ public class SimpleGoal implements Goal {
         if (goal.equals("exit")) {
             for (StaticEntity entity : staticEntities) {
                 if (entity.getType().equals("exit") && entity.getPosition().equals(playerEntity.getPosition())) {
-                    //System.out.println("At exit!");
                     isGoalAchieved = true;
                 }
             }
         }
         // 2. Destroying a certain number of enemies (or more) AND all spawners
         else if (goal.equals("enemies")) {
-            if (playerEntity.getEnemiesDestroyed() >= 1) {
+            //System.out.println("Enemy goal = " + enemyGoal);
+            if (playerEntity.getEnemiesDestroyed() >= enemyGoal) {
                 isGoalAchieved = true;
-                //this.achievedGoal = true;
                 for (StaticEntity entity : staticEntities) {
                     if (entity.isSpawner()) { // Not all spawners are destroyed.
                         isGoalAchieved = false;
@@ -84,7 +83,7 @@ public class SimpleGoal implements Goal {
             //         isGoalAchieved = true;
             //     }
             // }
-            if (playerEntity.getCountOfItems("treasure") >= 1) {
+            if (playerEntity.getCountOfItems("treasure") >= treasureGoal) {
                 isGoalAchieved = true;
             }
         }

@@ -32,6 +32,8 @@ public class DungeonManiaController {
     String dungeonName;
     String goals;
     JSONObject jsonGoal;
+    int enemyGoal;
+    int treasureGoal;
 
     PlayerEntity playerEntity;
     ArrayList<MovingEntity> movingEntities;
@@ -128,7 +130,7 @@ public class DungeonManiaController {
         this.playerEntity.use(itemUsedId);
 
         // update goal
-        Goal updatedGoals = GoalFactory.getGoal(jsonGoal, this.staticEntities, this.playerEntity);
+        Goal updatedGoals = GoalFactory.getGoal(jsonGoal, this.staticEntities, this.playerEntity, enemyGoal, treasureGoal);
         this.goals = updatedGoals.getGoal();
 
         DungeonResponse output = getDungeonResponse();
@@ -148,7 +150,7 @@ public class DungeonManiaController {
         this.haveBattle();
 
         // update goal
-        Goal updatedGoals = GoalFactory.getGoal(jsonGoal, this.staticEntities, this.playerEntity);
+        Goal updatedGoals = GoalFactory.getGoal(jsonGoal, this.staticEntities, this.playerEntity, enemyGoal, treasureGoal);
         this.goals = updatedGoals.getGoal();
 
         // Create dungeon response
@@ -196,8 +198,10 @@ public class DungeonManiaController {
      * goals
      */
     private String parseDungeonGoals(JSONObject goalCondition) {
+        this.enemyGoal = EntityConstants.getInstance("enemy_goal").intValue();
+        this.treasureGoal = EntityConstants.getInstance("treasure_goal").intValue();
         this.jsonGoal = goalCondition;
-        Goal goals = GoalFactory.getGoal(goalCondition, this.staticEntities, this.playerEntity);
+        Goal goals = GoalFactory.getGoal(goalCondition, this.staticEntities, this.playerEntity, enemyGoal, treasureGoal);
         return goals.getGoal();
     }
 
@@ -316,14 +320,13 @@ public class DungeonManiaController {
                 BattleResponse newBattleResponse = newBattle.battle();
                 this.battleResponse.add(newBattleResponse);
                 // Move the two following checks in the movingEntities
-                if (enemy.isDead()) {
-                    this.movingEntities.remove(enemy);
-                    this.playerEntity.increaseEnemiesDestroyed(1);
-                    //System.out.println(this.playerEntity.getEnemiesDestroyed());
-                }
                 if (playerEntity.isDead()) { // the player has died
                     this.playerEntity = null;
                     break;
+                }
+                if (enemy.isDead()) {
+                    this.movingEntities.remove(enemy);
+                    this.playerEntity.increaseEnemiesDestroyed(1);
                 }
             }
         }

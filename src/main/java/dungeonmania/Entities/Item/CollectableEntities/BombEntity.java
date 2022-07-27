@@ -2,13 +2,20 @@ package dungeonmania.Entities.Item.CollectableEntities;
 
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
+import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
 
 public class BombEntity extends Item {
+    private int bombRadius;
+
     public BombEntity(String id, String type, Position position) {
         super(id, type, position);
+        this.bombRadius = EntityConstants.getInstance("bomb_radius").intValue();
     }
 
+    public int getBombRadius() {
+        return this.bombRadius;
+    }
 
     // Can be collected by the player.
 

@@ -28,4 +28,21 @@ public class MidnightArmourEntity extends BuildableEntity {
     public HashMap<String, Integer> getOptions() {
         return new HashMap<String, Integer>();
     }
+
+    @Override
+    public boolean isWeapon() {
+        return true;
+    }
+
+    @Override
+    public double getExtraAttack(double currentAttack) {
+        return EntityConstants.getInstance("midnight_armour_attack").intValue();
+    }
+
+    @Override
+    public double getExtraDefence() {
+        return EntityConstants.getInstance("midnight_armour_defence").intValue();
+    }
+
+    // Lasts forever
 }

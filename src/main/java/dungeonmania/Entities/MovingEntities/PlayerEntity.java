@@ -130,4 +130,8 @@ public class PlayerEntity extends MovingEntity {
         return this.enemiesDestroyed;
     }
 
+    public void decreaseDurability() {
+        this.i.decreaseDurability();
+    }
+
 }

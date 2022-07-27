@@ -118,30 +118,33 @@ public class Inventory {
         // If durability reaches 0, remove the item by calling removeItem()
         ArrayList<Item> weapons = getAllWeapons();
         for (Item weapon : weapons) {
-            String itemType = weapon.getType();
-            switch (itemType) {
-                case "bow":
-                    BowEntity usedBow = (BowEntity) weapon;
-                    usedBow.decreaseDurability();
-                    if (usedBow.getDurability() == 0) {
-                        removeItem("bow");
-                    }
-                    break;
-                case "sword":
-                    SwordEntity usedSword = (SwordEntity) weapon;
-                    usedSword.decreaseDurability();
-                    if (usedSword.getDurability() == 0) {
-                        removeItem("sword");
-                    }
-                    break;
-                case "shield":
-                    ShieldEntity usedShield = (ShieldEntity) weapon;
-                    usedShield.decreaseDurability();
-                    if (usedShield.getDurability() == 0) {
-                        removeItem("shield");
-                    }
-                    break;
+            weapon.decreaseDurability();
+            if (weapon.getDurability() == 0) {
+                removeItem(weapon.getType());
             }
+            // switch (itemType) {
+            //     case "bow":
+            //         BowEntity usedBow = (BowEntity) weapon;
+            //         usedBow.decreaseDurability();
+            //         if (usedBow.getDurability() == 0) {
+            //             removeItem("bow");
+            //         }
+            //         break;
+            //     case "sword":
+            //         SwordEntity usedSword = (SwordEntity) weapon;
+            //         usedSword.decreaseDurability();
+            //         if (usedSword.getDurability() == 0) {
+            //             removeItem("sword");
+            //         }
+            //         break;
+            //     case "shield":
+            //         ShieldEntity usedShield = (ShieldEntity) weapon;
+            //         usedShield.decreaseDurability();
+            //         if (usedShield.getDurability() == 0) {
+            //             removeItem("shield");
+            //         }
+            //         break;
+            // }
         }
     }
 
@@ -150,17 +153,11 @@ public class Inventory {
      */
     public ArrayList<Item> getAllWeapons() {
         ArrayList<Item> weaponsList = new ArrayList<>();
-        if (hasItem("bow") >= 1) {
-            ArrayList<Item> bows = this.items.get("bow");
-            weaponsList.add(bows.get(0));
-        }
-        if (hasItem("sword") >= 1) {
-            ArrayList<Item> swords = this.items.get("sword");
-            weaponsList.add(swords.get(0));
-        }
-        if (hasItem("shield") >= 1) {
-            ArrayList<Item> shields = this.items.get("shield");
-            weaponsList.add(shields.get(0));
+        for (String itemName : this.items.keySet()) {
+            ArrayList<Item> weapons = this.items.get(itemName);
+            if (weapons.get(weapons.size()-1).isWeapon()) {
+                weaponsList.add(weapons.get(0));
+            }
         }
         return weaponsList;
     }
