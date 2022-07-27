@@ -39,4 +39,8 @@ public abstract class Entity {
     public boolean isInteractable() {
         return isInteractable;
     }
+
+    public void setIsInteractable(boolean isInteractable) {
+        this.isInteractable = isInteractable;
+    }
 }

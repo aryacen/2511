@@ -3,7 +3,9 @@ package dungeonmania;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-//import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.junit.jupiter.api.Assertions.assertFalse;
 //import static org.junit.jupiter.api.Assertions.assertNotEquals;
 //import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 ///import static dungeonmania.TestUtils.getGoals;
 //import static dungeonmania.TestUtils.countEntityOfType;
 //import static dungeonmania.TestUtils.getValueFromConfigFile;
-//import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.exceptions.InvalidActionException;
 
 
 
@@ -225,7 +227,7 @@ public class PlayerTests {
     /*
     Interaction with Zombie Toaster Spawner
      */
-    //@Test
+    @Test
     @DisplayName("Test player can destroy zombie toast spawner")
     public void testCanDestroyZombieToastSpawner() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -241,7 +243,7 @@ public class PlayerTests {
 
     }
 
-    //@Test
+    @Test
     @DisplayName("Test player cannot destroy zombie toast spawner out of range")
     public void testCannotDestroyOutOfRangeZombieToastSpawner() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -253,14 +255,13 @@ public class PlayerTests {
         String spawnerId = getEntities(res, "zombie_toast_spawner").get(0).getId();
         //check itneract throws exception and spawner still exists
 
-        // UNCOMMENT BELOW LINE ONCE INTERACT IMPLEMENTED ***********************************************************
-        //res = assertThrows(InvalidActionException.class, () -> dmc.interact(spawnerId));
+        assertThrows(InvalidActionException.class, () -> dmc.interact(spawnerId));
 
         assertEquals(1, getEntities(res, "zombie_toast_spawner").size());
 
     }
 
-    //@Test
+    @Test
     @DisplayName("Test player cannot destroy zombie toast spawner without weapon")
     public void testCannotDestroyZombieToastSpawnerWithoutWeapon() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -273,9 +274,9 @@ public class PlayerTests {
         String spawnerId = getEntities(res, "zombie_toast_spawner").get(0).getId();
         //check interact throws exception and spawner still exists
 
-        // UNCOMMENT BELOW LINE ONCE INTERACT IMPLEMENTED ***********************************************************
-        //res = assertThrows(InvalidActionException.class, () -> dmc.interact(spawnerId));
+        assertThrows(InvalidActionException.class, () -> dmc.interact(spawnerId));
 
         assertEquals(1, getEntities(res, "zombie_toast_spawner").size());
     }
+
 }
