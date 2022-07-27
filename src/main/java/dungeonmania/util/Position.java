@@ -3,6 +3,7 @@ package dungeonmania.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.lang.Math;
 
 public final class Position {
     private final int x, y, layer;
@@ -77,6 +78,12 @@ public final class Position {
         return new Position(b.x - a.x, b.y - a.y);
     }
 
+    public static final double calculateDistanceBetween(Position a, Position b) {
+        double y = Math.abs(b.y - a.y);
+        double x = Math.abs(b.x - a.x);
+        return Math.hypot(y, x);
+    }
+
     public static final boolean isAdjacent(Position a, Position b) {
         return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) == 1;
     }
@@ -106,5 +113,15 @@ public final class Position {
         adjacentPositions.add(new Position(x-1, y+1));
         adjacentPositions.add(new Position(x-1, y));
         return adjacentPositions;
+    }
+
+    public List<Position> getCardinallyAdjacentPositions() {
+        List<Position> cardinallyAdjacentPositions = new ArrayList<>();
+        
+        cardinallyAdjacentPositions.add(new Position(x  , y-1)); // 1
+        cardinallyAdjacentPositions.add(new Position(x+1, y)); // 3
+        cardinallyAdjacentPositions.add(new Position(x  , y+1));// 5
+        cardinallyAdjacentPositions.add(new Position(x-1, y));// 7
+        return cardinallyAdjacentPositions;
     }
 }

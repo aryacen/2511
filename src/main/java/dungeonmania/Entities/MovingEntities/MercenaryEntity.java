@@ -1,9 +1,10 @@
 package dungeonmania.Entities.MovingEntities;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
-import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
 
 import java.util.ArrayList;
@@ -28,6 +29,23 @@ public class MercenaryEntity extends MovingEntity {
                      ArrayList<Item> items,
                      ArrayList<StaticEntity> staticEntities,
                      ArrayList<MovingEntity> movingEntities) {
+
+    }
+
+    public void interact(Entity merc, PlayerEntity player, ArrayList<StaticEntity> staticEntities) throws InvalidActionException {
+        Position playerPos = player.getPosition();
+        Position mercPos = merc.getPosition();
+        // for Milestone 3 add check for sceptre here before attempting to bribe
+
+        double distanceBetween = Position.calculateDistanceBetween(playerPos, mercPos);
+        if (distanceBetween > bribeRadius) {
+            throw new InvalidActionException("Mercenary out of range");
+        } else if (bribeAmount > player.getCountOfItems("treasure")) {
+            throw new InvalidActionException("Not enough treasure to bribe");
+        }
+        // after bribed, merc becomes uninteractable
+        this.isInteractable = false;
+        // change mercenary movement to post-bribe
 
     }
 

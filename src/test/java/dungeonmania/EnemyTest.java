@@ -1,19 +1,27 @@
 package dungeonmania;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 import dungeonmania.Entities.Entity;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
-import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
+import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /*
 This test is for enemies of the player and how they interact
@@ -123,10 +131,74 @@ public class EnemyTest {
 
     }
 
-//    @Test
+    // assumes mercenary movement doesn't work
+    //@Test
+    @DisplayName("Test Mercenary can be bribed")
+    public void testMercenaryBribe() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_enemyTest_testMercenaryMovement",
+                "c_enemyTest_testMercenaryBribe");
+        // pick up coin and be adjacent to mercenary
+        String mercId = getEntities(res, "mercenary").get(0).getId();
+        res = dmc.tick(Direction.RIGHT);
+        //String mercId = getEntities(res, "mercenary").get(0).getId();
+        res = assertDoesNotThrow(() -> dmc.interact(mercId));
+        // isInteractable should be false once bribed
+        assertFalse(getEntities(res, "mercenary").get(0).isInteractable()); 
+    }
+
+    // assumes mercenary movement pre-bribe works
+    //@Test
     @DisplayName("Test Mercenary can be bribed and will follow player")
     public void testMercenaryMovementPostBribe() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_enemyTest_testMercenaryMovement",
+                "c_simple");
+        // pick up coin and be adjacent to mercenary
+        res = dmc.tick(Direction.RIGHT);
+        String mercId = getEntities(res, "mercenary").get(0).getId();
+        //res = dmc.interact(mercId);
+        // isInteractable should be false once bribed and then merc starts following player
+        assertFalse(getEntities(res, "mercenary").get(0).isInteractable());
+        res = dmc.tick(Direction.LEFT);
+        Position mercPos = getEntities(res, "mercenary").get(0).getPosition();
+        assertEquals(mercPos, new Position(1, 1));
+        // player tries to walk thru wall but can't, check that merc is in same position and not initiating battle
+        res = dmc.tick(Direction.UP);
+        mercPos = getEntities(res, "mercenary").get(0).getPosition();
+        assertEquals(mercPos, new Position(1, 1));
+        assertEquals(0, res.getBattles().size());
+        
+    }
 
+
+    //@Test
+    @DisplayName("Test Mercenary can't be bribed without enough treasure")
+    public void testMercenaryBribeNotEnoughTreasure() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_enemyTest_testMercenaryMovement",
+                "c_enemyTests_mercenaryBribeNotEnoughTreasure");
+        // pick up coin and be adjacent to mercenary
+        res = dmc.tick(Direction.RIGHT);
+        String mercId = getEntities(res, "mercenary").get(0).getId();
+        assertThrows(InvalidActionException.class , () -> dmc.interact(mercId));
+    }
+
+    //@Test
+    @DisplayName("Test Mercenary can't be bribed while out of Range")
+    public void testMercenaryBribeOutOfRange() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_enemyTest_testMercenaryOutOfRange",
+                "c_simple");
+        // pick up coin and be adjacent to mercenary
+        res = dmc.tick(Direction.RIGHT);
+        String mercId = getEntities(res, "mercenary").get(0).getId();
+        // try to bribe out of range but with enough treasure
+        assertThrows(InvalidActionException.class , () -> dmc.interact(mercId));
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        // now try within range
+        res = assertDoesNotThrow(() -> dmc.interact(mercId));
     }
 
     /*

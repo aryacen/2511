@@ -1,11 +1,14 @@
 package dungeonmania.Entities.MovingEntities;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.CraftingSystem;
 import dungeonmania.Entities.Item.Inventory;
 import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.MovingEntities.Movement.PlayerMovement;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
+import dungeonmania.Entities.StaticEntities.ZombieToastSpawnerEntity;
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
@@ -19,6 +22,7 @@ public class PlayerEntity extends MovingEntity {
 
     private CraftingSystem c;
     private Inventory i;
+    
     private int enemiesDestroyed;
 
     private final static String[] usableItems = { "bomb", "invisibility_potion", "invincibility_potion" };
@@ -100,6 +104,66 @@ public class PlayerEntity extends MovingEntity {
 
     }
 
+    public void interact(String entityId, ArrayList<StaticEntity> staticEntities,
+             ArrayList<MovingEntity> movingEntities) throws IllegalArgumentException, InvalidActionException {
+        
+        Entity interactable = null;
+        ZombieToastSpawnerEntity spawner = null;
+        MercenaryEntity merc = null;
+        /* 
+        interactable = movingEntities.stream().filter(me -> me.getId().equals(entityId)).findFirst();
+        if (interactable == null) {
+            interactable = staticEntities.stream().filter(se -> se.getId().equals(entityId)).findFirst();
+        }
+        */
+        System.out.println(movingEntities);
+        System.out.println(staticEntities);
+        for (MovingEntity entity: movingEntities) {
+            if(entity.getId().equals(entityId)) {
+                switch(entity.getType()) {
+                    case "mercenary":
+                        System.out.println(entity); 
+                        merc = (MercenaryEntity) entity;
+                        break;
+                    case "assassin":
+                        break;
+                    
+                        
+                }
+                interactable = entity;
+                
+            }
+        }
+             
+        if (interactable == null) {
+            for (StaticEntity entity: staticEntities) {
+                if (entity.getId().equals(entityId)) {
+                    spawner = (ZombieToastSpawnerEntity) entity;
+                    interactable = entity;
+                }
+            }
+        }
+        
+        if (interactable == null || !interactable.isInteractable()) {
+            throw new IllegalArgumentException("Object is not interactable");
+        } else {
+            String objectType = interactable.getType();
+            switch (objectType) {
+                // ASSUMES spawner can be destroyed with either a sword or bow
+                case "zombie_toast_spawner":
+                    spawner.interact(spawner, this, staticEntities);
+                    break;
+                    //this.interacter.destroySpawner(interactable, this, this.i, staticEntities);
+                case "mercenary":
+                    merc.interact(merc, this, staticEntities);
+                    //this.interacter.bribeMercenary(interactable, this, i, staticEntities);
+                    break;
+                case "assasin":
+                     
+            }
+        }
+        
+    }
     // Can bribe the mercenary
 
     /**

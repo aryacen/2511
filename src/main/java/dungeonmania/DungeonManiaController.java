@@ -169,7 +169,8 @@ public class DungeonManiaController {
      * /game/interact
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        this.playerEntity.interact(entityId, staticEntities, movingEntities);
+        return getDungeonResponse();
     }
 
     /**
@@ -332,4 +333,6 @@ public class DungeonManiaController {
         }
     }
 }
+
+
 
