@@ -10,7 +10,7 @@ public class SwordEntity extends Item{
     private int swordDurability;
     public SwordEntity(String id, String type, Position position) {
         super(id, type, position);
-        this.swordDurability = EntityConstants.sword_durability;
+        this.swordDurability = EntityConstants.getInstance("sword_durability").intValue();
     }
 
     public int getDurability() {

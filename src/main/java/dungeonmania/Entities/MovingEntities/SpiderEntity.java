@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class SpiderEntity extends MovingEntity {
     public SpiderEntity(String id, String type, Position position) {
         super(id, type, position);
-        this.hp = EntityConstants.spider_health;
-        this.attack = EntityConstants.spider_attack;
+        this.hp = EntityConstants.getInstance("spider_health");
+        this.attack = EntityConstants.getInstance("spider_attack");
         this.movement = new SpiderMovement();
     }
 

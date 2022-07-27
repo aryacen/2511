@@ -28,8 +28,8 @@ public class PlayerEntity extends MovingEntity {
         this.c = new CraftingSystem();
         this.i = new Inventory();
         this.movement = new PlayerMovement();
-        this.hp = EntityConstants.player_health;
-        this.attack = EntityConstants.player_attack;
+        this.hp = EntityConstants.getInstance("player_health");
+        this.attack = EntityConstants.getInstance("player_attack");
         this.enemiesDestroyed = 0;
     }
 

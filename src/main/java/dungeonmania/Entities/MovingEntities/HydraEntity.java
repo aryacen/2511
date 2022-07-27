@@ -1,8 +1,6 @@
 package dungeonmania.Entities.MovingEntities;
 
-import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Item.Item;
-import dungeonmania.Entities.MovingEntities.Movement.Movement;
 import dungeonmania.Entities.MovingEntities.Movement.ZombieToastMovement;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.util.Direction;
@@ -11,12 +9,13 @@ import dungeonmania.util.Position;
 
 import java.util.ArrayList;
 
-public class ZombieToastEntity extends MovingEntity {
-    public ZombieToastEntity(String id, String type, Position position) {
+public class HydraEntity extends MovingEntity {
+    public HydraEntity(String id, String type, Position position) {
         super(id, type, position);
-        this.hp = EntityConstants.getInstance("zombie_health");
-        this.attack = EntityConstants.getInstance("zombie_attack");
+        // Hydra movement is same as zombie toast
         this.movement = new ZombieToastMovement();
+        this.hp = EntityConstants.getInstance("hydra_health");
+        this.attack = EntityConstants.getInstance("hydra_attack");
     }
 
     @Override
@@ -24,10 +23,6 @@ public class ZombieToastEntity extends MovingEntity {
                      ArrayList<Item> items,
                      ArrayList<StaticEntity> staticEntities,
                      ArrayList<MovingEntity> movingEntities) {
-        this.position = this.movement.move(this, null, staticEntities, null);
+        this.movement.move(this, null, staticEntities, null);
     }
-
-    // Zombies spawn at zombie spawners and move in random directions.
-    // Zombies are limited by the same movement constraints as the Player,
-    // except portals have no effect on them.
 }

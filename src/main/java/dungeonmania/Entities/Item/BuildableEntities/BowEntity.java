@@ -10,7 +10,7 @@ public class BowEntity extends BuildableEntity {
 
     public BowEntity(String id, String type, Position position) {
         super(id, type, position);
-        this.durability = EntityConstants.bow_durability;
+        this.durability = EntityConstants.getInstance("bow_durability").intValue();
     }
     // Format is item name: quantity required
     // Items that are necessary for creation
