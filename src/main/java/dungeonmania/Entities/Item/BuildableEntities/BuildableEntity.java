@@ -15,8 +15,8 @@ public abstract class BuildableEntity extends Item {
     }
 
     @Override
-    public boolean canBeCrafted() {
-        return true;
+    public boolean canBeCrafted(HashMap<String, Integer> itemsToRemove) {
+        return false;
     }
 
     @Override
@@ -35,14 +35,15 @@ public abstract class BuildableEntity extends Item {
     }
 
     /*
-    E.g. Shield needs 2 wood + (1 treasure or 1 key)
-    Essential would be 2 wood
-    Option would be 1 treasure and 1 key
+     * E.g. Shield needs 2 wood + (1 treasure or 1 key)
+     * Essential would be 2 wood
+     * Option would be 1 treasure and 1 key
      */
     /**
      * Returns essential ingredient for a buildable entity
      */
     public abstract HashMap<String, Integer> getEssential();
+
     /**
      * Returns option ingredient
      */
