@@ -44,5 +44,14 @@ public class MidnightArmourEntity extends BuildableEntity {
         return EntityConstants.getInstance("midnight_armour_defence").intValue();
     }
 
+    @Override
+    public boolean canBeCrafted(HashMap<String, Integer> itemsToRemove) {
+        if (itemsToRemove.equals(essential)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // Lasts forever
 }

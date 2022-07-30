@@ -1,5 +1,7 @@
 package dungeonmania.Entities.Item;
 
+import java.util.HashMap;
+
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
 import dungeonmania.util.Position;
@@ -15,7 +17,7 @@ public abstract class Item extends Entity {
         this.durability = Integer.MAX_VALUE;
     }
 
-    public boolean canBeCrafted() {
+    public boolean canBeCrafted(HashMap<String, Integer> itemsToRemove) {
         return false;
     }
 

@@ -167,7 +167,7 @@ public class ItemTests {
 
                 List<String> expectedBuildables = new ArrayList<String>();
                 expectedBuildables.add("shield");
-                // assertEquals(expectedBuildables, res.getBuildables());
+                assertEquals(expectedBuildables, res.getBuildables());
 
                 // build shield
                 res = dmc.build("shield");
@@ -202,27 +202,270 @@ public class ItemTests {
         }
 
         @Test
-        @DisplayName("Player should only use one of treasure/key when crafting shield if both are present")
-        public void testPlayerCanCraftShieldExtended() throws IllegalArgumentException, InvalidActionException {
+        @DisplayName("Test player can craft sceptre (1 wood + 1 key + 1 sunstone)")
+        public void testPlayerCanCraftSceptre() throws IllegalArgumentException, InvalidActionException {
                 DungeonManiaController dmc;
                 dmc = new DungeonManiaController();
-                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting",
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting2",
                                 "c_simple");
-                // pick up 2 wood
+                // pick up 1 wood + 1 sun stone + 2 arrows
                 dmc.tick(Direction.RIGHT);
                 dmc.tick(Direction.RIGHT);
-                // pick up treasure
-                dmc.tick(Direction.RIGHT);
-                dmc.tick(Direction.LEFT);
+
+                assertThrows(InvalidActionException.class, () -> dmc.build("sceptre"));
 
                 // pick up key
                 dmc.tick(Direction.UP);
+                res = dmc.build("sceptre");
 
-                res = dmc.build("shield");
+                // check that materials are used and there is now a sceptre
+                assertEquals(0, getInventory(res, "wood").size());
+                assertEquals(0, getInventory(res, "key").size());
+                assertEquals(0, getInventory(res, "sun_stone").size());
+                assertEquals(1, getInventory(res, "sceptre").size());
+        }
+
+        @Test
+        @DisplayName("Test player can craft sceptre (2 arrows + 1 key + 1 sunstone)")
+        public void testPlayerCanCraftSceptre2() throws IllegalArgumentException, InvalidActionException {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting2",
+                                "c_simple");
+                // pick up 1 wood + 1 sun stone + 2 arrows
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.DOWN);
+                dmc.tick(Direction.DOWN);
+
+                dmc.tick(Direction.UP);
+                dmc.tick(Direction.UP);
+
+                assertThrows(InvalidActionException.class, () -> dmc.build("sceptre"));
+
+                // pick up key
+                dmc.tick(Direction.UP);
+                res = dmc.build("sceptre");
+
+                // check that materials are used and there is now a sceptre
+                assertEquals(1, getInventory(res, "wood").size());
+                assertEquals(0, getInventory(res, "key").size());
+                assertEquals(0, getInventory(res, "sun_stone").size());
+                assertEquals(0, getInventory(res, "arrow").size());
+                assertEquals(1, getInventory(res, "sceptre").size());
+        }
+
+        @Test
+        @DisplayName("Test player can craft sceptre (1 wood + 1 treasure + 1 sunstone)")
+        public void testPlayerCanCraftSceptre3() throws IllegalArgumentException, InvalidActionException {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting2",
+                                "c_simple");
+                // pick up 1 wood + 1 sun stone
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.RIGHT);
+
+                assertThrows(InvalidActionException.class, () -> dmc.build("sceptre"));
+
+                // pick up treasure
+                dmc.tick(Direction.RIGHT);
+                res = dmc.build("sceptre");
+
+                // check that materials are used and there is now a sceptre
                 assertEquals(0, getInventory(res, "wood").size());
                 assertEquals(0, getInventory(res, "treasure").size());
-                assertEquals(1, getInventory(res, "key").size());
-                assertEquals(1, getInventory(res, "shield").size());
+                assertEquals(0, getInventory(res, "sun_stone").size());
+                assertEquals(1, getInventory(res, "sceptre").size());
+        }
 
+        @Test
+        @DisplayName("Test player can craft sceptre (2 arrows + 1 treasure + 1 sunstone)")
+        public void testPlayerCanCraftSceptre4() throws IllegalArgumentException, InvalidActionException {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting2",
+                                "c_simple");
+                // pick up 1 wood + 1 sun stone + 2 arrows
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.DOWN);
+                dmc.tick(Direction.DOWN);
+
+                dmc.tick(Direction.UP);
+                dmc.tick(Direction.UP);
+
+                assertThrows(InvalidActionException.class, () -> dmc.build("sceptre"));
+
+                // pick up treasure
+                dmc.tick(Direction.RIGHT);
+                res = dmc.build("sceptre");
+
+                // check that materials are used and there is now a sceptre
+                assertEquals(1, getInventory(res, "wood").size());
+                assertEquals(0, getInventory(res, "treasure").size());
+                assertEquals(0, getInventory(res, "arrow").size());
+                assertEquals(0, getInventory(res, "sun_stone").size());
+                assertEquals(1, getInventory(res, "sceptre").size());
+        }
+
+        @Test
+        @DisplayName("Test player can craft midnight armour")
+        public void testPlayerCanCraftMidnightArmour() throws IllegalArgumentException, InvalidActionException {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting3",
+                                "c_simple");
+                // pick up 1 sword + 1 sun stone
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.RIGHT);
+
+                res = dmc.build("midnight_armour");
+
+                // check that materials are used and there is now a midnight armour
+                assertEquals(0, getInventory(res, "sword").size());
+                assertEquals(0, getInventory(res, "sun_stone").size());
+                assertEquals(1, getInventory(res, "midnight_armour").size());
+        }
+
+        @Test
+        @DisplayName("Test player cannot craft midnight armour while a zombie is present")
+        public void testPlayerCannotCraftMidnightArmour() throws IllegalArgumentException, InvalidActionException {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting4",
+                                "c_simple");
+                // pick up 1 sword + 1 sun stone
+                dmc.tick(Direction.RIGHT);
+                res = dmc.tick(Direction.RIGHT);
+
+                assertThrows(InvalidActionException.class, () -> dmc.build("midnight_armour"));
+
+                // check that materials are not used and there is no midnight armour
+                assertEquals(1, getInventory(res, "sword").size());
+                assertEquals(1, getInventory(res, "sun_stone").size());
+                assertEquals(0, getInventory(res, "midnight_armour").size());
+        }
+
+        @Test
+        @DisplayName("Testing the buildables function return all the craftables")
+        public void testBuildables() {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting5",
+                                "c_simple");
+
+                // pick up 2 woods + 3 arrows + 1 key
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.UP);
+                dmc.tick(Direction.DOWN);
+                dmc.tick(Direction.DOWN);
+                dmc.tick(Direction.DOWN);
+                dmc.tick(Direction.DOWN);
+
+                dmc.tick(Direction.UP);
+                dmc.tick(Direction.UP);
+                dmc.tick(Direction.UP);
+
+                // pick up 1 sword + 1 sun stone + 1 treasure
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.RIGHT);
+                res = dmc.tick(Direction.RIGHT);
+
+                List<String> expectedBuildables = new ArrayList<String>();
+                expectedBuildables.add("bow");
+                expectedBuildables.add("shield");
+                expectedBuildables.add("sceptre");
+                expectedBuildables.add("midnight_armour");
+                assertEquals(expectedBuildables, res.getBuildables());
+        }
+
+        @Test
+        @DisplayName("Testing the buildables function on midnight armour when zombies are present")
+        public void testBuildables2() {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting4",
+                                "c_simple");
+
+                // pick up 1 sword + 1 sun stone
+                dmc.tick(Direction.RIGHT);
+                res = dmc.tick(Direction.RIGHT);
+
+                List<String> expectedBuildables = new ArrayList<String>();
+                assertEquals(expectedBuildables, res.getBuildables());
+        }
+
+        @Test
+        @DisplayName("Testing the buildables function on midnight armour when zombies are not present")
+        public void testBuildables3() {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting3",
+                                "c_simple");
+
+                // pick up 1 sword + 1 sun stone
+                dmc.tick(Direction.RIGHT);
+                res = dmc.tick(Direction.RIGHT);
+
+                List<String> expectedBuildables = new ArrayList<String>();
+                expectedBuildables.add("midnight_armour");
+                assertEquals(expectedBuildables, res.getBuildables());
+        }
+
+        @Test
+        @DisplayName("Testing the buildables function on sceptre (2 arrows + 1 treasure + 1 sun stone)")
+        public void testBuildables4() {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting6",
+                                "c_simple");
+
+                // pick up 2 arrows + 1 sun stone + 1 treasure
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.RIGHT);
+                res = dmc.tick(Direction.RIGHT);
+
+                List<String> expectedBuildables = new ArrayList<String>();
+                expectedBuildables.add("sceptre");
+                assertEquals(expectedBuildables, res.getBuildables());
+        }
+
+        @Test
+        @DisplayName("Testing the buildables function on sceptre (1 wood + 1 treasure + 1 sun stone)")
+        public void testBuildables5() {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting2",
+                                "c_simple");
+
+                // pick up 1 wood + 1 sun stone + 1 treasure
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.RIGHT);
+                res = dmc.tick(Direction.RIGHT);
+
+                List<String> expectedBuildables = new ArrayList<String>();
+                expectedBuildables.add("sceptre");
+                assertEquals(expectedBuildables, res.getBuildables());
+        }
+
+        @Test
+        @DisplayName("Testing the buildables function on sceptre (1 wood + 1 key + 1 sun stone)")
+        public void testBuildables6() {
+                DungeonManiaController dmc;
+                dmc = new DungeonManiaController();
+                DungeonResponse res = dmc.newGame("d_itemTest_testCrafting2",
+                                "c_simple");
+
+                // pick up 1 wood + 1 sun stone + 1 key
+                dmc.tick(Direction.RIGHT);
+                dmc.tick(Direction.RIGHT);
+                res = dmc.tick(Direction.UP);
+
+                List<String> expectedBuildables = new ArrayList<String>();
+                expectedBuildables.add("sceptre");
+                assertEquals(expectedBuildables, res.getBuildables());
         }
 }

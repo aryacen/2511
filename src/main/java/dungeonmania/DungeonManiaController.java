@@ -5,6 +5,7 @@ import dungeonmania.Entities.EntityFactory.entityCreator;
 import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
+import dungeonmania.Entities.MovingEntities.ZombieToastEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.Goals.Goal;
 import dungeonmania.Goals.GoalFactory;
@@ -130,7 +131,8 @@ public class DungeonManiaController {
         this.playerEntity.use(itemUsedId);
 
         // update goal
-        Goal updatedGoals = GoalFactory.getGoal(jsonGoal, this.staticEntities, this.playerEntity, enemyGoal, treasureGoal);
+        Goal updatedGoals = GoalFactory.getGoal(jsonGoal, this.staticEntities, this.playerEntity, enemyGoal,
+                treasureGoal);
         this.goals = updatedGoals.getGoal();
 
         DungeonResponse output = getDungeonResponse();
@@ -146,11 +148,13 @@ public class DungeonManiaController {
                 this.itemEntities,
                 this.staticEntities,
                 this.movingEntities);
-        this.movingEntities.stream().forEach(e -> e.move(null, this.itemEntities, this.staticEntities, this.movingEntities));
+        this.movingEntities.stream()
+                .forEach(e -> e.move(null, this.itemEntities, this.staticEntities, this.movingEntities));
         this.haveBattle();
 
         // update goal
-        Goal updatedGoals = GoalFactory.getGoal(jsonGoal, this.staticEntities, this.playerEntity, enemyGoal, treasureGoal);
+        Goal updatedGoals = GoalFactory.getGoal(jsonGoal, this.staticEntities, this.playerEntity, enemyGoal,
+                treasureGoal);
         this.goals = updatedGoals.getGoal();
 
         // Create dungeon response
@@ -161,7 +165,13 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        this.playerEntity.craftItem(buildable);
+        if (buildable.equals("midnight_armour") && zombiesPresent()) {
+            if (zombiesPresent()) {
+                throw new InvalidActionException("Zombies are present in the map!");
+            }
+        } else {
+            this.playerEntity.craftItem(buildable);
+        }
         return getDungeonResponse();
     }
 
@@ -195,14 +205,15 @@ public class DungeonManiaController {
     }
 
     /**
-    * Helper function to read the goals and construct a String representing the
+     * Helper function to read the goals and construct a String representing the
      * goals
      */
     private String parseDungeonGoals(JSONObject goalCondition) {
         this.enemyGoal = EntityConstants.getInstance("enemy_goal").intValue();
         this.treasureGoal = EntityConstants.getInstance("treasure_goal").intValue();
         this.jsonGoal = goalCondition;
-        Goal goals = GoalFactory.getGoal(goalCondition, this.staticEntities, this.playerEntity, enemyGoal, treasureGoal);
+        Goal goals = GoalFactory.getGoal(goalCondition, this.staticEntities, this.playerEntity, enemyGoal,
+                treasureGoal);
         return goals.getGoal();
     }
 
@@ -233,6 +244,17 @@ public class DungeonManiaController {
             }
         }
     }
+
+    private boolean zombiesPresent() {
+        boolean output = false;
+        for (MovingEntity entity : this.movingEntities) {
+            if (entity.getType().equals("zombie_toast")) {
+                output = true;
+            }
+        }
+        return output;
+    }
+
     private DungeonResponse getDungeonResponse() {
         /*
          * Dungeon id
@@ -278,14 +300,18 @@ public class DungeonManiaController {
         ArrayList<ItemResponse> itemResponse = new ArrayList<>();
         if (playerEntity != null) {
             EntityResponse playerResponse = new EntityResponse(this.playerEntity.getId(), "player",
-                this.playerEntity.getPosition(), false);
+                    this.playerEntity.getPosition(), false);
             entityResponse.add(playerResponse);
             itemResponse = generateItemResponse(this.playerEntity.getInventory());
         }
 
-        // TODO: FIX THIS
-        // BUT FOR NOW JUST CREATE EMPTY LIST FOR BATTLES, AND BUILDABLES
         ArrayList<String> buildables = new ArrayList<>();
+        if (playerEntity != null) {
+            buildables = this.playerEntity.getBuildable();
+            if (zombiesPresent() && buildables.contains("midnight_armour")) {
+                buildables.remove("midnight_armour");
+            }
+        }
 
         DungeonResponse output = new DungeonResponse(this.dungeonId, this.dungeonName, entityResponse, itemResponse,
                 this.battleResponse, buildables, this.goals);
@@ -313,10 +339,11 @@ public class DungeonManiaController {
         ArrayList<MovingEntity> newMovingEntities = new ArrayList<>();
         newMovingEntities.addAll(movingEntities);
         for (MovingEntity enemy : newMovingEntities) {
-            // Movement methods are not implemented for other moving entities, e.g. mercenary
+            // Movement methods are not implemented for other moving entities, e.g.
+            // mercenary
             // added the case for mercenary just to pass the example tests
             if (enemy.getPosition().equals(playerEntity.getPosition()) || enemy.getType().equals("mercenary")) {
-            //if (enemy.getPosition().equals(playerEntity.getPosition())) {
+                // if (enemy.getPosition().equals(playerEntity.getPosition())) {
                 Battle newBattle = new Battle(playerEntity, enemy);
                 BattleResponse newBattleResponse = newBattle.battle();
                 this.battleResponse.add(newBattleResponse);
@@ -333,6 +360,3 @@ public class DungeonManiaController {
         }
     }
 }
-
-
-

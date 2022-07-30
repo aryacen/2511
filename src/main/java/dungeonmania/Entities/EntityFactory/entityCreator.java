@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 /**
  * Utilise a Factory Method to create entities
+ * 
  * @Pre-condition parameters are valid
  */
 public class entityCreator {
@@ -24,7 +25,7 @@ public class entityCreator {
         Entity e = null;
         switch (type) {
             /*
-            Moving Entities
+             * Moving Entities
              */
             case "player":
                 e = new PlayerEntity(id, type, position);
@@ -39,7 +40,7 @@ public class entityCreator {
                 e = new ZombieToastEntity(id, type, position);
                 break;
             /*
-            Items
+             * Items
              */
             case "arrow":
                 e = new ArrowsEntity(id, type, position);
@@ -62,11 +63,14 @@ public class entityCreator {
             case "wood":
                 e = new WoodEntity(id, type, position);
                 break;
+            case "sun_stone":
+                e = new SunStoneEntity(id, type, position);
+                break;
             case "key":
                 e = new KeyEntity(id, type, position, entityInfo.getInt("key"));
                 break;
             /*
-            Static Entities
+             * Static Entities
              */
             case "boulder":
                 e = new BoulderEntity(id, type, position);

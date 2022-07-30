@@ -1,14 +1,14 @@
 package dungeonmania.Entities.Item.BuildableEntities;
 
-import dungeonmania.util.Position;
-
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
+
 import dungeonmania.util.EntityConstants;
+import dungeonmania.util.Position;
 
 public class ShieldEntity extends BuildableEntity {
     private int durability;
-    //private int 
+    // private int
 
     public ShieldEntity(String id, String type, Position position) {
         super(id, type, position);
@@ -54,5 +54,20 @@ public class ShieldEntity extends BuildableEntity {
     @Override
     public double getExtraDefence() {
         return EntityConstants.getInstance("shield_defence").intValue();
+    }
+
+    @Override
+    public boolean canBeCrafted(HashMap<String, Integer> itemsToRemove) {
+        for (Entry<String, Integer> entry : option.entrySet()) {
+            HashMap<String, Integer> recipes = new HashMap<>();
+            recipes = essential;
+            recipes.put(entry.getKey(), entry.getValue());
+            if (itemsToRemove.equals(recipes)) {
+                return true;
+            } else {
+                recipes.remove(entry.getKey());
+            }
+        }
+        return false;
     }
 }
