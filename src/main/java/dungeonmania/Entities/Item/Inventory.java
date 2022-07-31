@@ -32,12 +32,12 @@ public class Inventory {
     }
 
     // Uncomment when persistence is done
-    // public Inventory(JSONArray j) {
-    // Iterator itemIterator = j.iterator();
-    // while (itemIterator.hasNext()) {
-    // addItem((Item) EntityCreator.createEntity((JSONObject) itemIterator.next()));
-    // }
-    // }
+//    public Inventory(JSONArray j) {
+//        Iterator itemIterator = j.iterator();
+//        while (itemIterator.hasNext()) {
+//            addItem((Item) EntityCreator.createEntity((JSONObject) itemIterator.next()));
+//        }
+//    }
 
     /**
      * Checks if inventory has a certain item and in what quantity
