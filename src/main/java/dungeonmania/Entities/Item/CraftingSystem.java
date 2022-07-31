@@ -24,7 +24,7 @@ public class CraftingSystem {
 
     public final static String[] craftableItems = { "bow", "shield", "sceptre", "midnight_armour" };
 
-    public ArrayList<String> getBuildable(Inventory i) {
+    public ArrayList<String> getBuildable(Inventory i, boolean zombiesPresent) {
         ArrayList<String> output = new ArrayList<>();
         ArrayList<HashMap<String, Integer>> itemRecipe = null;
         BuildableEntity itemToCraft = null;
@@ -33,22 +33,22 @@ public class CraftingSystem {
             switch (item) {
                 case "bow":
                     itemToCraft = new BowEntity("temp", "bow", EntityConstants.notOnMap);
-                    EntityBow tempBow = new EntityBow();
+                    RecipeBow tempBow = new RecipeBow();
                     itemRecipe = tempBow.getItemRecipe();
                     break;
                 case "shield":
                     itemToCraft = new ShieldEntity("temp", "shield", EntityConstants.notOnMap);
-                    EntityShield tempShield = new EntityShield();
+                    RecipeShield tempShield = new RecipeShield();
                     itemRecipe = tempShield.getItemRecipe();
                     break;
                 case "midnight_armour":
                     itemToCraft = new MidnightArmourEntity("temp", "midnight_armour", EntityConstants.notOnMap);
-                    EntityMidnightArmour tempMidnightArmour = new EntityMidnightArmour();
+                    RecipeMidnightArmour tempMidnightArmour = new RecipeMidnightArmour();
                     itemRecipe = tempMidnightArmour.getItemRecipe();
                     break;
                 case "sceptre":
                     itemToCraft = new SceptreEntity("temp", "sceptre", EntityConstants.notOnMap);
-                    EntitySceptre tempSceptre = new EntitySceptre();
+                    RecipeSceptre tempSceptre = new RecipeSceptre();
                     itemRecipe = tempSceptre.getItemRecipe();
                     break;
             }
@@ -66,6 +66,9 @@ public class CraftingSystem {
             }
 
             boolean craftable = itemToCraft.canBeCrafted(itemsToRemove);
+            if (itemToCraft.getType().equals("midnight_armour") && zombiesPresent) {
+                craftable = false;
+            }
 
             if (craftable) {
                 output.add(item);
@@ -84,7 +87,8 @@ public class CraftingSystem {
      *
      * @Pre-condition: Item can be crafted
      */
-    public void craft(String itemName, Inventory i) throws IllegalArgumentException, InvalidActionException {
+    public void craft(String itemName, boolean zombiesPresent, Inventory i)
+            throws IllegalArgumentException, InvalidActionException {
         // Check that the item can be crafted
         if (!Arrays.asList(craftableItems).contains(itemName)) {
             throw new IllegalArgumentException("not buildable");
@@ -100,22 +104,22 @@ public class CraftingSystem {
         switch (itemName) {
             case "bow":
                 itemToCraft = new BowEntity(newId, "bow", EntityConstants.notOnMap);
-                EntityBow tempBow = new EntityBow();
+                RecipeBow tempBow = new RecipeBow();
                 itemRecipe = tempBow.getItemRecipe();
                 break;
             case "shield":
                 itemToCraft = new ShieldEntity(newId, "shield", EntityConstants.notOnMap);
-                EntityShield tempShield = new EntityShield();
+                RecipeShield tempShield = new RecipeShield();
                 itemRecipe = tempShield.getItemRecipe();
                 break;
             case "midnight_armour":
                 itemToCraft = new MidnightArmourEntity(newId, "midnight_armour", EntityConstants.notOnMap);
-                EntityMidnightArmour tempMidnightArmour = new EntityMidnightArmour();
+                RecipeMidnightArmour tempMidnightArmour = new RecipeMidnightArmour();
                 itemRecipe = tempMidnightArmour.getItemRecipe();
                 break;
             case "sceptre":
                 itemToCraft = new SceptreEntity(newId, "sceptre", EntityConstants.notOnMap);
-                EntitySceptre tempSceptre = new EntitySceptre();
+                RecipeSceptre tempSceptre = new RecipeSceptre();
                 itemRecipe = tempSceptre.getItemRecipe();
                 break;
         }
@@ -135,6 +139,9 @@ public class CraftingSystem {
         }
 
         boolean craftable = itemToCraft.canBeCrafted(itemsToRemove);
+        if (itemToCraft.getType().equals("midnight_armour") && zombiesPresent) {
+            craftable = false;
+        }
 
         /* Check that the item has passed has all the item it needs */
         if (!craftable) {

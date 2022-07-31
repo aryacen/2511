@@ -32,12 +32,12 @@ public class Inventory {
     }
 
     // Uncomment when persistence is done
-//    public Inventory(JSONArray j) {
-//        Iterator itemIterator = j.iterator();
-//        while (itemIterator.hasNext()) {
-//            addItem((Item) EntityCreator.createEntity((JSONObject) itemIterator.next()));
-//        }
-//    }
+    // public Inventory(JSONArray j) {
+    // Iterator itemIterator = j.iterator();
+    // while (itemIterator.hasNext()) {
+    // addItem((Item) EntityCreator.createEntity((JSONObject) itemIterator.next()));
+    // }
+    // }
 
     /**
      * Checks if inventory has a certain item and in what quantity
@@ -51,8 +51,7 @@ public class Inventory {
         } else if (itemName.equals("key")) {
             if (key == null) {
                 return noSuchItem;
-            }
-            else {
+            } else {
                 return 1;
             }
         } else {
@@ -69,11 +68,12 @@ public class Inventory {
             this.key = (KeyEntity) i;
             return;
         }
-        // If there are no items, created a new list
+        // If there are no items, create a new list
         if (hasItem(i.getType()) == noSuchItem) {
             ArrayList<Item> tempList = new ArrayList<Item>();
             tempList.add(i);
             this.items.put(i.getType(), tempList);
+            // update the existing list of that item
         } else {
             ArrayList<Item> tempList = this.items.get(i.getType());
             tempList.add(i);
@@ -141,7 +141,7 @@ public class Inventory {
         ArrayList<Item> weaponsList = new ArrayList<>();
         for (String itemName : this.items.keySet()) {
             ArrayList<Item> weapons = this.items.get(itemName);
-            if (weapons.get(weapons.size()-1).isWeapon()) {
+            if (weapons.get(weapons.size() - 1).isWeapon()) {
                 weaponsList.add(weapons.get(0));
             }
         }
@@ -190,26 +190,27 @@ public class Inventory {
 
     // Uncomment when persistence is done
     // Returns each item in the inventory as a JSONArray of JSONObject
-//    public JSONArray getJSON() {
-//        JSONArray j = new JSONArray();
-//        for (String itemName: this.items.keySet()) {
-//            this.items.get(itemName).forEach(i -> j.put(i.getJSON()));
-//        }
-//        if (key != null) {
-//            j.put(key.getJSON());
-//        }
-//        return j;
-//    }
+    // public JSONArray getJSON() {
+    // JSONArray j = new JSONArray();
+    // for (String itemName: this.items.keySet()) {
+    // this.items.get(itemName).forEach(i -> j.put(i.getJSON()));
+    // }
+    // if (key != null) {
+    // j.put(key.getJSON());
+    // }
+    // return j;
+    // }
 
     /**
      * Picks up all items that the player can pick up at specified position
      */
     public void pickUpItems(ArrayList<Item> items, Position pos) {
         ArrayList<Item> itemsAtPos = new ArrayList<>(items);
-        itemsAtPos = (ArrayList<Item>) itemsAtPos.stream().filter(i -> i.getPosition().equals(pos)).collect(Collectors.toList());
+        itemsAtPos = (ArrayList<Item>) itemsAtPos.stream().filter(i -> i.getPosition().equals(pos))
+                .collect(Collectors.toList());
         // If the item is at the current location of the player, place it in the
         for (Item i : itemsAtPos) {
-            if (canPickUp(i.getType())){
+            if (canPickUp(i.getType())) {
                 addItem(i);
                 items.remove(i);
             }
@@ -224,4 +225,7 @@ public class Inventory {
         return !type.equals("key") || this.key == null;
     }
 
+    // hash map has keyset function, so for each key in the key set you have a list
+    // and then we can iterate through that list using streams exmaple
+    // streams.filter.i.getType();
 }
