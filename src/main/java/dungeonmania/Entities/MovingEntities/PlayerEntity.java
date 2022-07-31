@@ -47,12 +47,12 @@ public class PlayerEntity extends MovingEntity {
         this.i = new Inventory();
 
         // Uncomment when persistence is done
-//        if (j.has("inventory")) {
-//            this.i = new Inventory((JSONArray) j.get("inventory"));
-//        }
-//        else {
-//            this.i = new Inventory();
-//        }
+        // if (j.has("inventory")) {
+        // this.i = new Inventory((JSONArray) j.get("inventory"));
+        // }
+        // else {
+        // this.i = new Inventory();
+        // }
     }
 
     /**
@@ -115,33 +115,34 @@ public class PlayerEntity extends MovingEntity {
     }
 
     public void interact(String entityId, ArrayList<StaticEntity> staticEntities,
-             ArrayList<MovingEntity> movingEntities) throws IllegalArgumentException, InvalidActionException {
+            ArrayList<MovingEntity> movingEntities) throws IllegalArgumentException, InvalidActionException {
 
         Entity interactable = null;
         ZombieToastSpawnerEntity spawner = null;
         MercenaryEntity merc = null;
         /*
-        interactable = movingEntities.stream().filter(me -> me.getId().equals(entityId)).findFirst();
-        if (interactable == null) {
-            interactable = staticEntities.stream().filter(se -> se.getId().equals(entityId)).findFirst();
-        }
-        */
-        for (MovingEntity entity: movingEntities) {
-            if(entity.getId().equals(entityId)) {
-                switch(entity.getType()) {
+         * interactable = movingEntities.stream().filter(me ->
+         * me.getId().equals(entityId)).findFirst();
+         * if (interactable == null) {
+         * interactable = staticEntities.stream().filter(se ->
+         * se.getId().equals(entityId)).findFirst();
+         * }
+         */
+        for (MovingEntity entity : movingEntities) {
+            if (entity.getId().equals(entityId)) {
+                switch (entity.getType()) {
                     case "mercenary":
                         merc = (MercenaryEntity) entity;
                         break;
                     case "assassin":
                         break;
-                    
-                        
+
                 }
                 interactable = entity;
-                
+
             }
         }
-             
+
         if (interactable == null) {
             for (StaticEntity entity : staticEntities) {
                 if (entity.getId().equals(entityId)) {
@@ -150,7 +151,7 @@ public class PlayerEntity extends MovingEntity {
                 }
             }
         }
-        
+
         if (interactable == null || !interactable.isInteractable()) {
             throw new IllegalArgumentException("Object is not interactable");
         } else {
@@ -166,10 +167,10 @@ public class PlayerEntity extends MovingEntity {
                     // this.interacter.bribeMercenary(interactable, this, i, staticEntities);
                     break;
                 case "assassin":
-                     
+
             }
         }
-        
+
     }
     // Can bribe the mercenary
 
@@ -206,12 +207,11 @@ public class PlayerEntity extends MovingEntity {
     }
 
     // Uncomment when persistence is done
-//    @Override
-//    public JSONObject getJSON() {
-//        JSONObject j = super.getJSON();
-//        j.put("inventory", this.i.getJSON());
-//        return j;
-//    }
-
+    // @Override
+    // public JSONObject getJSON() {
+    // JSONObject j = super.getJSON();
+    // j.put("inventory", this.i.getJSON());
+    // return j;
+    // }
 
 }
