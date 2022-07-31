@@ -28,7 +28,6 @@ import org.json.*;
 
 public class DungeonManiaController {
     List<String> dungeons = new ArrayList<String>();
-    List<DungeonResponse> currentModel = new ArrayList<DungeonResponse>();
     String dungeonId;
     String dungeonName;
     String goals;
@@ -121,7 +120,7 @@ public class DungeonManiaController {
      * /game/dungeonResponseModel
      */
     public DungeonResponse getDungeonResponseModel() {
-        return this.currentModel.get(0);
+        return getDungeonResponse();
     }
 
     /**
