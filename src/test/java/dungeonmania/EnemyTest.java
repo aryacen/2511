@@ -1,27 +1,19 @@
 package dungeonmania;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-import dungeonmania.Entities.Entity;
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
-
+import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
+import static org.junit.jupiter.api.Assertions.*;
 
 /*
 This test is for enemies of the player and how they interact
@@ -59,7 +51,7 @@ public class EnemyTest {
         // 6
         movementTrajectory.add(new Position(x + 1, y - 1));
         // 7
-        movementTrajectory.add(new Position(x , y - 1));
+        movementTrajectory.add(new Position(x, y - 1));
         // 8
         movementTrajectory.add(new Position(x - 1, y - 1));
         // 9
@@ -71,7 +63,7 @@ public class EnemyTest {
         // 12
         movementTrajectory.add(new Position(x - 1, y - 1));
         // Assert the spider follows expected path
-        for (Position p: movementTrajectory) {
+        for (Position p : movementTrajectory) {
             res = dmc.tick(Direction.UP);
             // For debugging purposes
             pos = getEntities(res, "spider").get(0).getPosition();
@@ -91,17 +83,17 @@ public class EnemyTest {
         int x = pos.getX();
         int y = pos.getY();
         // 1
-            movementTrajectory.add(new Position(x, y + 1));
+        movementTrajectory.add(new Position(x, y + 1));
         // 2
-            movementTrajectory.add(new Position(x - 1, y + 1));
+        movementTrajectory.add(new Position(x - 1, y + 1));
         // 3
-            movementTrajectory.add(new Position(x - 1, y));
+        movementTrajectory.add(new Position(x - 1, y));
         // 4
-            movementTrajectory.add(new Position(x - 1, y - 1));
+        movementTrajectory.add(new Position(x - 1, y - 1));
         // 5
-            movementTrajectory.add(new Position(x - 1, y));
+        movementTrajectory.add(new Position(x - 1, y));
         // Assert the spider follows expected path
-            for (Position p: movementTrajectory) {
+        for (Position p : movementTrajectory) {
             res = dmc.tick(Direction.UP);
             // For debugging purposes
             pos = getEntities(res, "spider").get(0).getPosition();
@@ -144,7 +136,7 @@ public class EnemyTest {
         //String mercId = getEntities(res, "mercenary").get(0).getId();
         res = assertDoesNotThrow(() -> dmc.interact(mercId));
         // isInteractable should be false once bribed
-        assertFalse(getEntities(res, "mercenary").get(0).isInteractable()); 
+        assertFalse(getEntities(res, "mercenary").get(0).isInteractable());
     }
 
     // assumes mercenary movement pre-bribe works
@@ -168,7 +160,7 @@ public class EnemyTest {
         mercPos = getEntities(res, "mercenary").get(0).getPosition();
         assertEquals(mercPos, new Position(1, 1));
         assertEquals(0, res.getBattles().size());
-        
+
     }
 
 
@@ -181,7 +173,7 @@ public class EnemyTest {
         // pick up coin and be adjacent to mercenary
         res = dmc.tick(Direction.RIGHT);
         String mercId = getEntities(res, "mercenary").get(0).getId();
-        assertThrows(InvalidActionException.class , () -> dmc.interact(mercId));
+        assertThrows(InvalidActionException.class, () -> dmc.interact(mercId));
     }
 
     //@Test
@@ -194,7 +186,7 @@ public class EnemyTest {
         res = dmc.tick(Direction.RIGHT);
         String mercId = getEntities(res, "mercenary").get(0).getId();
         // try to bribe out of range but with enough treasure
-        assertThrows(InvalidActionException.class , () -> dmc.interact(mercId));
+        assertThrows(InvalidActionException.class, () -> dmc.interact(mercId));
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
         // now try within range
@@ -213,10 +205,10 @@ public class EnemyTest {
                 "c_movementTest_testCardinalMovement");
         DungeonResponse actualDungonRes = dmc.tick(Direction.DOWN);
         List<EntityResponse> entityList = getEntities(actualDungonRes, "zombie_toast");
-        assert(entityList.size() == 1);
+        assert (entityList.size() == 1);
         EntityResponse zombie = entityList.get(0);
         ArrayList<Position> possiblePositions = new ArrayList<>(Arrays.asList(new Position(51, 50), new Position(50, 51), new Position(49, 50), new Position(50, 49)));
-        assert(possiblePositions.contains(zombie.getPosition()));
+        assert (possiblePositions.contains(zombie.getPosition()));
     }
 
     @Test
@@ -226,15 +218,15 @@ public class EnemyTest {
         DungeonResponse initDungonRes = dmc.newGame("d_enemyTest_zombieMovementBoulder",
                 "c_movementTest_testCardinalMovement");
         List<EntityResponse> entityList = getEntities(initDungonRes, "zombie_toast");
-        assert(entityList.size() == 1);
+        assert (entityList.size() == 1);
         EntityResponse zombieInit = entityList.get(0);
 
         DungeonResponse actualDungonRes = dmc.tick(Direction.DOWN);
         entityList = getEntities(actualDungonRes, "zombie_toast");
-        assert(entityList.size() == 1);
+        assert (entityList.size() == 1);
 
         EntityResponse zombie = entityList.get(0);
-        assert(zombie.getPosition().equals(zombieInit.getPosition()));
+        assert (zombie.getPosition().equals(zombieInit.getPosition()));
     }
 
     @Test
@@ -244,15 +236,15 @@ public class EnemyTest {
         DungeonResponse initDungonRes = dmc.newGame("d_enemyTest_zombieMovementWall",
                 "c_movementTest_testCardinalMovement");
         List<EntityResponse> entityList = getEntities(initDungonRes, "zombie_toast");
-        assert(entityList.size() == 1);
+        assert (entityList.size() == 1);
         EntityResponse zombieInit = entityList.get(0);
 
         DungeonResponse actualDungonRes = dmc.tick(Direction.DOWN);
         entityList = getEntities(actualDungonRes, "zombie_toast");
-        assert(entityList.size() == 1);
+        assert (entityList.size() == 1);
 
         EntityResponse zombie = entityList.get(0);
-        assert(zombie.getPosition().equals(zombieInit.getPosition()));
+        assert (zombie.getPosition().equals(zombieInit.getPosition()));
 
     }
 
@@ -263,12 +255,12 @@ public class EnemyTest {
         DungeonResponse initDungonRes = dmc.newGame("d_enemyTest_zombieMovementPortal",
                 "c_movementTest_testCardinalMovement");
         List<EntityResponse> entityList = getEntities(initDungonRes, "zombie_toast");
-        assert(entityList.size() == 1);
+        assert (entityList.size() == 1);
         EntityResponse zombieInit = entityList.get(0);
 
         DungeonResponse actualDungonRes = dmc.tick(Direction.DOWN);
         entityList = getEntities(actualDungonRes, "zombie_toast");
-        assert(entityList.size() == 1);
+        assert (entityList.size() == 1);
 
         EntityResponse zombie = entityList.get(0);
         /*
@@ -276,13 +268,13 @@ public class EnemyTest {
          Don't know which one he is teleported via but the teleporter functionality is already tested with the player
         */
         ArrayList<Position> nonValidPosition = new ArrayList<>(Arrays.asList(
-            zombie.getPosition(),
-            zombie.getPosition().translateBy(Direction.UP),
-            zombie.getPosition().translateBy(Direction.DOWN),
-            zombie.getPosition().translateBy(Direction.RIGHT),
-            zombie.getPosition().translateBy(Direction.LEFT)
+                zombie.getPosition(),
+                zombie.getPosition().translateBy(Direction.UP),
+                zombie.getPosition().translateBy(Direction.DOWN),
+                zombie.getPosition().translateBy(Direction.RIGHT),
+                zombie.getPosition().translateBy(Direction.LEFT)
         ));
-        assert(nonValidPosition.contains(zombie.getPosition()));
+        assert (nonValidPosition.contains(zombie.getPosition()));
     }
 
 }

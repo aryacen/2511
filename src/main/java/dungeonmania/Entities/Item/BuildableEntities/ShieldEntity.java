@@ -5,14 +5,25 @@ import java.util.Map.Entry;
 
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 
 public class ShieldEntity extends BuildableEntity {
-    private int durability;
-    // private int
 
     public ShieldEntity(String id, String type, Position position) {
         super(id, type, position);
         this.durability = EntityConstants.getInstance("shield_durability").intValue();
+    }
+
+    public ShieldEntity(JSONObject j) {
+        super(j);
+        this.durability = EntityConstants.getInstance("shield_durability").intValue();
+        // Uncomment when persistence is done
+//        if (j.has("durability")) {
+//            this.durability = j.getInt("durability");
+//        }
+//        else {
+//            this.durability = EntityConstants.getInstance("shield_durability").intValue();
+//        }
     }
 
     // Can be crafted with 2 wood + (1 treasure OR 1 key).
@@ -70,4 +81,12 @@ public class ShieldEntity extends BuildableEntity {
         }
         return false;
     }
+
+    // Uncomment when persistence is done
+//    @Override
+//    public JSONObject getJSON() {
+//        JSONObject j = super.getJSON();
+//        j.put("durability", this.durability);
+//        return j;
+//    }
 }

@@ -2,6 +2,7 @@ package dungeonmania.Entities.StaticEntities;
 
 import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 
 public abstract class StaticEntity extends Entity {
     public StaticEntity(String id, String type, Position position) {
@@ -16,4 +17,5 @@ public abstract class StaticEntity extends Entity {
     public abstract boolean canPass(String type);
 
     public abstract boolean isSpawner();
+
 }

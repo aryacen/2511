@@ -2,6 +2,7 @@ package dungeonmania.Entities.StaticEntities;
 
 import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 
 public class DoorEntity extends StaticEntity {
     private final int keyId;
@@ -35,4 +36,13 @@ public class DoorEntity extends StaticEntity {
     public boolean isSpawner() {
         return false;
     }
+
+    // Uncomment when persistence is done
+//    @Override
+//    public JSONObject getJSON() {
+//        JSONObject j = super.getJSON();
+//        j.put("key", this.keyId);
+//        return j;
+//    }
+
 }

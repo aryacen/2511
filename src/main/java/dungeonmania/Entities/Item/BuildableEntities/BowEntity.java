@@ -1,15 +1,29 @@
 package dungeonmania.Entities.Item.BuildableEntities;
 
+import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
 
 import java.util.HashMap;
-
-import dungeonmania.Entities.MovingEntities.PlayerEntity;
 import dungeonmania.util.EntityConstants;
+import org.json.JSONObject;
 
 public class BowEntity extends BuildableEntity {
+
     public BowEntity(String id, String type, Position position) {
         super(id, type, position);
+        this.durability = EntityConstants.getInstance("bow_durability").intValue();
+    }
+
+    public BowEntity(JSONObject j) {
+        super(j);
+        this.durability = EntityConstants.getInstance("bow_durability").intValue();
+        // Uncomment when persistence is done
+//        if (j.has("durability")) {
+//            this.durability = j.getInt("durability");
+//        }
+//        else {
+//            this.durability = EntityConstants.getInstance("bow_durability").intValue();
+//        }
     }
 
     // Format is item name: quantity required
@@ -24,7 +38,7 @@ public class BowEntity extends BuildableEntity {
     public HashMap<String, Integer> getEssential() {
         return essential;
     }
-
+    
     @Override
     public HashMap<String, Integer> getOptions() {
         return new HashMap<String, Integer>();
@@ -59,4 +73,12 @@ public class BowEntity extends BuildableEntity {
     // Bows give the Player double damage in a single round, to simulate being able
     // to
     // attack an enemy at range (it can't actually attack an enemy at range).
+
+    // Uncomment when persistence is done
+//    @Override
+//    public JSONObject getJSON() {
+//        JSONObject j = super.getJSON();
+//        j.put("durability", this.durability);
+//        return j;
+//    }
 }

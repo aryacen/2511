@@ -25,6 +25,7 @@ public class SwampTests {
         // The player should not be slowed down by the swamp tile
         assertEquals(initPos.translateBy(Direction.RIGHT).translateBy(Direction.RIGHT), finPos);
     }
+
     @Test
     @DisplayName("Swamp Tile slows spider down")
     public void testSwampSpider() {

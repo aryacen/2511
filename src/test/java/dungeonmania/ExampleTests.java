@@ -1,31 +1,19 @@
 package dungeonmania;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import static dungeonmania.TestUtils.getPlayer;
-import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getInventory;
-import static dungeonmania.TestUtils.getGoals;
-import static dungeonmania.TestUtils.countEntityOfType;
-import static dungeonmania.TestUtils.getValueFromConfigFile;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
-// import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static dungeonmania.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ExampleTests {
 
@@ -187,7 +175,7 @@ public class ExampleTests {
     }
 
     private void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies,
-            String configFilePath) {
+                                          String configFilePath) {
         List<RoundResponse> rounds = battle.getRounds();
         double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
         double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_health", configFilePath));

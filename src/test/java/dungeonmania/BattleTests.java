@@ -1,15 +1,13 @@
 package dungeonmania;
 
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.Test;
 
 public class BattleTests {
-    
+
     // Currently fails
     @DisplayName("Test player battles spider and player dies")
     public void testBattleSpiderLose() {
-        
+
     }
 
     @DisplayName("Test player battles spider and spider dies")
@@ -70,12 +68,12 @@ public class BattleTests {
 
     @DisplayName("Test basic health calculations spider - player wins")
     public void testBasicHealthCalculationsZombiePlayerWins() {
-        
+
     }
 
     @DisplayName("Test basic health calculations spider - player wins")
     public void testBasicHealthCalculationsMercenaryPlayerWins() {
-        
+
     }
 
     @DisplayName("Test basic health calculations spider - player loses")
@@ -85,12 +83,12 @@ public class BattleTests {
 
     @DisplayName("Test basic health calculations spider - player loses")
     public void testBasicHealthCalculationsZombiePlayerLoses() {
-        
+
     }
 
     @DisplayName("Test basic health calculations spider - player loses")
     public void testBasicHealthCalculationsMercenaryPlayerLoses() {
-        
+
     }
 
     /*

@@ -1,7 +1,6 @@
 package dungeonmania;
 
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 /*
 This test is for any combat related
@@ -28,6 +27,7 @@ public class CombatTests {
     public void testInvincibilityPotion() {
 
     }
+
     //@Test
     @DisplayName("Test invincibility potion causes zombies to flee")
     public void testInvincibilityPotionCausesZombiesToFlee() {

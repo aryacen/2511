@@ -1,15 +1,16 @@
 package dungeonmania.Entities.Item;
 
-import dungeonmania.Entities.Entity;
-import dungeonmania.Entities.Item.BuildableEntities.BowEntity;
-import dungeonmania.Entities.Item.BuildableEntities.ShieldEntity;
+import dungeonmania.Entities.EntityFactory.EntityCreator;
 import dungeonmania.Entities.Item.CollectableEntities.KeyEntity;
-import dungeonmania.Entities.Item.CollectableEntities.SwordEntity;
+import dungeonmania.util.Position;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.security.Key;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
+import java.util.stream.Collectors;
 
 /*
 This class contains the player's inventory
@@ -21,14 +22,22 @@ public class Inventory {
 
     // Key = item type, Value = List of Items of that item type
     private HashMap<String, ArrayList<Item>> items;
-    // Keys are stored in their own list
-    ArrayList<KeyEntity> keys;
+    // Player can only hold 1 key at a time
+    private KeyEntity key;
     public static int noSuchItem = -1;
 
     public Inventory() {
         items = new HashMap<>();
-        keys = new ArrayList<>();
+        key = null;
     }
+
+    // Uncomment when persistence is done
+//    public Inventory(JSONArray j) {
+//        Iterator itemIterator = j.iterator();
+//        while (itemIterator.hasNext()) {
+//            addItem((Item) EntityCreator.createEntity((JSONObject) itemIterator.next()));
+//        }
+//    }
 
     /**
      * Checks if inventory has a certain item and in what quantity
@@ -40,10 +49,11 @@ public class Inventory {
         if (this.items.containsKey(itemName)) {
             return items.get(itemName).size();
         } else if (itemName.equals("key")) {
-            if (keys.isEmpty()) {
+            if (key == null) {
                 return noSuchItem;
-            } else {
-                return keys.size();
+            }
+            else {
+                return 1;
             }
         } else {
             return noSuchItem;
@@ -56,7 +66,7 @@ public class Inventory {
     public void addItem(Item i) {
         // If it is a key, add it to its own list
         if (i.getType().equals("key")) {
-            keys.add((KeyEntity) i);
+            this.key = (KeyEntity) i;
             return;
         }
         // If there are no items, created a new list
@@ -83,7 +93,7 @@ public class Inventory {
          * Remove the last item
          */
         if (itemName.equals("key")) {
-            this.keys.remove(0);
+            this.key = null;
             return;
         }
         ArrayList<Item> itemList = this.items.getOrDefault(itemName, new ArrayList<Item>());
@@ -93,7 +103,6 @@ public class Inventory {
         } else {
             this.items.remove(itemName);
         }
-
     }
 
     /**
@@ -122,29 +131,6 @@ public class Inventory {
             if (weapon.getDurability() == 0) {
                 removeItem(weapon.getType());
             }
-            // switch (itemType) {
-            //     case "bow":
-            //         BowEntity usedBow = (BowEntity) weapon;
-            //         usedBow.decreaseDurability();
-            //         if (usedBow.getDurability() == 0) {
-            //             removeItem("bow");
-            //         }
-            //         break;
-            //     case "sword":
-            //         SwordEntity usedSword = (SwordEntity) weapon;
-            //         usedSword.decreaseDurability();
-            //         if (usedSword.getDurability() == 0) {
-            //             removeItem("sword");
-            //         }
-            //         break;
-            //     case "shield":
-            //         ShieldEntity usedShield = (ShieldEntity) weapon;
-            //         usedShield.decreaseDurability();
-            //         if (usedShield.getDurability() == 0) {
-            //             removeItem("shield");
-            //         }
-            //         break;
-            // }
         }
     }
 
@@ -167,20 +153,13 @@ public class Inventory {
      * inventory
      */
     public boolean validKey(int keyId) {
-        if (keys.isEmpty()) {
+        // If there is no key or key player has is invalid, return false
+        if (this.key == null || !(this.key.getKey() == keyId)) {
             return false;
         }
-        KeyEntity validKey = null;
-        for (KeyEntity key : keys) {
-            if (key.getKey() == keyId) {
-                validKey = key;
-                break;
-            }
-        }
-        if (validKey == null) {
-            return false;
-        } else {
-            keys.remove(validKey);
+        // If there is a valid key, remove it and return true
+        else {
+            this.key = null;
             return true;
         }
     }
@@ -188,9 +167,9 @@ public class Inventory {
     public HashMap<String, ArrayList<Item>> getItems() {
         HashMap<String, ArrayList<Item>> itemList = new HashMap<>();
         itemList.putAll(this.items);
-        ArrayList<Item> keyList = new ArrayList<>();
-        keyList.addAll(keys);
-        itemList.put("key", keyList);
+        if (this.key != null) {
+            itemList.put("keys", new ArrayList<>(Arrays.asList(this.key)));
+        }
         return itemList;
     }
 
@@ -209,7 +188,40 @@ public class Inventory {
 
     }
 
-    // hash map has keyset function, so for each key in the key set you have a list
-    // and then we can iterate through that list using streams exmaple
-    // streams.filter.i.getType();
+    // Uncomment when persistence is done
+    // Returns each item in the inventory as a JSONArray of JSONObject
+//    public JSONArray getJSON() {
+//        JSONArray j = new JSONArray();
+//        for (String itemName: this.items.keySet()) {
+//            this.items.get(itemName).forEach(i -> j.put(i.getJSON()));
+//        }
+//        if (key != null) {
+//            j.put(key.getJSON());
+//        }
+//        return j;
+//    }
+
+    /**
+     * Picks up all items that the player can pick up at specified position
+     */
+    public void pickUpItems(ArrayList<Item> items, Position pos) {
+        ArrayList<Item> itemsAtPos = new ArrayList<>(items);
+        itemsAtPos = (ArrayList<Item>) itemsAtPos.stream().filter(i -> i.getPosition().equals(pos)).collect(Collectors.toList());
+        // If the item is at the current location of the player, place it in the
+        for (Item i : itemsAtPos) {
+            if (canPickUp(i.getType())){
+                addItem(i);
+                items.remove(i);
+            }
+        }
+    }
+
+    /**
+     * Checks whether an item can be picked up
+     */
+    private boolean canPickUp(String type) {
+        // Can not pick up multiple keys
+        return !type.equals("key") || this.key == null;
+    }
+
 }

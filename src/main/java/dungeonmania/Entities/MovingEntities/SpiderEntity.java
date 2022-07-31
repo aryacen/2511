@@ -8,6 +8,8 @@ import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,21 @@ public class SpiderEntity extends MovingEntity {
         this.movement = new SpiderMovement();
     }
 
+    public SpiderEntity(JSONObject j) {
+        super(j);
+        this.hp = EntityConstants.getInstance("spider_health");
+        this.attack = EntityConstants.getInstance("spider_attack");
+        this.movement = new SpiderMovement();
+
+        // Uncomment when persistences works
+//        if (j.has("movement")) {
+//            this.movement = new SpiderMovement((JSONObject) j.get("movement"));
+//        }
+//        else {
+//            this.movement = new SpiderMovement();
+//        }
+    }
+
     @Override
     public void move(Direction direction,
                      ArrayList<Item> items,
@@ -26,6 +43,14 @@ public class SpiderEntity extends MovingEntity {
                      ArrayList<MovingEntity> movingEntities) {
         this.position = this.movement.move(this, null, staticEntities, null);
     }
+
+    // Uncomment when persistence is done
+//    @Override
+//    public JSONObject getJSON() {
+//        JSONObject j = super.getJSON();
+//        j.put("movement", this.movement.getJSON());
+//        return j;
+//    }
 
     // Spiders spawn at random locations in the dungeon from the beginning of the game.
 

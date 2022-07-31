@@ -1,11 +1,10 @@
 package dungeonmania.Entities.EntityFactory;
 
 import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.Item.BuildableEntities.BowEntity;
+import dungeonmania.Entities.Item.BuildableEntities.ShieldEntity;
 import dungeonmania.Entities.Item.CollectableEntities.*;
-import dungeonmania.Entities.MovingEntities.MercenaryEntity;
-import dungeonmania.Entities.MovingEntities.PlayerEntity;
-import dungeonmania.Entities.MovingEntities.SpiderEntity;
-import dungeonmania.Entities.MovingEntities.ZombieToastEntity;
+import dungeonmania.Entities.MovingEntities.*;
 import dungeonmania.Entities.StaticEntities.*;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
@@ -16,11 +15,22 @@ import org.json.JSONObject;
  * 
  * @Pre-condition parameters are valid
  */
-public class entityCreator {
+public class EntityCreator {
 
     public static Entity createEntity(JSONObject entityInfo) {
+        /*
+        NOTE: THE UNPACKING OF THE JSON FILE SHOULD BE ABSTRACTED TO EACH OBJECT AS THEY CAN UTILISE CLASS SPECIFIC
+        PARAMETERS
+        */
         String type = entityInfo.getString("type");
-        String id = EntityConstants.newId();
+        // IF ENTITY INFO HAS NO ID CREATE A NEW ID FOR IT (SHOULD BE ABSTRACTED TO THE CLASS)
+        String id;
+        if (entityInfo.has("id")) {
+            id = (String) entityInfo.get("id");
+        }
+        else {
+            id = EntityConstants.newId();
+        }
         Position position = new Position(entityInfo.getInt("x"), entityInfo.getInt("y"));
         Entity e = null;
         switch (type) {
@@ -28,16 +38,24 @@ public class entityCreator {
              * Moving Entities
              */
             case "player":
-                e = new PlayerEntity(id, type, position);
+                e = new PlayerEntity(entityInfo);
                 break;
             case "mercenary":
                 e = new MercenaryEntity(id, type, position);
+                // TODO: CHANGE THIS TO CHECK IF MERCENARY IS AFFECTED BY A STATUS
                 break;
             case "spider":
-                e = new SpiderEntity(id, type, position);
+                e = new SpiderEntity(entityInfo);
                 break;
             case "zombie_toast":
                 e = new ZombieToastEntity(id, type, position);
+                break;
+            case "hydra":
+                e = new HydraEntity(id, type, position);
+                break;
+            case "assassin":
+                e = new AssassinEntity(id, type, position);
+                // TODO: CHANGE THIS TO CHECK IF ASSASSIN IS AFFECTED BY A STATUS
                 break;
             /*
              * Items
@@ -55,7 +73,7 @@ public class entityCreator {
                 e = new InvisibilityPotionEntity(id, type, position);
                 break;
             case "sword":
-                e = new SwordEntity(id, type, position);
+                e = new SwordEntity(entityInfo);
                 break;
             case "treasure":
                 e = new TreasureEntity(id, type, position);
@@ -95,6 +113,15 @@ public class entityCreator {
                 break;
             case "swamp_tile":
                 e = new SwampTileEntity(id, type, position, entityInfo.getInt("movement_factor"));
+                break;
+            /*
+            Restricted (these should only be called by inventory when loading game)
+             */
+            case "bow":
+                e = new BowEntity(entityInfo);
+                break;
+            case "shield":
+                e = new ShieldEntity(entityInfo);
                 break;
         }
         return e;

@@ -1,34 +1,16 @@
 package dungeonmania;
 
+import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
+import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertFalse;
-//import static org.junit.jupiter.api.Assertions.assertNotEquals;
-//import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
+import static dungeonmania.TestUtils.getPlayer;
 import static org.junit.jupiter.api.Assertions.*;
-//import static dungeonmania.TestUtils.getInventory;
-///import static dungeonmania.TestUtils.getGoals;
-//import static dungeonmania.TestUtils.countEntityOfType;
-//import static dungeonmania.TestUtils.getValueFromConfigFile;
-import dungeonmania.exceptions.InvalidActionException;
-
-
-
-//import dungeonmania.response.models.BattleResponse;
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
-//import dungeonmania.response.models.RoundResponse;
-import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
-
-import java.util.ArrayList;
 
 /*
 This test is for anything interaction/action involving the player as the only moving entity
@@ -59,7 +41,7 @@ public class PlayerTests {
         actualDungonRes = dmc.tick(Direction.LEFT);
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
         assertEquals(expectedPlayer, actualPlayer);
-        
+
     }
 
     /*
@@ -80,8 +62,9 @@ public class PlayerTests {
         actualDungonRes = dmc.tick(Direction.DOWN);
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
         assertEquals(expectedPlayer, actualPlayer);
-        
-    } 
+
+    }
+
     /*
     Movement with Boulders
      */
@@ -103,7 +86,6 @@ public class PlayerTests {
         assertEquals(new Position(3, 1), actualBoulderPos);
 
 
-        
     }
 
     @Test
@@ -133,22 +115,22 @@ public class PlayerTests {
 
     @Test
     @DisplayName("Test player cannot move two boulders")
-        public void testCannotPushTwoBoulders() {
-            DungeonManiaController dmc = new DungeonManiaController();
-            DungeonResponse initDungonRes = dmc.newGame("d_movementTest_testBoulderCanBePushed",
-                    "c_movementTest_testCardinalMovement");
-            EntityResponse initPlayer = getPlayer(initDungonRes).get();
-            EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(1, 1),
-                    false);
-            // Two boulders in down direction, so none of them should move
-            DungeonResponse actualDungonRes = dmc.tick(Direction.DOWN);
-            EntityResponse actualPlayer = getPlayer(actualDungonRes).get();   
-            assertEquals(expectedPlayer, actualPlayer);
-            // *****
-            Position actualBoulderPos1 = getEntities(initDungonRes, "boulder").get(1).getPosition();
-            Position actualBoulderPos2 = getEntities(initDungonRes, "boulder").get(2).getPosition();
-            assertEquals(new Position(1, 2), actualBoulderPos1);
-            assertEquals(new Position(1, 3), actualBoulderPos2);
+    public void testCannotPushTwoBoulders() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse initDungonRes = dmc.newGame("d_movementTest_testBoulderCanBePushed",
+                "c_movementTest_testCardinalMovement");
+        EntityResponse initPlayer = getPlayer(initDungonRes).get();
+        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(1, 1),
+                false);
+        // Two boulders in down direction, so none of them should move
+        DungeonResponse actualDungonRes = dmc.tick(Direction.DOWN);
+        EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
+        assertEquals(expectedPlayer, actualPlayer);
+        // *****
+        Position actualBoulderPos1 = getEntities(initDungonRes, "boulder").get(1).getPosition();
+        Position actualBoulderPos2 = getEntities(initDungonRes, "boulder").get(2).getPosition();
+        assertEquals(new Position(1, 2), actualBoulderPos1);
+        assertEquals(new Position(1, 3), actualBoulderPos2);
     }
 
     /*
@@ -163,12 +145,13 @@ public class PlayerTests {
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
         // ASSUMED BY DEFAULT PORTAL TELEPORT PLAYER IN SAME DIRECTION AS PLAYER MOVEMENT
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(4, 3),
-                    false);
-        
+                false);
+
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
-        EntityResponse actualPlayer = getPlayer(actualDungonRes).get(); 
+        EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
         assertEquals(expectedPlayer, actualPlayer);
     }
+
     @Test
     @DisplayName("Test player can't be teleported into a wall")
     public void testTeleportIntoWall() {
@@ -180,6 +163,7 @@ public class PlayerTests {
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
         assertNotEquals(actualPlayer.getPosition(), new Position(4, 3));
     }
+
     @Test
     @DisplayName("Test player can't be teleported into a spot with no movements")
     public void testTeleportIntoPositonWithNoValidMovement() {
@@ -188,7 +172,7 @@ public class PlayerTests {
                 "c_movementTest_testCardinalMovement");
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(1, 1),
-                    false);
+                false);
 
         // second portal is covered by walls so player should stay in same position
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -210,6 +194,7 @@ public class PlayerTests {
         // Check that the player is teleported correctly
         assertEquals(actualPlayer.getPosition(), new Position(5, 5));
     }
+
     @Test
     @DisplayName("Test teleporting from one portal to another")
     public void testTeleportMultipleTimes() {

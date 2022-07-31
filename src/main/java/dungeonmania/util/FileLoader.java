@@ -1,9 +1,15 @@
 package dungeonmania.util;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Ref;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
@@ -42,5 +48,16 @@ public final class FileLoader {
                 .stream()
                 .map(s -> s.replace(directory + "/", "").replace(".json", ""))
                 .collect(Collectors.toList());
+    }
+    // Added function for saving a file
+    public static void saveJSON(JSONObject j, String name) throws IOException {
+    // TODO: FIGURE THIS OUT
+//        File f = new File(name + ".json");
+//        f.createNewFile();
+//
+//        FileWriter fileWriter = new FileWriter(name + ".json", false);
+//        fileWriter.write(j.toString());
+//        fileWriter.flush();
+//        fileWriter.close();
     }
 }

@@ -5,7 +5,9 @@ import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
+import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -29,9 +31,7 @@ public class MercenaryEntity extends MovingEntity {
                      ArrayList<Item> items,
                      ArrayList<StaticEntity> staticEntities,
                      ArrayList<MovingEntity> movingEntities) {
-
     }
-
     public void interact(Entity merc, PlayerEntity player, ArrayList<StaticEntity> staticEntities) throws InvalidActionException {
         Position playerPos = player.getPosition();
         Position mercPos = merc.getPosition();
@@ -65,4 +65,9 @@ public class MercenaryEntity extends MovingEntity {
 
     // As an ally, once it reaches the Player it simply follows the Player around,
     // occupying the square the player was previously in.
+//    @Override
+//    public JSONObject getJSON() {
+//        // TODO: RETURN STATUS OF MERCENARY
+//        return super.getJSON();
+//    }
 }
