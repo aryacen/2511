@@ -6,6 +6,7 @@ import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 import org.reflections.vfs.Vfs;
 
 import java.util.ArrayList;
@@ -80,4 +81,8 @@ public abstract class Movement {
         }
     }
 
+    public JSONObject getJSON() {
+        JSONObject j = new JSONObject();
+        return j;
+    }
 }

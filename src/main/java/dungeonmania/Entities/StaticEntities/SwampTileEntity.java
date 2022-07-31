@@ -1,6 +1,7 @@
 package dungeonmania.Entities.StaticEntities;
 
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -41,4 +42,12 @@ public class SwampTileEntity extends StaticEntity {
             return true;
         }
     }
+
+    // Uncomment when persistence is done
+//    @Override
+//    public JSONObject getJSON() {
+//        JSONObject j = super.getJSON();
+//        j.put("movement_factor", this.movementFactor);
+//        return j;
+//    }
 }

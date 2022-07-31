@@ -1,31 +1,12 @@
 package dungeonmania;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import static dungeonmania.TestUtils.getPlayer;
-import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getInventory;
-import static dungeonmania.TestUtils.getGoals;
-import static dungeonmania.TestUtils.countEntityOfType;
-import static dungeonmania.TestUtils.getValueFromConfigFile;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.util.Direction;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import dungeonmania.response.models.BattleResponse;
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
-import dungeonmania.response.models.RoundResponse;
-import dungeonmania.util.Direction;
-// import dungeonmania.util.EntityConstants;
-import dungeonmania.util.Position;
+import static dungeonmania.TestUtils.getGoals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /*
 This test is regarding anything that will cause the player to win the game
@@ -35,7 +16,7 @@ public class GoalTests {
     ! Basic Goals
      */
     /*
-    * Exit
+     * Exit
      */
     // @Test
     @DisplayName("Getting to exit")
@@ -44,7 +25,7 @@ public class GoalTests {
     }
 
     /*
-    * Destroy enemies and spawners
+     * Destroy enemies and spawners
      */
     // @Test
     @DisplayName("Destroy 1 enemy")
@@ -77,7 +58,7 @@ public class GoalTests {
     }
 
     /*
-    * Floor switches
+     * Floor switches
      */
     // @Test
     @DisplayName("Move boulder onto 1 floor switch")
@@ -98,7 +79,7 @@ public class GoalTests {
     }
 
     /*
-    * Collect treasure
+     * Collect treasure
      */
     // @Test
     @DisplayName("Collect 1 treasure")

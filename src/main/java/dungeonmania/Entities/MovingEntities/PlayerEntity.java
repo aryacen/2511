@@ -8,10 +8,11 @@ import dungeonmania.Entities.MovingEntities.Movement.PlayerMovement;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.Entities.StaticEntities.ZombieToastSpawnerEntity;
 import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,6 @@ public class PlayerEntity extends MovingEntity {
 
     private CraftingSystem c;
     private Inventory i;
-
     private int enemiesDestroyed;
 
     private final static String[] usableItems = { "bomb", "invisibility_potion", "invincibility_potion" };
@@ -35,6 +35,24 @@ public class PlayerEntity extends MovingEntity {
         this.hp = EntityConstants.getInstance("player_health");
         this.attack = EntityConstants.getInstance("player_attack");
         this.enemiesDestroyed = 0;
+    }
+
+    public PlayerEntity(JSONObject j ) {
+        super(j);
+        this.c = new CraftingSystem();
+        this.movement = new PlayerMovement();
+        this.hp = EntityConstants.getInstance("player_health");
+        this.attack = EntityConstants.getInstance("player_attack");
+        this.enemiesDestroyed = 0;
+        this.i = new Inventory();
+
+        // Uncomment when persistence is done
+//        if (j.has("inventory")) {
+//            this.i = new Inventory((JSONArray) j.get("inventory"));
+//        }
+//        else {
+//            this.i = new Inventory();
+//        }
     }
 
     /**
@@ -53,18 +71,9 @@ public class PlayerEntity extends MovingEntity {
             ArrayList<Item> items,
             ArrayList<StaticEntity> staticEntities,
             ArrayList<MovingEntity> movingEntities) {
-        Position newPosition = this.movement.move(this, direction, staticEntities, movingEntities);
-        this.position = newPosition;
-        // Create a duplicate list to avoid modification of list while in the loop
-        ArrayList<Item> tmpItemList = new ArrayList<>();
-        tmpItemList.addAll(items);
-        // If the item is at the current location of the player, place it in the
-        // inventory
-        for (Item item : tmpItemList)
-            if (item.getPosition().equals(this.position)) {
-                this.i.addItem(item);
-                items.remove(item);
-            }
+        this.position = this.movement.move(this, direction, staticEntities, movingEntities);
+        // Get the inventory to pick up any item it can at the current location
+        this.i.pickUpItems(items, this.position);
     }
 
     public Inventory getI() {
@@ -105,37 +114,33 @@ public class PlayerEntity extends MovingEntity {
     }
 
     public void interact(String entityId, ArrayList<StaticEntity> staticEntities,
-            ArrayList<MovingEntity> movingEntities) throws IllegalArgumentException, InvalidActionException {
+             ArrayList<MovingEntity> movingEntities) throws IllegalArgumentException, InvalidActionException {
 
         Entity interactable = null;
         ZombieToastSpawnerEntity spawner = null;
         MercenaryEntity merc = null;
         /*
-         * interactable = movingEntities.stream().filter(me ->
-         * me.getId().equals(entityId)).findFirst();
-         * if (interactable == null) {
-         * interactable = staticEntities.stream().filter(se ->
-         * se.getId().equals(entityId)).findFirst();
-         * }
-         */
-        System.out.println(movingEntities);
-        System.out.println(staticEntities);
-        for (MovingEntity entity : movingEntities) {
-            if (entity.getId().equals(entityId)) {
-                switch (entity.getType()) {
+        interactable = movingEntities.stream().filter(me -> me.getId().equals(entityId)).findFirst();
+        if (interactable == null) {
+            interactable = staticEntities.stream().filter(se -> se.getId().equals(entityId)).findFirst();
+        }
+        */
+        for (MovingEntity entity: movingEntities) {
+            if(entity.getId().equals(entityId)) {
+                switch(entity.getType()) {
                     case "mercenary":
-                        System.out.println(entity);
                         merc = (MercenaryEntity) entity;
                         break;
                     case "assassin":
                         break;
-
+                    
+                        
                 }
                 interactable = entity;
-
+                
             }
         }
-
+             
         if (interactable == null) {
             for (StaticEntity entity : staticEntities) {
                 if (entity.getId().equals(entityId)) {
@@ -144,7 +149,7 @@ public class PlayerEntity extends MovingEntity {
                 }
             }
         }
-
+        
         if (interactable == null || !interactable.isInteractable()) {
             throw new IllegalArgumentException("Object is not interactable");
         } else {
@@ -159,11 +164,11 @@ public class PlayerEntity extends MovingEntity {
                     merc.interact(merc, this, staticEntities);
                     // this.interacter.bribeMercenary(interactable, this, i, staticEntities);
                     break;
-                case "assasin":
-
+                case "assassin":
+                     
             }
         }
-
+        
     }
     // Can bribe the mercenary
 
@@ -198,5 +203,14 @@ public class PlayerEntity extends MovingEntity {
     public void decreaseDurability() {
         this.i.decreaseDurability();
     }
+
+    // Uncomment when persistence is done
+//    @Override
+//    public JSONObject getJSON() {
+//        JSONObject j = super.getJSON();
+//        j.put("inventory", this.i.getJSON());
+//        return j;
+//    }
+
 
 }

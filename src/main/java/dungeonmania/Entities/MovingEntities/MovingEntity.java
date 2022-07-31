@@ -6,6 +6,7 @@ import dungeonmania.Entities.MovingEntities.Movement.Movement;
 import dungeonmania.Entities.StaticEntities.StaticEntity;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,10 @@ public abstract class MovingEntity extends Entity {
         this.entityType = "Moving";
     }
 
+    public MovingEntity(JSONObject j) {
+        super(j);
+        this.entityType = "Moving";
+    }
     public double getHp() {
         return hp;
     }
@@ -39,4 +44,13 @@ public abstract class MovingEntity extends Entity {
     public Boolean isDead() {
         return (this.getHp() <= 0.0);
     }
+
+    // Uncomment when persistence is done
+//    @Override
+//    public JSONObject getJSON() {
+//        JSONObject j = super.getJSON();
+//        j.put("hp", this.hp);
+//        j.put("attack", this.attack);
+//        return j;
+//    }
 }

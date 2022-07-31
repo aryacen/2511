@@ -4,6 +4,7 @@ import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
 import dungeonmania.util.EntityConstants;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -12,6 +13,9 @@ public abstract class BuildableEntity extends Item {
 
     public BuildableEntity(String id, String type, Position position) {
         super(id, type, EntityConstants.notOnMap);
+    }
+    public BuildableEntity(JSONObject j) {
+        super(j);
     }
 
     @Override

@@ -5,9 +5,10 @@ import java.util.HashMap;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 
 public abstract class Item extends Entity {
-    private int durability;
+    protected int durability;
 
     public Item(String id, String type, Position position) {
         super(id, type, position);
@@ -15,6 +16,11 @@ public abstract class Item extends Entity {
         this.isInteractable = true;
         this.entityType = "Item";
         this.durability = Integer.MAX_VALUE;
+    }
+
+    public Item(JSONObject j) {
+        super(j);
+        this.entityType = "Item";
     }
 
     public boolean canBeCrafted(HashMap<String, Integer> itemsToRemove) {

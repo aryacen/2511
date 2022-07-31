@@ -1,5 +1,6 @@
 package dungeonmania.util;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -20,6 +21,44 @@ public class EntityConstants {
     public final static Position notOnMap = new Position(-1, -1);
 
     private static HashMap<String, Double> config = new HashMap<>();
+    private static HashMap<String, Double> defaultConfig = new HashMap<>();
+    static {
+        config.put("ally_attack", 3.0);
+        config.put("ally_defence", 3.0);
+        config.put("bomb_radius", 1.0);
+        config.put("bow_durability", 1.0);
+        config.put("bribe_amount", 1.0);
+        config.put("bribe_radius", 1.0);
+        config.put("enemy_goal", 1.0);
+        config.put("invincibility_potion_duration", 1.0);
+        config.put("invisibility_potion_duration", 1.0);
+        config.put("mercenary_attack", 1.0);
+        config.put("mercenary_health", 1.0);
+        config.put("player_attack", 1.0);
+        config.put("player_health", 1.0);
+        config.put("shield_defence", 1.0);
+        config.put("shield_durability", 1.0);
+        config.put("spider_attack", 1.0);
+        config.put("spider_health", 1.0);
+        config.put("sword_attack", 1.0);
+        config.put("sword_durability", 1.0);
+        config.put("treasure_goal", 1.0);
+        config.put("zombie_attack", 1.0);
+        config.put("zombie_health", 1.0);
+        config.put("zombie_spawn_rate", 1.0);
+        config.put("assassin_attack", 1.0);
+        config.put("assassin_bribe_amount", 1.0);
+        config.put("assassin_bribe_fail_rate", 1.0);
+        config.put("assassin_health", 1.0);
+        config.put("assassin_recon_radius", 1.0);
+        config.put("hydra_attack", 1.0);
+        config.put("hydra_health", 1.0);
+        config.put("hydra_health_increase_rate", 1.0);
+        config.put("hydra_health_increase_amount", 1.0);
+        config.put("mind_control_duration", 1.0);
+        config.put("midnight_armour_attack", 1.0);
+        config.put("midnight_armour_defence", 1.0);
+    }
     private static int idCounter = 0;
 
     /**
@@ -30,24 +69,23 @@ public class EntityConstants {
         return String.valueOf(idCounter);
     }
 
-    public static synchronized void setId(int i) {
-        EntityConstants.idCounter = i;
+    public static synchronized void setId(String i) {
+        EntityConstants.idCounter = Integer.parseInt(i);
     }
 
-    /**
-     * If no counter was specified, set the id counter to 0
-     */
-    public static synchronized void setId() {
-        EntityConstants.idCounter = 0;
-    }
 
     /**
      * Reset id to zero and returns what the counter was initially
      */
-    public static synchronized int resetId() {
-        int tmp = idCounter;
+    public static synchronized void resetId() {
         idCounter = 0;
-        return tmp;
+    }
+
+    /**
+     * Returns most recent id used
+     */
+    public static synchronized String getIdCounter() {
+        return String.valueOf(idCounter);
     }
 
     public static synchronized void setConfig(JSONObject j) throws IOException {
@@ -106,10 +144,8 @@ public class EntityConstants {
      * @param field
      * @return
      */
-    private static synchronized Double getDefault(String field) throws IOException {
-        String configFile = FileLoader.loadResourceFile("configs/c_default.json");
-        JSONObject configFileJson = new JSONObject(configFile);
-        return (Double) configFileJson.getDouble(field);
+    private static Double getDefault(String field) {
+        return EntityConstants.defaultConfig.get(field);
     }
     /**
      * Uses the singleton pattern
@@ -117,6 +153,12 @@ public class EntityConstants {
      */
      public static synchronized Double getInstance(String field) {
         return config.get(field);
+    }
+
+    public static JSONObject getJSON() {
+        JSONObject j = new JSONObject();
+        config.keySet().forEach(c -> j.put(c, config.get(c)));
+        return j;
     }
 
 }

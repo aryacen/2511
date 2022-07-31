@@ -3,6 +3,7 @@ package dungeonmania.Entities.StaticEntities;
 import dungeonmania.Entities.MovingEntities.Movement.Movement;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
 
 import javax.sound.sampled.Port;
 import java.util.ArrayList;
@@ -11,14 +12,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PortalEntity extends StaticEntity {
-    private final String color;
-    public PortalEntity(String id, String type, Position position, String color) {
+    private final String colour;
+    public PortalEntity(String id, String type, Position position, String colour) {
         super(id, type, position);
-        this.color = color;
+        this.colour = colour;
     }
 
-    public String getColor() {
-        return color;
+    public String getColour() {
+        return colour;
     }
 
     @Override
@@ -33,7 +34,7 @@ public class PortalEntity extends StaticEntity {
     // walls, then the player should remain where they are.
 
     /**
-     * @Pre-condition Corresponding portal with the same color
+     * @Pre-condition Corresponding portal with the same colour
      * @Post-condition Returns the corresponding PortalEntity
      */
     public PortalEntity findCorrespondingPortal(ArrayList<StaticEntity> staticEntities) {
@@ -46,10 +47,10 @@ public class PortalEntity extends StaticEntity {
         tmp.forEach(e -> portals.add((PortalEntity) e));
 
         // Find corresponding portal
-        // Same color but different id
+        // Same colour but different id
         return portals
                 .stream()
-                .filter( e -> e.getColor().equals(this.color) && !e.getId().equals(this.id))
+                .filter( e -> e.getColour().equals(this.colour) && !e.getId().equals(this.id))
                 .findAny()
                 .get();
     }
@@ -119,4 +120,12 @@ public class PortalEntity extends StaticEntity {
     public boolean isSpawner() {
         return false;
     }
+
+    // Uncomment when persistence is done
+//    @Override
+//    public JSONObject getJSON() {
+//        JSONObject j = super.getJSON();
+//        j.put("colour", this.colour);
+//        return j;
+//    }
 }

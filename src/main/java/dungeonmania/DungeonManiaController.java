@@ -1,7 +1,7 @@
 package dungeonmania;
 
 import dungeonmania.Entities.Entity;
-import dungeonmania.Entities.EntityFactory.entityCreator;
+import dungeonmania.Entities.EntityFactory.EntityCreator;
 import dungeonmania.Entities.Item.Item;
 import dungeonmania.Entities.MovingEntities.MovingEntity;
 import dungeonmania.Entities.MovingEntities.PlayerEntity;
@@ -18,7 +18,6 @@ import dungeonmania.Entities.Battle;
 
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
-import dungeonmania.util.Position;
 import dungeonmania.util.EntityConstants;
 
 import java.io.IOException;
@@ -112,8 +111,7 @@ public class DungeonManiaController {
             e.printStackTrace();
         }
 
-        DungeonResponse output = getDungeonResponse();
-        return output;
+        return getDungeonResponse();
     }
 
     /**
@@ -134,8 +132,7 @@ public class DungeonManiaController {
                 treasureGoal);
         this.goals = updatedGoals.getGoal();
 
-        DungeonResponse output = getDungeonResponse();
-        return output;
+        return getDungeonResponse();
     }
 
     /**
@@ -147,8 +144,7 @@ public class DungeonManiaController {
                 this.itemEntities,
                 this.staticEntities,
                 this.movingEntities);
-        this.movingEntities.stream()
-                .forEach(e -> e.move(null, this.itemEntities, this.staticEntities, this.movingEntities));
+        this.movingEntities.forEach(e -> e.move(null, this.itemEntities, this.staticEntities, this.movingEntities));
         this.haveBattle();
 
         // update goal
@@ -186,20 +182,31 @@ public class DungeonManiaController {
      * /game/save
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-        return null;
+//        try {
+//            GameSaver.saveGame(name, this);
+//        } catch (IOException e) {
+//            throw new IllegalArgumentException(e);
+//        }
+        return getDungeonResponse();
     }
 
     /**
      * /game/load
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
-        return null;
+//        try {
+//            GameSaver.loadGame(name, this);
+//        } catch (IOException e) {
+//            throw new IllegalArgumentException(e);
+//        }
+        return getDungeonResponse();
     }
 
     /**
      * /games/all
      */
     public List<String> allGames() {
+//        return FileLoader.listFileNamesInResourceDirectory("savedgames");
         return new ArrayList<>();
     }
 
@@ -223,7 +230,7 @@ public class DungeonManiaController {
         Iterator<Object> entityIterator = entities.iterator();
         Entity newEntity;
         while (entityIterator.hasNext()) {
-            newEntity = entityCreator.createEntity((JSONObject) entityIterator.next());
+            newEntity = EntityCreator.createEntity((JSONObject) entityIterator.next());
             // Player is stored separately to all other entities
             if (newEntity.getType().equals("player")) {
                 this.playerEntity = (PlayerEntity) newEntity;
@@ -258,43 +265,16 @@ public class DungeonManiaController {
         /*
          * Dungeon id
          * Dungeon name
-         * Entites
+         * Entities
          * Inventory
          * Battle Response
          * Buildables
          * Goals
          */
         ArrayList<EntityResponse> entityResponse = new ArrayList<>();
-
-        for (int i = 0; i < this.movingEntities.size(); i++) {
-            MovingEntity tempEntity = this.movingEntities.get(i);
-            String id = tempEntity.getId();
-            String type = tempEntity.getType();
-            Position position = tempEntity.getPosition();
-            boolean interactable = tempEntity.isInteractable();
-            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
-            entityResponse.add(tempEntityResponse);
-        }
-
-        for (int i = 0; i < this.staticEntities.size(); i++) {
-            StaticEntity tempEntity = this.staticEntities.get(i);
-            String id = tempEntity.getId();
-            String type = tempEntity.getType();
-            Position position = tempEntity.getPosition();
-            boolean interactable = tempEntity.isInteractable();
-            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
-            entityResponse.add(tempEntityResponse);
-        }
-
-        for (int i = 0; i < this.itemEntities.size(); i++) {
-            Item tempEntity = this.itemEntities.get(i);
-            String id = tempEntity.getId();
-            String type = tempEntity.getType();
-            Position position = tempEntity.getPosition();
-            boolean interactable = tempEntity.isInteractable();
-            EntityResponse tempEntityResponse = new EntityResponse(id, type, position, interactable);
-            entityResponse.add(tempEntityResponse);
-        }
+        this.movingEntities.forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
+        this.staticEntities.forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
+        this.itemEntities.forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
 
         ArrayList<ItemResponse> itemResponse = new ArrayList<>();
         if (playerEntity != null) {
@@ -312,11 +292,8 @@ public class DungeonManiaController {
             }
         }
 
-        DungeonResponse output = new DungeonResponse(this.dungeonId, this.dungeonName, entityResponse, itemResponse,
+        return new DungeonResponse(this.dungeonId, this.dungeonName, entityResponse, itemResponse,
                 this.battleResponse, buildables, this.goals);
-
-        return output;
-
     }
 
     private ArrayList<ItemResponse> generateItemResponse(HashMap<String, ArrayList<Item>> items) {
@@ -358,4 +335,47 @@ public class DungeonManiaController {
             }
         }
     }
+
+    public JSONObject getJsonGoal() {
+        return jsonGoal;
+    }
+
+    public PlayerEntity getPlayerEntity() {
+        return playerEntity;
+    }
+
+    public ArrayList<MovingEntity> getMovingEntities() {
+        return movingEntities;
+    }
+
+    public ArrayList<StaticEntity> getStaticEntities() {
+        return staticEntities;
+    }
+
+    public ArrayList<Item> getItemEntities() {
+        return itemEntities;
+    }
+
+    public void setJsonGoal(JSONObject jsonGoal) {
+        this.jsonGoal = jsonGoal;
+    }
+
+    public void setPlayerEntity(PlayerEntity playerEntity) {
+        this.playerEntity = playerEntity;
+    }
+
+    public void setMovingEntities(ArrayList<MovingEntity> movingEntities) {
+        this.movingEntities = movingEntities;
+    }
+
+    public void setStaticEntities(ArrayList<StaticEntity> staticEntities) {
+        this.staticEntities = staticEntities;
+    }
+
+    public void setItemEntities(ArrayList<Item> itemEntities) {
+        this.itemEntities = itemEntities;
+    }
 }
+
+
+
