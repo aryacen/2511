@@ -160,13 +160,9 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        if (buildable.equals("midnight_armour") && zombiesPresent()) {
-            if (zombiesPresent()) {
-                throw new InvalidActionException("Zombies are present in the map!");
-            }
-        } else {
-            this.playerEntity.craftItem(buildable);
-        }
+
+        this.playerEntity.craftItem(buildable, zombiesPresent());
+
         return getDungeonResponse();
     }
 
@@ -182,11 +178,11 @@ public class DungeonManiaController {
      * /game/save
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-//        try {
-//            GameSaver.saveGame(name, this);
-//        } catch (IOException e) {
-//            throw new IllegalArgumentException(e);
-//        }
+        // try {
+        // GameSaver.saveGame(name, this);
+        // } catch (IOException e) {
+        // throw new IllegalArgumentException(e);
+        // }
         return getDungeonResponse();
     }
 
@@ -194,11 +190,11 @@ public class DungeonManiaController {
      * /game/load
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
-//        try {
-//            GameSaver.loadGame(name, this);
-//        } catch (IOException e) {
-//            throw new IllegalArgumentException(e);
-//        }
+        // try {
+        // GameSaver.loadGame(name, this);
+        // } catch (IOException e) {
+        // throw new IllegalArgumentException(e);
+        // }
         return getDungeonResponse();
     }
 
@@ -206,7 +202,7 @@ public class DungeonManiaController {
      * /games/all
      */
     public List<String> allGames() {
-//        return FileLoader.listFileNamesInResourceDirectory("savedgames");
+        // return FileLoader.listFileNamesInResourceDirectory("savedgames");
         return new ArrayList<>();
     }
 
@@ -251,16 +247,26 @@ public class DungeonManiaController {
         }
     }
 
+    /**
+     * Checks if a zombie toast entity is present in the map, returns true if yes,
+     * otherwise false
+     * 
+     * @return boolean
+     */
     private boolean zombiesPresent() {
-        boolean output = false;
         for (MovingEntity entity : this.movingEntities) {
             if (entity.getType().equals("zombie_toast")) {
-                output = true;
+                return true;
             }
         }
-        return output;
+        return false;
     }
 
+    /**
+     * Generate a DungeonResponse
+     * 
+     * @return DungeonResponse
+     */
     private DungeonResponse getDungeonResponse() {
         /*
          * Dungeon id
@@ -272,9 +278,12 @@ public class DungeonManiaController {
          * Goals
          */
         ArrayList<EntityResponse> entityResponse = new ArrayList<>();
-        this.movingEntities.forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
-        this.staticEntities.forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
-        this.itemEntities.forEach(e -> entityResponse.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
+        this.movingEntities.forEach(e -> entityResponse
+                .add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
+        this.staticEntities.forEach(e -> entityResponse
+                .add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
+        this.itemEntities.forEach(e -> entityResponse
+                .add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), e.isInteractable())));
 
         ArrayList<ItemResponse> itemResponse = new ArrayList<>();
         if (playerEntity != null) {
@@ -286,16 +295,19 @@ public class DungeonManiaController {
 
         ArrayList<String> buildables = new ArrayList<>();
         if (playerEntity != null) {
-            buildables = this.playerEntity.getBuildable();
-            if (zombiesPresent() && buildables.contains("midnight_armour")) {
-                buildables.remove("midnight_armour");
-            }
+            buildables = this.playerEntity.getBuildable(zombiesPresent());
         }
 
         return new DungeonResponse(this.dungeonId, this.dungeonName, entityResponse, itemResponse,
                 this.battleResponse, buildables, this.goals);
     }
 
+    /**
+     * This helper function will generate ItemResponses from our List of Items
+     * 
+     * @param items
+     * @return ArrayList<ItemResponses>
+     */
     private ArrayList<ItemResponse> generateItemResponse(HashMap<String, ArrayList<Item>> items) {
         ArrayList<ItemResponse> itemResponses = new ArrayList<>();
         for (String itemName : items.keySet()) {
@@ -376,6 +388,3 @@ public class DungeonManiaController {
         this.itemEntities = itemEntities;
     }
 }
-
-
-
