@@ -1,0 +1,149 @@
+{
+    "entities": [
+        {
+            "type" : "player",
+            "x" : 0,
+            "y" : 1
+        }, {
+            "type": "wall",
+            "x": 1,
+            "y": 1
+        }, {
+            "type": "exit",
+            "x": 50,
+            "y": 50
+        }, {
+            "type": "boulder",
+            "x": 51,
+            "y": 50
+        }, {
+            "type": "switch",
+            "x": 52,
+            "y": 50
+        }, {
+            "type": "door",
+            "x": 53,
+            "y": 50,
+            "key": 1
+        }, {
+            "type": "portal",
+            "x": 52,
+            "y": 50,
+            "colour": "BLUE"
+        }, {
+            "type": "portal",
+            "x": 55,
+            "y": 50,
+            "colour": "BLUE"
+        }, {
+            "type": "zombie_toast_spawner",
+            "x": 56,
+            "y": 50
+        }, {
+            "type": "mercenary",
+            "x": 57,
+            "y": 50
+        }, {
+            "type": "treasure",
+            "x": 57,
+            "y": 50
+        }, {
+            "type": "key",
+            "x": 58,
+            "y": 50,
+            "key": 1
+        }, {
+            "type": "invincibility_potion",
+            "x": 59,
+            "y": 50
+        }, {
+            "type": "invisibility_potion",
+            "x": 60,
+            "y": 50
+        }, {
+            "type": "wood",
+            "x": 61,
+            "y": 50
+        }, {
+            "type": "arrow",
+            "x": 62,
+            "y": 50
+        }, {
+            "type": "bomb",
+            "x": 63,
+            "y": 50
+        }, {
+            "type": "sword",
+            "x": 64,
+            "y": 50
+        }, {
+            "type": "assassin",
+            "x": 65,
+            "y": 50
+        }, {
+            "type": "hydra",
+            "x": 66,
+            "y": 50
+        }, {
+            "type": "swamp_tile",
+            "x": 67,
+            "y": 50,
+            "movement_factor": 2
+        }, {
+            "type": "sun_stone",
+            "x": 68,
+            "y": 50
+        },
+        {
+            "type": "mercenary",
+            "x": 2,
+            "y": 1
+        },
+        {
+            "type": "exit",
+            "x": 0,
+            "y": 0
+        },
+        {
+            "type": "wall",
+            "x": 1,
+            "y": 0
+        },
+        {
+            "type": "wall",
+            "x": 2,
+            "y": 0
+        },
+        {
+            "type": "wall",
+            "x": 3,
+            "y": 0
+        },
+        {
+            "type": "wall",
+            "x": 3,
+            "y": 1
+        },
+        {
+            "type": "wall",
+            "x": 3,
+            "y": 2
+        },
+        {
+            "type": "wall",
+            "x": 2,
+            "y": 2
+        },
+        {
+            "type": "wall",
+            "x": 1,
+            "y": 2
+        },
+        {
+            "type": "wall",
+            "x": 0,
+            "y": 2
+        }
+    ],
+    "goal-condition": {"goal": "exit"}
+}
